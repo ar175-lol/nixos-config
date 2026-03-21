@@ -8,7 +8,6 @@
 
   # Boot settings
    boot = {
-   initrd.kernelModules = [ "vboxvideo" ];
    # Disable systemd-boot
    loader = {
       systemd-boot.enable = false;
@@ -39,7 +38,7 @@
       ];
 
       # Kernel
-      #kernelPackages = pkgs.linuxPackages_xanmod;
+      kernelPackages = pkgs.linuxPackages_xanmod;
    };
 
 
