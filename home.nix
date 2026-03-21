@@ -15,7 +15,7 @@
     fish = {
       enable = true;
       shellAliases = {
-        update = "sudo nixos-rebuild switch --flake /etc/nixos --log-format internal-json 2>&1 | nom --json";
+        update = "sudo nixos-rebuild switch --flake . --update-input nixpkgs && nix-collect-garbage -d && git add . && git commit -m 'run a update: $(date +%D_%H:%M)' && git push";
         sudo-dolphin = "dolphin --sudo";
         clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
       };

@@ -108,7 +108,7 @@
     };
   };
 
-  virtualisation.virtualbox.guest.enable = true;
+  # virtualisation.virtualbox.guest.enable = true;
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "26.05"; 
 
