@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
@@ -35,11 +35,41 @@
         "rd.systemd.show_status=false"
         "rd.udev.log_level=3"
         "udev.log_priority=3"
+        "nvidia-drm.modeset=1"
       ];
 
       # Kernel
       kernelPackages = pkgs.linuxPackages_xanmod;
    };
+
+  hardware = {
+    bluetooth = {
+      enable = true;
+      powerOnBoot = true;
+    };
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+  };
+  
+  nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+        };
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+      };
+    };
+  };
+
 
   # Services
   services = {
@@ -47,13 +77,20 @@
     pipewire = {
       enable = true;
       pulse.enable = true;
+      alsa.enable = true;
     };
     # KDE Plasma
-    displayManager.sddm.enable = true;
     desktopManager.plasma6.enable = true;
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
 
     # X11
-    xserver.enable = true;
+    xserver = {
+      enable = true;
+      videoDrivers = [ "nvidia" ];
+    };
   };
 
   # Networking 
@@ -99,7 +136,7 @@
     };
     gc = {
       automatic = true;
-      dates = "*7d";
+      dates = "weekly";
       options = "--delete-older-than 7d";
     };
   };
