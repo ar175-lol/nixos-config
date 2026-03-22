@@ -137,6 +137,8 @@
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
     };
+
+    # Garbage collector
     gc = {
       automatic = true;
       dates = "weekly";
