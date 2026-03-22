@@ -99,8 +99,8 @@
     };
     gc = {
       automatic = true;
-      dates = "*:0/30";
-      options = "--delete-older-than 30m";
+      dates = "*7d";
+      options = "--delete-older-than 7d";
     };
   };
   nixpkgs.config.allowUnfree = true;
