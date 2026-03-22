@@ -15,7 +15,7 @@
     fish = {
       enable = true;
       shellAliases = {
-        update = "sudo nixos-rebuild switch --flake . --update-input nixpkgs && nix-collect-garbage -d && git add . && git commit -m 'run a update: $(date +%D_%H:%M)' && git push";
+        update = "cd /etc/nixos && sudo nixos-rebuild switch --flake . --update-input nixpkgs && nix-collect-garbage -d && git add . && git commit -m 'run a update: $(date +%D_%H:%M)' && git push";
         sudo-dolphin = "dolphin --sudo";
         clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
       };
@@ -24,6 +24,17 @@
         set -g fish_greeting ""
         fastfetch --logo nixos_small -s OS:Kernel:Uptime:DE:CPU:GPU:MEMORY
       '';
+    };
+    firefox = {
+      enable = true;
+      profiles.ar175 = {
+        settings = {
+        "browser.startup.homepage" = "https://nixos.org";
+        "browser.toolbarbuttons.introduced.pocket-button"  = false;
+        "general.useragent.locale" = "en_US";
+        };
+
+      };
     };
 
     git = {

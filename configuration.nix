@@ -8,7 +8,6 @@
 
   # Boot settings
    boot = {
-   initrd.kernelModules = [ "vboxvideo" ];
    # Disable systemd-boot
    loader = {
       systemd-boot.enable = false;
@@ -42,24 +41,6 @@
       kernelPackages = pkgs.linuxPackages_xanmod;
    };
 
-  hardware = {
-    graphics.enable = true;
-    nvidia = {
-      modesetting.enable = true;
-      open = true;
-      nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-      prime = {
-        sync.enable = true;
-        intelBusId = "PCI:0:2:0";
-        nvidiaBusId = "PCI:1:0:0";
-      };
-    };
-  };
-
-
-
   # Services
   services = {
   # Sound
@@ -73,9 +54,6 @@
 
     # X11
     xserver.enable = true;
-    xserver.videoDrivers = [ "nvidia" ];
-
-
   };
 
   # Networking 
@@ -125,8 +103,6 @@
       options = "--delete-older-than 30m";
     };
   };
-
-  # virtualisation.virtualbox.guest.enable = true;
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "26.05"; 
 
