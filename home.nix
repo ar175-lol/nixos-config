@@ -15,8 +15,7 @@
     fish = {
       enable = true;
       shellAliases = {
-        update = "cd /etc/nixos && sudo nixos-rebuild switch --flake . --update-input nixpkgs && nix-collect-garbage -d && git add . && git commit -m 'run a update: $(date +%D_%H:%M)'";
-        sudo-dolphin = "dolphin --sudo";
+        update = "cd /etc/nixos && nix flake update && sudo nixos-rebuild switch --flake .";
         clean = "sudo nix-collect-garbage -d && sudo nix-store --optimize";
       };
       # Greeting
@@ -46,8 +45,7 @@
         };
       };
     };
-
-    home-manager.enable = true;
   };
+  programs.home-manager.enable = true;
 }
 
