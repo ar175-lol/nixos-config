@@ -39,8 +39,12 @@
 
     git = {
       enable = true;
-      userName = "ar175-lol";
-      userEmail = "ghailmbv@proton.me";
+      settings = {
+        user = {
+          name = "ar175-lol";
+          email = "ghailmbv@proton.me";
+        };
+      };
     };
 
     home-manager.enable = true;
