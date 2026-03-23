@@ -6,7 +6,7 @@
       ./hardware-configuration.nix
     ];
 
-  # Boot settings
+  # ------------------------------Boot------------------------------
    boot = {
    # Disable systemd-boot
    loader = {
@@ -14,7 +14,7 @@
       efi.canTouchEfiVariables = true;
       timeout = 0;
 
-      # Grub
+      # --------------------Grub--------------------
       grub = {
           enable = true;
           device = "nodev";
@@ -23,7 +23,7 @@
         };
       };
 
-      # Silent boot
+      # --------------------Silent boot--------------------
       plymouth = {
         enable = true;
         theme = "breeze";
@@ -38,20 +38,24 @@
         "nvidia-drm.modeset=1"
       ];
 
-      # Kernel
+      # --------------------Kernel--------------------
       kernelPackages = pkgs.linuxPackages_xanmod;
    };
 
+  # ------------------------------Drivers------------------------------
   hardware = {
+    # ------------------------Bluetooth----------------------
     bluetooth = {
       enable = true;
       powerOnBoot = true;
     };
+    
+    # ------------------------OpenGL---------------------
     graphics = {
       enable = true;
       enable32Bit = true;
   };
-  
+  # ------------------------------ Nvidia ------------------------------
   nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -59,6 +63,7 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
+    # ------------------------------ Prime & Offload ------------------------------
     prime = {
       offload = {
         enable = true;
@@ -71,7 +76,7 @@
   };
 
 
-  # Services
+  # ------------------------------ Services ------------------------------
   services = {
   # Sound
     pipewire = {
@@ -93,7 +98,7 @@
     };
   };
 
-  # Networking 
+  # ------------------------------ Networking ------------------------------ 
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
@@ -109,11 +114,11 @@
     };
   };
 
-  # Locale
+  # ------------------------------ Locale ------------------------------
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "Asia/Almaty";
 
-  # Users
+  # ------------------------------ Users ------------------------------
    users.users.ar175 = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
@@ -121,7 +126,7 @@
     shell = pkgs.fish;
   };
 
-  # Programs
+  # ------------------------------ Programs ------------------------------
   programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -138,13 +143,13 @@
       experimental-features = [ "nix-command" "flakes" ];
     };
 
-    # Garbage collector
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 7d";
     };
   };
+  
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "26.05"; 
 

@@ -24,16 +24,16 @@
         fastfetch --logo nixos_small -s OS:Kernel:Uptime:DE:CPU:GPU:MEMORY
       '';
     };
-    #firefox = {
-    #enable = true;
-    #  profiles.ar175 = {
-    # settings = {
-    #   "browser.startup.homepage" = "https://nixos.org";
-    #    "browser.toolbarbuttons.introduced.pocket-button"  = false;
-    #    "general.useragent.locale" = "en_US";
-    #    };
-    #   };
-    #};
+    firefox = {
+      enable = true;
+      profiles.ar175 = {
+      settings = {
+        "browser.startup.homepage" = "https://nixos.org";
+         "browser.toolbarbuttons.introduced.pocket-button"  = false;
+         "general.useragent.locale" = "en_US";
+         };
+        };
+     };
 
     vscode = {
       enable = true;
