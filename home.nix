@@ -35,6 +35,37 @@
     #   };
     #};
 
+    vscode = {
+      enable = true;
+      package = pkgs.vscodium;
+    
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          jnoortheen.nix-ide
+          mkhl.direnv
+          arrterian.nix-env-selector
+        ];
+
+        userSettings = {
+          "nix.enableLanguageServer" = true;
+          "nix.serverPath" = "nixd";
+          "nix.formatterPath" = "nixfmt"; 
+          "editor.formatOnSave" = true;
+        
+          "nixd" = {
+            "formatting" = {
+              "command" = [ "nixfmt" ];
+            };
+            "options" = {
+              "nixos" = {
+                "expr" = "(builtins.getFlake \"/etc/nixos\").nixosConfigurations.nixos.options";
+              };
+            };
+          };
+        };
+      };
+    };
+
     git = {
       enable = true;
       settings = {
