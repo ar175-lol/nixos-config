@@ -44,7 +44,7 @@
 
   # ------------------------------Drivers------------------------------
   hardware = {
-    # ------------------------Bluetooth----------------------
+    # ------------------Bluetooth----------------
     bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -55,7 +55,7 @@
       enable = true;
       enable32Bit = true;
   };
-  # ------------------------------ Nvidia ------------------------------
+  # ------------------------ Nvidia ------------------------
   nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -63,12 +63,12 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-    # ------------------------------ Prime & Offload ------------------------------
+    # ------------------------ Prime & Offload ------------------------
     prime = {
       offload = {
         enable = true;
         enableOffloadCmd = true;
-        };
+      };
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:1:0:0";
       };
@@ -92,10 +92,10 @@
     };
 
     # X11
-    xserver = {
-      enable = true;
-      videoDrivers = [ "nvidia" ];
-    };
+    xserver.enable = true;
+
+    #----------------NVIDIA#2-------------------
+    xserver.videoDrivers = [ "nvidia" ];
   };
 
   # ------------------------------ Networking ------------------------------ 
@@ -105,7 +105,7 @@
 
     firewall = {
       enable = true;
-      allowedTCPPorts = [
+      allowedTCPPortRanges = [
         { from = 1714; to = 1764; }
       ];
       allowedUDPPortRanges = [
