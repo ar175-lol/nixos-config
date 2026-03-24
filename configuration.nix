@@ -70,8 +70,7 @@
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-
-    # ------------------------ Prime & Offload ------------------------
+     
     prime = {
       offload = {
         enable = true;
@@ -98,9 +97,6 @@
       enable = true;
       wayland.enable = true;
     };
-
-    #----------------NVIDIA#2-------------------
-
   };
 
   # ------------------------------ Networking ------------------------------ 
@@ -136,10 +132,7 @@
 
   environment.systemPackages = with pkgs; [
     wget
-    nixd
-    statix
     efibootmgr
-    nix-output-monitor
   ];
 
   nix = {
