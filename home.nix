@@ -7,11 +7,12 @@
         stateVersion = "26.05";
         packages = with pkgs; [
             fastfetch
+            btop  
+
         ];
     };
 
   programs = {
-
     fish = {
       enable = true;
       shellAliases = {

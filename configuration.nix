@@ -43,6 +43,13 @@
    };
 
   # ------------------------------Drivers------------------------------
+
+  # --------------X11--------------
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "nvidia" ];
+  };
+
   hardware = {
     # ------------------Bluetooth----------------
     bluetooth = {
@@ -56,6 +63,7 @@
       enable32Bit = true;
   };
   # ------------------------ Nvidia ------------------------
+
   nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
@@ -91,11 +99,8 @@
       wayland.enable = true;
     };
 
-    # X11
-    xserver.enable = true;
-
     #----------------NVIDIA#2-------------------
-    xserver.videoDrivers = [ "nvidia" ];
+
   };
 
   # ------------------------------ Networking ------------------------------ 
