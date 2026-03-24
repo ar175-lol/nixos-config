@@ -4,6 +4,7 @@
   imports =
     [ 
       ./hardware-configuration.nix
+      ./modules/plasma.nix
     ];
 
   # ------------------------------Boot------------------------------
@@ -70,7 +71,7 @@
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-     
+
     prime = {
       offload = {
         enable = true;
