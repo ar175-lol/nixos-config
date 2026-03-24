@@ -8,7 +8,8 @@
         packages = with pkgs; [
             fastfetch
             btop  
-
+            nixd
+            statix
         ];
     };
 
