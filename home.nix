@@ -14,6 +14,7 @@
     };
 
   programs = {
+    # ------------- fish -------------
     fish = {
       enable = true;
       shellAliases = {
@@ -26,7 +27,7 @@
         fastfetch --logo nixos_small -s OS:Kernel:Uptime:DE:CPU:GPU:MEMORY
       '';
     };
-    
+    # ------------- firefox -------------
     firefox = {
       enable = true;
       profiles.ar175 = {
@@ -37,7 +38,7 @@
          };
         };
      };
-
+    # ------------- vscodium -------------
     vscode = {
       enable = true;
       package = pkgs.vscodium;
@@ -47,6 +48,7 @@
           jnoortheen.nix-ide
           mkhl.direnv
           arrterian.nix-env-selector
+          dracula-theme
         ];
 
         userSettings = {
@@ -69,6 +71,7 @@
       };
     };
 
+    # ------------- Git -------------
     git = {
       enable = true;
       settings = {
@@ -79,6 +82,7 @@
       };
     };
   };
+  
   programs.home-manager.enable = true;
 }
 

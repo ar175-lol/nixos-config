@@ -7,120 +7,107 @@
       ./modules/plasma.nix
     ];
 
-  # ------------------------------Boot------------------------------
-   boot = {
-   # Disable systemd-boot
-   loader = {
-      systemd-boot.enable = false;
-      efi.canTouchEfiVariables = true;
-      timeout = 0;
+   # Bootloader
+  boot.loader = {
+    systemd-boot.enable = false;
+    efi.canTouchEfiVariables = true;
+    timeout = 0;
 
-      # --------------------Grub--------------------
-      grub = {
-          enable = true;
-          device = "nodev";
-          efiSupport = true;
-          useOSProber = true;
-        };
-      };
+    grub = {
+      enable = true;
+      device = "nodev";
+      efiSupport = true;
+      useOSProber = true;
+    };
+  };
 
-      # --------------------Silent boot--------------------
-      plymouth = {
-        enable = true;
-        theme = "breeze";
-      };
-      kernelParams = [
-        "quiet"
-        "splash"
-        "vga=current"
-        "rd.systemd.show_status=false"
-        "rd.udev.log_level=3"
-        "udev.log_priority=3"
-        "nvidia-drm.modeset=1"
-      ];
+  # Plymouth 
+  boot.plymouth = {
+    enable = true;
+    theme = "breeze";
+};
 
-      # --------------------Kernel--------------------
-      kernelPackages = pkgs.linuxPackages_xanmod;
-   };
+  # Kernel parameters
+  boot.kernelPackages = pkgs.linuxPackages_xanmod;
+  boot.kernelParams = [
+    "quiet"
+    "splash"
+    "vga=current"
+    "rd.systemd.show_status=false"
+    "rd.udev.log_level=3"
+    "rd.udev.log_priority=3"
+    "nvidia-drm.modeset=1"
+  ];
 
-  # ------------------------------Drivers------------------------------
+  # Pipewire
+  services.pipewire = {
+    enable = true;
+    pulse.enable = true;
+    alsa.enable = true;
+    jack.enable = true;
+  };
 
-  # --------------X11--------------
+  # SDDM
+  services.displayManager = {
+    enable = true;
+    wayland.enable = true;
+  };
+
+  # Plasma
+  services.desktopManager.plasma6.enable = true;
+
+  # X server 
   services.xserver = {
     enable = true;
     videoDrivers = [ "nvidia" ];
   };
 
-  hardware = {
-    # ------------------Bluetooth----------------
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-    };
-    
-    # ------------------------OpenGL---------------------
-    graphics = {
-      enable = true;
-      enable32Bit = true;
-  };
-  # ------------------------ Nvidia ------------------------
+  
 
-  nvidia = {
+  # Enable Bluetooth.
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+  };
+
+  # Enable OpenGL.
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
+# Enable NVIDIA Drivers.
+  hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
 
-    prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:1:0:0";
-      };
-    };
+  # Enable PRIME.
+  hardware.nvidia.prime = {
+    offload.enable = true;
+    offload.enableOffloadCmd = true;
+    intelBusId = "PCI:0:2:0";
+    nvidiaBusId = "PCI:1:0:0";
   };
 
 
-  # ------------------------------ Services ------------------------------
-  services = {
-  # Sound
-    pipewire = {
-      enable = true;
-      pulse.enable = true;
-      alsa.enable = true;
-    };
-    # KDE Plasma
-    desktopManager.plasma6.enable = true;
-    displayManager.sddm = {
-      enable = true;
-      wayland.enable = true;
-    };
-  };
-
-  # ------------------------------ Networking ------------------------------ 
   networking = {
-    hostName = "nixos";
+    hostName = true;
     networkmanager.enable = true;
-
-    firewall = {
-      enable = true;
-      allowedTCPPortRanges = [
-        { from = 1714; to = 1764; }
-      ];
-      allowedUDPPortRanges = [
-        { from = 1714; to = 1764; }
-      ];
-    };
   };
 
-  # ------------------------------ Locale ------------------------------
+  networking.firewall = {
+    enable = true;
+    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
+    allowedUDPPortRanges = [ { from = 1714; to = 1764; } ];
+  };
+
   i18n.defaultLocale = "en_US.UTF-8";
   time.timeZone = "Asia/Almaty";
 
-  # ------------------------------ Users ------------------------------
    users.users.ar175 = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" ];
@@ -128,7 +115,6 @@
     shell = pkgs.fish;
   };
 
-  # ------------------------------ Programs ------------------------------
   programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
@@ -136,17 +122,16 @@
     efibootmgr
   ];
 
-  nix = {
-    settings = {
-      auto-optimise-store = true;
-      experimental-features = [ "nix-command" "flakes" ];
-    };
-
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
+  # Garbage collector
+  nix.gc = {
+    automatic= true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+  # Features
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = [ "nix-command" "flakes" ];
   };
   
   nixpkgs.config.allowUnfree = true;
