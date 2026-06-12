@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   flake.homeModules.mySpotify = {
     pkgs,
     inputs,

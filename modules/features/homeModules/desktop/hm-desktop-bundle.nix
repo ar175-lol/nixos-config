@@ -1,8 +1,5 @@
-{
-  self,
-  ...
-}: {
-  flake.homeModules.hmDesktopBundle = { ...}: {
+{self, ...}: {
+  flake.homeModules.hmDesktopBundle = {...}: {
     imports = [
       self.homeModules.myCursor
     ];

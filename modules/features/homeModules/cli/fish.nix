@@ -1,7 +1,4 @@
-{
-  self,
-  ...
-}: {
+{self, ...}: {
   flake.homeModules.myFish = {pkgs, ...}: {
     home.packages = [self.packages.${pkgs.stdenv.hostPlatform.system}.myStarship pkgs.fastfetch];
     programs.fish = {

@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.systemdBootConfiguration = { ...}: {
+  flake.nixosModules.systemdBootConfiguration = {...}: {
     boot = {
       bootspec.enable = true;
       tmp.cleanOnBoot = true;
