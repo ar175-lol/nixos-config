@@ -23,5 +23,7 @@
       VISUAL = "nvim";
       NH_FLAKE = "/home/ar175/nix-test-v2";
     };
+
+    system.stateVersion = "26.05";
   };
 }
