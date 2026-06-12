@@ -111,7 +111,9 @@
         ],
         "right": [
           {
-            "blacklist": [],
+            "blacklist": [
+              "zero-trust-client"
+            ],
             "chevronColor": "none",
             "colorizeIcons": true,
             "drawerEnabled": false,

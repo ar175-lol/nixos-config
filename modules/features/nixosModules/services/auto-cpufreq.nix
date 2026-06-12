@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   flake.nixosModules.autocpufreqConfiguration = {...}: {
     services = {
       power-profiles-daemon.enable = false;

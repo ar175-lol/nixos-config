@@ -1,4 +1,4 @@
-{ ...}: {
+{...}: {
   flake.nixosModules.usersConfiguration = {pkgs, ...}: {
     users.users.ar175 = {
       isNormalUser = true;

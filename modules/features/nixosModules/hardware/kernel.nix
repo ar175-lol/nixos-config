@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   flake.nixosModules.kernelConfiguration = {pkgs, ...}: {
     boot = {
       kernelParams = [
