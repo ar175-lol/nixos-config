@@ -5,6 +5,7 @@
       self.nixosModules.nvidiaConfiguration
       self.nixosModules.zramConfiguration
       self.nixosModules.kernelConfiguration
+      self.nixosModules.automountConfiguration
     ];
   };
 }

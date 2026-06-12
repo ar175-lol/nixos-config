@@ -82,6 +82,7 @@
       profiles.default = {
         isDefault = true;
         pinsForce = true;
+        pinsForceAction = "remove";
 
         mods = [
           "7190e4e9-bead-4b40-8f57-95d852ddc941"
