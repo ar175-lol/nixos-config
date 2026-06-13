@@ -2,6 +2,7 @@ _: {
   flake.homeModules.myNvim = {
     inputs,
     pkgs,
+    config,
     ...
   }: {
     imports = [inputs.nixvim.homeModules.nixvim];
@@ -144,42 +145,34 @@ _: {
 
       plugins.lsp = {
         enable = true;
+        inlayHints = true;
+
         servers = {
           nixd = {
             enable = true;
+            rootMarkers = ["flake.nix" ".git"];
             settings = {
-              #nixpkgs.expr = "import (builtins.getFlake \"/home/ar175/nix-test-v2\").inputs.nixpkgs { }";
-              nixpkgs = {
-                expr = "import <nixpkgs> {}";
-              };
+              nixpkgs = {expr = "import <nixpkgs> {}";};
               formatting.command = ["alejandra"];
-              completion.auto = true;
-              completion.startWithSpace = true;
+
+              completion = {
+                auto = true;
+                startWithSpace = true;
+              };
               target = {
                 path = "/home/ar175/nix-test-v2";
                 installable = ".#victus";
               };
               options = {
-                nixos = {
-                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";
-                };
-                home-manager = {
-                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
-                };
+                nixos = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";};
+                home-manager = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";};
               };
             };
           };
           pyright.enable = true;
           jsonls.enable = true;
         };
-        onAttach =
-          # lua
-          ''
-            client.config.flags = client.config.flags or {}
-            client.config.flags.debounce_text_changes = 0
-          '';
       };
-
       diagnostics = {
         virtual_text = {
           spacing = 4;
@@ -228,28 +221,42 @@ _: {
 
       plugins.treesitter = {
         enable = true;
-        settings = {
-          highlight.enable = true;
-          indent.enable = true;
-          ensure_installed = ["nix" "lua" "bash" "python"];
-        };
+        highlight.enable = true;
+        indent.enable = true;
+        folding.enable = true;
+        grammarPackages = with config.programs.nixvim.plugins.treesitter.package.builtGrammars; [
+          nix
+          lua
+          bash
+          python
+          markdown
+        ];
       };
-      plugins.cmp = {
+      plugins.blink-cmp = {
         enable = true;
+
         settings = {
-          sources = [
-            {name = "nvim_lsp";}
-            {name = "luasnip";}
-            {name = "buffer";}
-            {name = "path";}
-          ];
-          mapping = {
-            "<C-Space>" = "cmp.mapping.complete()";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
-            "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' })";
-            "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' })";
-            "<C-d>" = "cmp.mapping.scroll_docs(-4)";
-            "<C-f>" = "cmp.mapping.scroll_docs(4)";
+          appearance = {
+            nerd_font_variant = "normal";
+            use_nvim_cmp_as_default = false;
+          };
+
+          sources.default = ["lsp" "path" "luasnip" "buffer"];
+
+          completion = {
+            accept.auto_brackets.enabled = true;
+
+            documentation.auto_show = true;
+          };
+
+          signature.enabled = true;
+
+          keymap = {
+            preset = "default";
+
+            "<CR>" = ["accept" "fallback"];
+            "<C-d>" = ["scroll_documentation_up" "fallback"];
+            "<C-f>" = ["scroll_documentation_down" "fallback"];
           };
         };
       };
@@ -261,10 +268,6 @@ _: {
           };
         };
       };
-      plugins.cmp-nvim-lsp.enable = true;
-      plugins.cmp-buffer.enable = true;
-      plugins.cmp-path.enable = true;
-
       plugins.luasnip.enable = true;
       plugins.telescope.enable = true;
       plugins.neo-tree.enable = true;
