@@ -1,4 +1,4 @@
-name: "Nix CI"
+name: "Check code"
 on:
   push:
     branches: [ main ]
@@ -19,6 +19,10 @@ jobs:
       - name: Check flake
         run: nix flake check
         
-      - name: Check formatting (Alejandra)
+      - name: Check formatting 
         run: |
           nix run nixpkgs#alejandra -- --check .
+
+      - name: Check for unused code 
+        run: |
+          nix run nixpkgs#deadnix -- --fail .

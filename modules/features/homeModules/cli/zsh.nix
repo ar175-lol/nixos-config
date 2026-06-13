@@ -18,19 +18,17 @@
         searchDownKey = "^[[B";
       };
 
-      #shellAliases = {
-      #  update = "git add . && sudo nixos-rebuild switch --flake .#victus";
-      #  upgrade = "git add . && nix flake update && sudo nixos-rebuild --flake .#victus";
-      #  ncg = "nix-collect-garbage -d";
-      #};
-
-      initExtra = ''
+      initContent = ''
         echo -ne '\e[5 q'
 
         alias update="git add . && sudo nixos-rebuild switch --flake .#victus"
         alias upgrade="git add . && nix flake update && sudo nixos-rebuild switch --flake .#victus"
         alias ncg="nix-collect-garbage -d"
       '';
+    };
+    programs.nix-index = {
+      enable = true;
+      enableZshIntegration = true;
     };
   };
 }
