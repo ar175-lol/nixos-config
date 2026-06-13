@@ -1,7 +1,6 @@
 {
   self,
   inputs,
-  pkgs,
   ...
 }: {
   flake.nixosConfigurations.my-iso = inputs.nixpkgs.lib.nixosSystem {

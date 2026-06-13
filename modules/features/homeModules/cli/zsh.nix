@@ -1,4 +1,4 @@
-{self, ...}: {
+{...}: {
   flake.homeModules.myZsh = {pkgs, ...}: {
     home.packages = [pkgs.fastfetch];
 

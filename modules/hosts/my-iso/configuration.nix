@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{...}: {
   flake.nixosModules.myIsoConfiguration = {
     pkgs,
     config,
