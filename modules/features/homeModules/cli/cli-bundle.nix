@@ -1,7 +1,8 @@
 {self, ...}: {
   flake.homeModules.cliBundle = {...}: {
     imports = [
-      self.homeModules.myFish
+      self.homeModules.myZsh
+      self.homeModules.myStarship
     ];
   };
 }

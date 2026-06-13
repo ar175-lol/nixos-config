@@ -9,9 +9,6 @@
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
     };
     services.upower.enable = true;
-    environment.systemPackages = [
-      self.packages.${pkgs.stdenv.hostPlatform.system}.myKitty
-    ];
   };
 
   perSystem = {
