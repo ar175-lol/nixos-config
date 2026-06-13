@@ -148,12 +148,24 @@ _: {
           nixd = {
             enable = true;
             settings = {
-              nixpkgs.expr = "import (builtins.getFlake \"/home/ar175/nix-test-v2\").inputs.nixpkgs { }";
+              #nixpkgs.expr = "import (builtins.getFlake \"/home/ar175/nix-test-v2\").inputs.nixpkgs { }";
+              nixpkgs = {
+                expr = "import <nixpkgs> {}";
+              };
               formatting.command = ["alejandra"];
               completion.auto = true;
               completion.startWithSpace = true;
+              target = {
+                path = "/home/ar175/nix-test-v2";
+                installable = ".#victus";
+              };
               options = {
-                nixos.expr = ''(builtins.getFlake "/home/ar175/nix-test-v2").nixosConfigurations.victus.options'';
+                nixos = {
+                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";
+                };
+                home-manager = {
+                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                };
               };
             };
           };

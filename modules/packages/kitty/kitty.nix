@@ -1,4 +1,14 @@
-{inputs, ...}: {
+{
+  self,
+  inputs,
+  ...
+}: {
+  flake.nixosModules.myKitty = {pkgs, ...}: {
+    environment.systemPackages = [
+      self.packages.${pkgs.stdenv.hostPlatform.system}.myKitty
+    ];
+  };
+
   perSystem = {pkgs, ...}: {
     packages.myKitty = inputs.wrapper-modules.wrappers.kitty.wrap {
       inherit pkgs;
