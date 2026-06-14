@@ -229,16 +229,6 @@
           python
           markdown
         ];
-
-        settings.incremental_selection = {
-          enable = true;
-          keymaps = {
-            init_selection = "<Leader>ss";
-            node_incremental = "<Leader>si";
-            node_decremental = "<Leader>sd";
-            scope_incremental = "<Leader>sc";
-          };
-        };
       };
       plugins.blink-cmp = {
         enable = true;
