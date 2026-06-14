@@ -23,6 +23,7 @@
       self.nixosModules.usersConfiguration
       # desktop
       self.nixosModules.xdgConfiguration
+      self.nixosModules.myCursor
       # packages
       self.nixosModules.niri
       self.nixosModules.yaziConfiguration

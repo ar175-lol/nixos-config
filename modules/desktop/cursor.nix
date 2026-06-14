@@ -17,6 +17,8 @@
         bibata-cursors
       ];
     };
+  };
+  flake.nixosModules.myCursor = {...}: {
     programs.dconf.enable = true;
   };
 }

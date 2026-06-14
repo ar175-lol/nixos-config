@@ -15,9 +15,13 @@
       };
     };
     imports = [
-      self.homeModules.appsBundle
-      self.homeModules.devBundle
-      self.homeModules.cliBundle
+      self.homeModules.myGit
+      self.homeModules.myZsh
+      self.homeModules.myStarship
+      self.homeModules.myZen
+      self.homeModules.mySpotify
+      self.homeModules.myDiscord
+      self.homeModules.myCursor
     ];
   };
 }
