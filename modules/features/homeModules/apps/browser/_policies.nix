@@ -1,7 +1,8 @@
-{
+_: {
   DisableTelemetry = true;
   DisableFirefoxAccounts = true;
   DisableFirefoxStudies = true;
+  DontCheckDefaultBrowser = true;
 
   UserMessaging = {
     Locked = true;
@@ -12,6 +13,14 @@
     MoreFromMozilla = false;
     FirefoxLabs = false;
   };
+
+  AIControls = {
+    Default = {
+      Value = "blocked";
+      Locked = true;
+    };
+  };
+
   EnableTrackingProtection = {
     Value = true;
     Locked = true;
@@ -20,6 +29,7 @@
     EmailTracking = true;
     Category = "strict";
   };
+
   Proxy = {
     Mode = "manual";
     Locked = true;
@@ -28,6 +38,7 @@
     UseProxyForDNS = true;
     Passthrough = "<local>";
   };
+
   FirefoxHome = {
     Search = false;
     TopSites = true;
@@ -37,12 +48,6 @@
     Stories = false;
     SponsoredStories = false;
     Snippets = false;
-  };
-  AIControls = {
-    Default = {
-      Value = "blocked";
-      Locked = true;
-    };
   };
 
   Preferences = {
@@ -56,7 +61,6 @@
 
   SanitizeOnShutdown = {
     Locked = true;
-
     Cache = true;
     Cookies = false;
     History = true;
@@ -64,8 +68,6 @@
     SiteSettings = false;
     Sessions = false;
   };
-
-  DontCheckDefaultBrowser = true;
 
   ExtensionSettings = {
     "uBlock0@raymondhill.net" = {

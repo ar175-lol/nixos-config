@@ -12,7 +12,7 @@
       enable = true;
       setAsDefaultBrowser = true;
 
-      policies = import ./policies.nix;
+      policies = (import ./_policies.nix) {};
 
       profiles.default = {
         isDefault = true;
