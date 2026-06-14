@@ -20,12 +20,15 @@
     nixvim = {
       url = "github:nix-community/nixvim";
     };
+
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     nixcord.url = "github:FlameFlag/nixcord";
   };
+
   outputs = inputs:
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux"];
+
       imports = [
         (inputs.import-tree ./modules)
         inputs.home-manager.flakeModules.home-manager

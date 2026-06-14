@@ -1,11 +1,6 @@
-_: {
-  flake.homeModules.myNvim = {
-    inputs,
-    pkgs,
-    config,
-    ...
-  }: {
-    imports = [inputs.nixvim.homeModules.nixvim];
+{inputs, ...}: {
+  flake.nixosModules.myNvim = {pkgs, ...}: {
+    imports = [inputs.nixvim.nixosModules.nixvim];
 
     programs.nixvim = {
       enable = true;
@@ -16,7 +11,6 @@ _: {
         tabstop = 2;
         shiftwidth = 2;
         expandtab = true;
-        smartindent = true;
         wrap = false;
         scrolloff = 8;
         signcolumn = "yes";
@@ -161,11 +155,15 @@ _: {
               };
               target = {
                 path = "/home/ar175/nix-test-v2";
-                installable = ".#victus";
+                installable = ".#nixosConfigurations.victus";
               };
               options = {
-                nixos = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";};
-                home-manager = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";};
+                nixos = {
+                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
+                };
+                home-manager = {
+                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                };
               };
             };
           };
@@ -222,15 +220,25 @@ _: {
       plugins.treesitter = {
         enable = true;
         highlight.enable = true;
-        indent.enable = true;
-        folding.enable = true;
-        grammarPackages = with config.programs.nixvim.plugins.treesitter.package.builtGrammars; [
+        indent.enable = false;
+        folding.enable = false;
+        grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
           nix
           lua
           bash
           python
           markdown
         ];
+
+        settings.incremental_selection = {
+          enable = true;
+          keymaps = {
+            init_selection = "<Leader>ss";
+            node_incremental = "<Leader>si";
+            node_decremental = "<Leader>sd";
+            scope_incremental = "<Leader>sc";
+          };
+        };
       };
       plugins.blink-cmp = {
         enable = true;
@@ -241,22 +249,36 @@ _: {
             use_nvim_cmp_as_default = false;
           };
 
-          sources.default = ["lsp" "path" "luasnip" "buffer"];
+          sources.default = ["lsp" "path" "snippets" "buffer"];
+
+          snippets.preset = "luasnip";
 
           completion = {
             accept.auto_brackets.enabled = true;
-
             documentation.auto_show = true;
           };
 
           signature.enabled = true;
 
           keymap = {
-            preset = "default";
+            preset = "none";
 
-            "<CR>" = ["accept" "fallback"];
+            "<Tab>" = [
+              "select_next"
+              "snippet_forward"
+              "fallback"
+            ];
+
+            "<S-Tab>" = [
+              "select_prev"
+              "snippet_backward"
+              "fallback"
+            ];
+
             "<C-d>" = ["scroll_documentation_up" "fallback"];
             "<C-f>" = ["scroll_documentation_down" "fallback"];
+
+            "<CR>" = ["accept" "fallback"];
           };
         };
       };
@@ -277,15 +299,30 @@ _: {
         settings.options.theme = "gruvbox";
       };
 
+      plugins.nvim-autopairs = {
+        enable = true;
+        settings = {
+          check_ts = true;
+          disable_filetype = ["TelescopePrompt" "spectre_panel"];
+        };
+      };
+
       plugins.gitsigns.enable = true;
-      plugins.nvim-autopairs.enable = true;
       plugins.comment.enable = true;
       plugins.which-key.enable = true;
       plugins.web-devicons.enable = true;
       plugins.nui-nvim.enable = true;
       plugins.nvim-notify.enable = true;
 
-      extraPackages = with pkgs; [vimPlugins.snacks-nvim alejandra deadnix ripgrep tree-sitter fd jq];
+      extraPackages = with pkgs; [
+        vimPlugins.snacks-nvim
+        alejandra
+        deadnix
+        ripgrep
+        tree-sitter
+        fd
+        jq
+      ];
     };
   };
 }

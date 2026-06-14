@@ -4,6 +4,7 @@
       self.nixosModules.niri
       self.nixosModules.yaziConfiguration
       self.nixosModules.myKitty
+      self.nixosModules.myNvim
     ];
   };
 }
