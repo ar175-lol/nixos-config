@@ -1,10 +1,6 @@
-_: {
-  flake.homeModules.myNvim = {
-    inputs,
-    pkgs,
-    ...
-  }: {
-    imports = [inputs.nixvim.homeModules.nixvim];
+{inputs, ...}: {
+  flake.nixosModules.myNvim = {pkgs, ...}: {
+    imports = [inputs.nixvim.nixosModules.nixvim];
 
     programs.nixvim = {
       enable = true;
@@ -15,7 +11,6 @@ _: {
         tabstop = 2;
         shiftwidth = 2;
         expandtab = true;
-        smartindent = true;
         wrap = false;
         scrolloff = 8;
         signcolumn = "yes";
@@ -144,27 +139,30 @@ _: {
 
       plugins.lsp = {
         enable = true;
+        inlayHints = true;
+
         servers = {
           nixd = {
             enable = true;
+            rootMarkers = ["flake.nix" ".git"];
             settings = {
-              #nixpkgs.expr = "import (builtins.getFlake \"/home/ar175/nix-test-v2\").inputs.nixpkgs { }";
-              nixpkgs = {
-                expr = "import <nixpkgs> {}";
-              };
+              nixpkgs = {expr = "import <nixpkgs> {}";};
               formatting.command = ["alejandra"];
-              completion.auto = true;
-              completion.startWithSpace = true;
+
+              completion = {
+                auto = true;
+                startWithSpace = true;
+              };
               target = {
                 path = "/home/ar175/nix-test-v2";
-                installable = ".#victus";
+                installable = ".#nixosConfigurations.victus";
               };
               options = {
                 nixos = {
-                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";
+                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
                 };
                 home-manager = {
-                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
                 };
               };
             };
@@ -172,14 +170,7 @@ _: {
           pyright.enable = true;
           jsonls.enable = true;
         };
-        onAttach =
-          # lua
-          ''
-            client.config.flags = client.config.flags or {}
-            client.config.flags.debounce_text_changes = 0
-          '';
       };
-
       diagnostics = {
         virtual_text = {
           spacing = 4;
@@ -228,28 +219,56 @@ _: {
 
       plugins.treesitter = {
         enable = true;
-        settings = {
-          highlight.enable = true;
-          indent.enable = true;
-          ensure_installed = ["nix" "lua" "bash" "python"];
-        };
+        highlight.enable = true;
+        indent.enable = false;
+        folding.enable = false;
+        grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+          nix
+          lua
+          bash
+          python
+          markdown
+        ];
       };
-      plugins.cmp = {
+      plugins.blink-cmp = {
         enable = true;
+
         settings = {
-          sources = [
-            {name = "nvim_lsp";}
-            {name = "luasnip";}
-            {name = "buffer";}
-            {name = "path";}
-          ];
-          mapping = {
-            "<C-Space>" = "cmp.mapping.complete()";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
-            "<Tab>" = "cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' })";
-            "<S-Tab>" = "cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 's' })";
-            "<C-d>" = "cmp.mapping.scroll_docs(-4)";
-            "<C-f>" = "cmp.mapping.scroll_docs(4)";
+          appearance = {
+            nerd_font_variant = "normal";
+            use_nvim_cmp_as_default = false;
+          };
+
+          sources.default = ["lsp" "path" "snippets" "buffer"];
+
+          snippets.preset = "luasnip";
+
+          completion = {
+            accept.auto_brackets.enabled = true;
+            documentation.auto_show = true;
+          };
+
+          signature.enabled = true;
+
+          keymap = {
+            preset = "none";
+
+            "<Tab>" = [
+              "select_next"
+              "snippet_forward"
+              "fallback"
+            ];
+
+            "<S-Tab>" = [
+              "select_prev"
+              "snippet_backward"
+              "fallback"
+            ];
+
+            "<C-d>" = ["scroll_documentation_up" "fallback"];
+            "<C-f>" = ["scroll_documentation_down" "fallback"];
+
+            "<CR>" = ["accept" "fallback"];
           };
         };
       };
@@ -261,10 +280,6 @@ _: {
           };
         };
       };
-      plugins.cmp-nvim-lsp.enable = true;
-      plugins.cmp-buffer.enable = true;
-      plugins.cmp-path.enable = true;
-
       plugins.luasnip.enable = true;
       plugins.telescope.enable = true;
       plugins.neo-tree.enable = true;
@@ -274,15 +289,30 @@ _: {
         settings.options.theme = "gruvbox";
       };
 
+      plugins.nvim-autopairs = {
+        enable = true;
+        settings = {
+          check_ts = true;
+          disable_filetype = ["TelescopePrompt" "spectre_panel"];
+        };
+      };
+
       plugins.gitsigns.enable = true;
-      plugins.nvim-autopairs.enable = true;
       plugins.comment.enable = true;
       plugins.which-key.enable = true;
       plugins.web-devicons.enable = true;
       plugins.nui-nvim.enable = true;
       plugins.nvim-notify.enable = true;
 
-      extraPackages = with pkgs; [vimPlugins.snacks-nvim alejandra deadnix ripgrep tree-sitter fd jq];
+      extraPackages = with pkgs; [
+        vimPlugins.snacks-nvim
+        alejandra
+        deadnix
+        ripgrep
+        tree-sitter
+        fd
+        jq
+      ];
     };
   };
 }
