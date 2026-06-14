@@ -6,7 +6,7 @@ _: {
 
       settings =
         fromTOML
-        (builtins.readFile ../../../../assets/starship.toml);
+        (builtins.readFile ../../assets/starship.toml);
     };
   };
 }

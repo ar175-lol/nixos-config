@@ -298,7 +298,7 @@
     "wallpaper": {
       "enabled": true,
       "overviewEnabled": false,
-      "directory": "/home/ar175/nix-test-v2/wallpapers",
+      "directory": "/home/ar175/Pictures/Wallpapers/",
       "monitorDirectories": [],
       "enableMultiMonitorDirectories": false,
       "showHiddenFiles": false,
@@ -679,7 +679,7 @@
     "openedPanel": "",
     "lockScreenActive": false,
     "wallpapers": {
-      "eDP-1": "/home/ar175/nix-test-v2/assets/xy111-wallpaper.cam.png"
+      "eDP-1": "/home/ar175/Pictures/Wallpapers/xy111-wallpaper.cam.png"
     },
     "desktopWidgetsEditMode": false,
     "display": {

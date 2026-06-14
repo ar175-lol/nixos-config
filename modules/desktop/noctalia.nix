@@ -5,7 +5,7 @@
       settings =
         # Im lazy for doing ts
         (builtins.fromJSON
-          (builtins.readFile ../../../assets/noctalia.json)).settings;
+          (builtins.readFile ../../assets/noctalia.json)).settings;
     };
   };
 }

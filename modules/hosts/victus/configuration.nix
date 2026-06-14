@@ -1,14 +1,35 @@
 {self, ...}: {
   flake.nixosModules.myVictusConfiguration = {pkgs, ...}: {
     imports = [
-      self.nixosModules.networkBundle
-      self.nixosModules.servicesBundle
-      self.nixosModules.hardwareBundle
-      self.nixosModules.coreBundle
-
-      self.nixosModules.desktopBundle
-      self.nixosModules.packagesBundle
+      # network
+      self.nixosModules.dnscryptConfiguration
+      self.nixosModules.iwdConfiguration
+      self.nixosModules.firewallConfiguration
+      self.nixosModules.warpConfiguration
+      # services
+      self.nixosModules.pipewireConfiguration
+      self.nixosModules.autocpufreqConfiguration
+      self.nixosModules.xserverConfiguration
+      self.nixosModules.systemDebloatConfiguration
+      # hardware
+      self.nixosModules.bluetoothConfiguration
+      self.nixosModules.nvidiaConfiguration
+      self.nixosModules.zramConfiguration
+      self.nixosModules.kernelConfiguration
+      self.nixosModules.automountConfiguration
+      # core
+      self.nixosModules.systemdBootConfiguration
+      self.nixosModules.nixConfiguration
+      self.nixosModules.usersConfiguration
+      # desktop
+      self.nixosModules.xdgConfiguration
+      # packages
+      self.nixosModules.niri
+      self.nixosModules.yaziConfiguration
+      self.nixosModules.myKitty
+      self.nixosModules.myNvim
     ];
+
     networking.hostName = "victus";
     fonts.packages = with pkgs; [
       nerd-fonts.jetbrains-mono
