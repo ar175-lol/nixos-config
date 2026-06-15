@@ -1,5 +1,5 @@
 {...}: {
-  flake.homeModules.myCursor = {pkgs, ...}: {
+  nixos.home = {pkgs, ...}: {
     home = {
       pointerCursor = {
         gtk.enable = true;
@@ -17,8 +17,5 @@
         bibata-cursors
       ];
     };
-  };
-  flake.nixosModules.myCursor = {...}: {
-    programs.dconf.enable = true;
   };
 }

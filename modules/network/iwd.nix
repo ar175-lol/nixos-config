@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.iwdConfiguration = {...}: {
+  nixos.base = {...}: {
     networking = {
       networkmanager.enable = false;
 

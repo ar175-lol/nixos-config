@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.warpConfiguration = {pkgs, ...}: {
+  nixos.victus = {pkgs, ...}: {
     services.cloudflare-warp.enable = true;
 
     systemd.services.warp-auto-config = {

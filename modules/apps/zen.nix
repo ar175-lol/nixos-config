@@ -1,5 +1,5 @@
 {...}: {
-  flake.homeModules.myZen = {
+  nixos.home = {
     inputs,
     pkgs,
     ...

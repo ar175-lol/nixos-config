@@ -1,5 +1,5 @@
 {...}: {
-  flake.homeModules.myGit = {...}: {
+  nixos.home = {...}: {
     programs.git = {
       enable = true;
       settings = {

@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.zramConfiguration = {...}: {
+  nixos.victus = {...}: {
     zramSwap = {
       enable = true;
       algorithm = "zstd";

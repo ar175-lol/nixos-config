@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.dnscryptConfiguration = {...}: {
+  nixos.base = {...}: {
     services.resolved.enable = false;
     services.dnscrypt-proxy = {
       enable = true;

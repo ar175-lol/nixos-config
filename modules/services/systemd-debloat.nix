@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.systemDebloatConfiguration = {lib, ...}: {
+  nixos.desktop = {lib, ...}: {
     systemd = {
       services = {
         ModemManager = {

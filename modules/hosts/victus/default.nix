@@ -1,14 +1,24 @@
 {
-  self,
   inputs,
+  config,
   ...
 }: {
   flake.nixosConfigurations.victus = inputs.nixpkgs.lib.nixosSystem {
     modules = [
-      self.nixosModules.myVictusConfiguration
-      self.nixosModules.myVictusHardware
-      self.nixosModules.myHomeManager
-      inputs.home-manager.nixosModules.home-manager
+      config.nixos.base
+      config.nixos.desktop
+      config.nixos.victus
+      inputs.home-manager.nixosModules.default
+      {
+        home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+
+          extraSpecialArgs = {inherit inputs;};
+          backupFileExtension = "backup";
+          users.ar175 = config.nixos.home;
+        };
+      }
     ];
   };
 }

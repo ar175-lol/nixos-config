@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.nixosModules.myNvim = {pkgs, ...}: {
+  nixos.base = {pkgs, ...}: {
     imports = [inputs.nixvim.nixosModules.nixvim];
 
     programs.nixvim = {

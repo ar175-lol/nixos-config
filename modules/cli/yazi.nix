@@ -3,12 +3,13 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.yaziConfiguration = {pkgs, ...}: {
+  nixos.desktop = {pkgs, ...}: {
     programs.yazi = {
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.myYazi;
     };
   };
+
   perSystem = {pkgs, ...}: {
     packages.myYazi = inputs.wrapper-modules.wrappers.yazi.wrap {
       inherit pkgs;

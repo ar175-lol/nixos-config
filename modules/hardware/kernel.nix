@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.kernelConfiguration = {pkgs, ...}: {
+  nixos.victus = {pkgs, ...}: {
     boot = {
       kernelParams = [
         "quiet"

@@ -1,5 +1,5 @@
 {...}: {
-  flake.homeModules.mySpotify = {
+  nixos.home = {
     pkgs,
     inputs,
     ...

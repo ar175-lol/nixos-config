@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.xserverConfiguration = {pkgs, ...}: {
+  nixos.desktop = {pkgs, ...}: {
     services.xserver = {
       enable = true;
       displayManager.lightdm.enable = true;

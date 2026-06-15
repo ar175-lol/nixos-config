@@ -1,5 +1,5 @@
 {...}: {
-  flake.homeModules.myDiscord = {inputs, ...}: {
+  nixos.home = {inputs, ...}: {
     imports = [
       inputs.nixcord.homeModules.nixcord
     ];

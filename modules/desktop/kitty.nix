@@ -3,7 +3,7 @@
   inputs,
   ...
 }: {
-  flake.nixosModules.myKitty = {pkgs, ...}: {
+  nixos.desktop = {pkgs, ...}: {
     environment.systemPackages = [
       self.packages.${pkgs.stdenv.hostPlatform.system}.myKitty
     ];

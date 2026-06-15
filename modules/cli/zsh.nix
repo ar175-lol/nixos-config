@@ -1,5 +1,5 @@
 {...}: {
-  flake.homeModules.myZsh = {pkgs, ...}: {
+  nixos.home = {pkgs, ...}: {
     home.packages = [pkgs.fastfetch];
 
     programs.zsh = {

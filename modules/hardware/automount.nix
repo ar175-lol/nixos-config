@@ -1,5 +1,5 @@
 {...}: {
-  flake.nixosModules.automountConfiguration = _: {
+  nixos.base = _: {
     fileSystems."/mnt/ventoy" = {
       device = "/dev/disk/by-uuid/4E21-0000";
       fsType = "exfat";

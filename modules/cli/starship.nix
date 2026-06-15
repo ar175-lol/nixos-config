@@ -1,5 +1,5 @@
 _: {
-  flake.homeModules.myStarship = {...}: {
+  nixos.home = {...}: {
     programs.starship = {
       enable = true;
       enableZshIntegration = true;

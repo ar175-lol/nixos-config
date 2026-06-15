@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.myVictusHardware = {
+  nixos.victus = {
     config,
     lib,
     modulesPath,

@@ -1,5 +1,5 @@
 _: {
-  flake.nixosModules.firewallConfiguration = {...}: {
+  nixos.base = {...}: {
     networking = {
       firewall = {
         enable = true;

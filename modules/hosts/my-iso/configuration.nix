@@ -1,5 +1,5 @@
-{...}: {
-  flake.nixosModules.myIsoConfiguration = {
+_: {
+  nixos.my-iso = {
     pkgs,
     config,
     ...
