@@ -1,7 +1,7 @@
 {...}: {
   nixos.home = {inputs, ...}: {
     imports = [
-      inputs.nixcord.homeModules.nixcord
+      inputs.nixcord.homeModules.default
     ];
 
     programs.nixcord = {

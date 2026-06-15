@@ -21,7 +21,7 @@
       url = "github:nix-community/nixvim";
     };
 
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    spicetify-nix.url = "github:ar175-lol/spicetify-nix-fix/feat/homeModules-alias";
     nixcord.url = "github:FlameFlag/nixcord";
   };
 
