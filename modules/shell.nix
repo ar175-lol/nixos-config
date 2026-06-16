@@ -30,6 +30,7 @@
         jq
         alejandra
         deadnix
+        statix
       ];
     };
   };
