@@ -147,7 +147,10 @@
               enable = true;
               rootMarkers = ["flake.nix" ".git"];
               settings = {
-                nixpkgs = {expr = "import <nixpkgs> {}";};
+                nixpkgs = {
+                  expr = "import <nixpkgs> {}";
+                };
+
                 formatting.command = ["alejandra"];
 
                 completion = {
@@ -268,10 +271,19 @@
                 "fallback"
               ];
 
-              "<C-d>" = ["scroll_documentation_up" "fallback"];
-              "<C-f>" = ["scroll_documentation_down" "fallback"];
+              "<C-d>" = [
+                "scroll_documentation_up"
+                "fallback"
+              ];
+              "<C-f>" = [
+                "scroll_documentation_down"
+                "fallback"
+              ];
 
-              "<CR>" = ["accept" "fallback"];
+              "<CR>" = [
+                "accept"
+                "fallback"
+              ];
             };
           };
         };
