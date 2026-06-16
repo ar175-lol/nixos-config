@@ -1,4 +1,4 @@
-{...}: {
+_: {
   nixos.home = {inputs, ...}: {
     imports = [inputs.nixcord.homeModules.default];
 

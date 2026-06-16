@@ -1,4 +1,4 @@
-{...}: {
+_: {
   nixos.desktop = {pkgs, ...}: {
     services.xserver = {
       enable = true;

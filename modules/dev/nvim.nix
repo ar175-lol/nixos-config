@@ -137,175 +137,179 @@
         }
       ];
 
-      plugins.lsp = {
-        enable = true;
-        inlayHints = true;
+      plugins = {
+        lsp = {
+          enable = true;
+          inlayHints = true;
 
-        servers = {
-          nixd = {
-            enable = true;
-            rootMarkers = ["flake.nix" ".git"];
-            settings = {
-              nixpkgs = {expr = "import <nixpkgs> {}";};
-              formatting.command = ["alejandra"];
+          servers = {
+            nixd = {
+              enable = true;
+              rootMarkers = ["flake.nix" ".git"];
+              settings = {
+                nixpkgs = {expr = "import <nixpkgs> {}";};
+                formatting.command = ["alejandra"];
 
-              completion = {
-                auto = true;
-                startWithSpace = true;
-              };
-              target = {
-                path = "/home/ar175/nix-test-v2";
-                installable = ".#nixosConfigurations.victus";
-              };
-              options = {
-                nixos = {
-                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
+                completion = {
+                  auto = true;
+                  startWithSpace = true;
                 };
-                home-manager = {
-                  expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+
+                target = {
+                  path = "/home/ar175/nix-test-v2";
+                  installable = ".#nixosConfigurations.victus";
+                };
+
+                options = {
+                  nixos = {
+                    expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
+                  };
+                  home-manager = {
+                    expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                  };
                 };
               };
             };
-          };
-          pyright.enable = true;
-          jsonls.enable = true;
-        };
-      };
-      diagnostics = {
-        virtual_text = {
-          spacing = 4;
-          prefix = "●";
-        };
-        signs = true;
-        underline = true;
-        severity_sort = true;
-        update_in_insert = false;
-      };
-
-      autoCmd = [
-        {
-          event = ["CursorHold" "CursorHoldI"];
-          callback = {
-            __raw =
-              # lua
-              ''
-                function()
-                  vim.diagnostic.open_float(nil, {
-                    focusable    = false,
-                    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-                    border       = "rounded",
-                    source       = "always",
-                    scope        = "cursor",
-                  })
-                end
-              '';
-          };
-        }
-      ];
-
-      plugins.conform-nvim = {
-        enable = true;
-        settings = {
-          formatters_by_ft = {
-            nix = ["alejandra"];
-            json = ["jq"];
-          };
-          format_on_save = {
-            timeout_ms = 500;
-            lsp_fallback = true;
+            pyright.enable = true;
+            jsonls.enable = true;
           };
         };
-      };
 
-      plugins.treesitter = {
-        enable = true;
-        highlight.enable = true;
-        indent.enable = false;
-        folding.enable = false;
-        grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-          nix
-          lua
-          bash
-          python
-          markdown
+        diagnostics = {
+          virtual_text = {
+            spacing = 4;
+            prefix = "●";
+          };
+          signs = true;
+          underline = true;
+          severity_sort = true;
+          update_in_insert = false;
+        };
+
+        autoCmd = [
+          {
+            event = ["CursorHold" "CursorHoldI"];
+            callback = {
+              __raw =
+                # lua
+                ''
+                  function()
+                    vim.diagnostic.open_float(nil, {
+                      focusable    = false,
+                      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+                      border       = "rounded",
+                      source       = "always",
+                      scope        = "cursor",
+                    })
+                  end
+                '';
+            };
+          }
         ];
-      };
-      plugins.blink-cmp = {
-        enable = true;
 
-        settings = {
-          appearance = {
-            nerd_font_variant = "normal";
-            use_nvim_cmp_as_default = false;
-          };
-
-          sources.default = ["lsp" "path" "snippets" "buffer"];
-
-          snippets.preset = "luasnip";
-
-          completion = {
-            accept.auto_brackets.enabled = true;
-            documentation.auto_show = true;
-          };
-
-          signature.enabled = true;
-
-          keymap = {
-            preset = "none";
-
-            "<Tab>" = [
-              "select_next"
-              "snippet_forward"
-              "fallback"
-            ];
-
-            "<S-Tab>" = [
-              "select_prev"
-              "snippet_backward"
-              "fallback"
-            ];
-
-            "<C-d>" = ["scroll_documentation_up" "fallback"];
-            "<C-f>" = ["scroll_documentation_down" "fallback"];
-
-            "<CR>" = ["accept" "fallback"];
+        conform-nvim = {
+          enable = true;
+          settings = {
+            formatters_by_ft = {
+              nix = ["alejandra"];
+              json = ["jq"];
+            };
+            format_on_save = {
+              timeout_ms = 500;
+              lsp_fallback = true;
+            };
           };
         };
-      };
-      plugins.none-ls = {
-        enable = true;
-        sources = {
-          diagnostics = {
-            deadnix.enable = true;
+
+        treesitter = {
+          enable = true;
+          highlight.enable = true;
+          indent.enable = false;
+          folding.enable = false;
+          grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
+            nix
+            lua
+            bash
+            python
+            markdown
+          ];
+        };
+        blink-cmp = {
+          enable = true;
+
+          settings = {
+            appearance = {
+              nerd_font_variant = "normal";
+              use_nvim_cmp_as_default = false;
+            };
+
+            sources.default = ["lsp" "path" "snippets" "buffer"];
+
+            snippets.preset = "luasnip";
+
+            completion = {
+              accept.auto_brackets.enabled = true;
+              documentation.auto_show = true;
+            };
+            signature.enabled = true;
+
+            keymap = {
+              preset = "none";
+
+              "<Tab>" = [
+                "select_next"
+                "snippet_forward"
+                "fallback"
+              ];
+
+              "<S-Tab>" = [
+                "select_prev"
+                "snippet_backward"
+                "fallback"
+              ];
+
+              "<C-d>" = ["scroll_documentation_up" "fallback"];
+              "<C-f>" = ["scroll_documentation_down" "fallback"];
+
+              "<CR>" = ["accept" "fallback"];
+            };
           };
         };
-      };
-
-      plugins.lualine = {
-        enable = true;
-        settings.options.theme = "gruvbox";
-      };
-
-      plugins.nvim-autopairs = {
-        enable = true;
-        settings = {
-          check_ts = true;
-          disable_filetype = ["TelescopePrompt" "spectre_panel"];
+        none-ls = {
+          enable = true;
+          sources = {
+            diagnostics = {
+              deadnix.enable = true;
+            };
+          };
         };
-      };
 
-      plugins.gitsigns.enable = true;
-      plugins.comment.enable = true;
-      plugins.which-key.enable = true;
-      plugins.web-devicons.enable = true;
-      plugins.nui-nvim.enable = true;
-      plugins.nvim-notify.enable = true;
-      plugins.luasnip.enable = true;
-      plugins.telescope.enable = true;
-      plugins.neo-tree.enable = true;
-      plugins.trouble.enable = true;
-      plugins.ts-context-commentstring.enable = true;
-      plugins.rainbow-delimiters.enable = true;
+        lualine = {
+          enable = true;
+          settings.options.theme = "gruvbox";
+        };
+
+        nvim-autopairs = {
+          enable = true;
+          settings = {
+            check_ts = true;
+            disable_filetype = ["TelescopePrompt" "spectre_panel"];
+          };
+        };
+
+        gitsigns.enable = true;
+        comment.enable = true;
+        which-key.enable = true;
+        web-devicons.enable = true;
+        nui-nvim.enable = true;
+        nvim-notify.enable = true;
+        luasnip.enable = true;
+        telescope.enable = true;
+        neo-tree.enable = true;
+        trouble.enable = true;
+        ts-context-commentstring.enable = true;
+        rainbow-delimiters.enable = true;
+      };
     };
   };
 }

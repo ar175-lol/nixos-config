@@ -1,5 +1,5 @@
 _: {
-  nixos.desktop = {...}: {
+  nixos.desktop = _: {
     security.rtkit.enable = true;
     services.pulseaudio.enable = false;
 

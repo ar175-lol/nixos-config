@@ -1,9 +1,11 @@
 {lib, ...}: {
   options = {
-    nixos.base = lib.mkOption {type = lib.types.deferredModule;};
-    nixos.desktop = lib.mkOption {type = lib.types.deferredModule;};
-    nixos.victus = lib.mkOption {type = lib.types.deferredModule;};
-    nixos.my-iso = lib.mkOption {type = lib.types.deferredModule;};
-    nixos.home = lib.mkOption {type = lib.types.deferredModule;};
+    nixos = {
+      base = lib.mkOption {type = lib.types.deferredModule;};
+      desktop = lib.mkOption {type = lib.types.deferredModule;};
+      victus = lib.mkOption {type = lib.types.deferredModule;};
+      my-iso = lib.mkOption {type = lib.types.deferredModule;};
+      home = lib.mkOption {type = lib.types.deferredModule;};
+    };
   };
 }

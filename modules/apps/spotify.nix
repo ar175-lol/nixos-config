@@ -1,4 +1,4 @@
-{...}: {
+_: {
   nixos.home = {
     pkgs,
     inputs,

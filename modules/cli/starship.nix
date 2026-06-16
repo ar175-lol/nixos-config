@@ -1,5 +1,5 @@
 _: {
-  nixos.home = {...}: {
+  nixos.home = _: {
     programs.starship = {
       enable = true;
       enableZshIntegration = true;

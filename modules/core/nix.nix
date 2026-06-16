@@ -1,5 +1,5 @@
 _: {
-  nixos.base = {...}: {
+  nixos.base = _: {
     nix = {
       settings = {
         experimental-features = ["nix-command" "flakes"];

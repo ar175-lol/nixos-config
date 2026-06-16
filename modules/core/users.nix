@@ -1,4 +1,4 @@
-{...}: {
+_: {
   nixos.base = {pkgs, ...}: {
     users.users.ar175 = {
       isNormalUser = true;

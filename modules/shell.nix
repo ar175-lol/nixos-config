@@ -10,7 +10,10 @@
       hooks = {
         alejandra.enable = true;
         deadnix.enable = true;
-        statix.enable = true;
+        statix = {
+          enable = true;
+          excludes = ["modules/hosts/victus/hardware\\.nix$"];
+        };
       };
     };
 
@@ -25,6 +28,8 @@
         tree-sitter
         fd
         jq
+        alejandra
+        deadnix
       ];
     };
   };

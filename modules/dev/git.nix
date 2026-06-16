@@ -1,5 +1,5 @@
-{...}: {
-  nixos.home = {...}: {
+_: {
+  nixos.home = _: {
     programs.git = {
       enable = true;
       settings = {

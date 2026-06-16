@@ -1,5 +1,5 @@
 _: {
-  nixos.victus = {...}: {
+  nixos.victus = _: {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;

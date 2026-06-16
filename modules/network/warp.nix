@@ -1,4 +1,4 @@
-{...}: {
+_: {
   nixos.victus = {pkgs, ...}: {
     services.cloudflare-warp.enable = true;
 

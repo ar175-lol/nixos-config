@@ -1,4 +1,4 @@
-{...}: {
+_: {
   nixos.base = _: {
     fileSystems."/mnt/ventoy" = {
       device = "/dev/disk/by-uuid/4E21-0000";

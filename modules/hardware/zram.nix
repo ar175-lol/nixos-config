@@ -1,5 +1,5 @@
 _: {
-  nixos.victus = {...}: {
+  nixos.victus = _: {
     zramSwap = {
       enable = true;
       algorithm = "zstd";
