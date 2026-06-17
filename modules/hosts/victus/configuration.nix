@@ -7,12 +7,9 @@ _: {
     ];
     programs.steam.enable = true;
 
-    environment.systemPackages = with pkgs; [nh];
-
     environment.variables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
-      NH_FLAKE = "/home/ar175/nix-test-v2";
     };
 
     system.stateVersion = "26.05";
