@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  nixos.base = {pkgs, ...}: {
+  nixos.base = {...}: {
     imports = [inputs.nixvim.nixosModules.default];
 
     programs.nixvim = {
@@ -137,6 +137,39 @@
         }
       ];
 
+      autoCmd = [
+        {
+          event = ["CursorHold" "CursorHoldI"];
+          callback = {
+            __raw =
+              # lua
+              ''
+                function()
+                  vim.diagnostic.open_float(nil, {
+                    focusable    = false,
+                    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+                    border       = "rounded",
+                    source       = "always",
+                    scope        = "cursor",
+                  })
+                end
+              '';
+          };
+        }
+      ];
+
+      diagnostic = {
+        settings = {
+          virtual_text = {
+            spacing = 4;
+            prefix = "●";
+          };
+          signs = true;
+          underline = true;
+          severity_sort = true;
+          update_in_insert = false;
+        };
+      };
       plugins = {
         lsp = {
           enable = true;
@@ -150,8 +183,6 @@
                 nixpkgs = {
                   expr = "import <nixpkgs> {}";
                 };
-
-                formatting.command = ["alejandra"];
 
                 completion = {
                   auto = true;
@@ -178,38 +209,6 @@
           };
         };
 
-        diagnostics = {
-          virtual_text = {
-            spacing = 4;
-            prefix = "●";
-          };
-          signs = true;
-          underline = true;
-          severity_sort = true;
-          update_in_insert = false;
-        };
-
-        autoCmd = [
-          {
-            event = ["CursorHold" "CursorHoldI"];
-            callback = {
-              __raw =
-                # lua
-                ''
-                  function()
-                    vim.diagnostic.open_float(nil, {
-                      focusable    = false,
-                      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-                      border       = "rounded",
-                      source       = "always",
-                      scope        = "cursor",
-                    })
-                  end
-                '';
-            };
-          }
-        ];
-
         conform-nvim = {
           enable = true;
           settings = {
@@ -228,15 +227,10 @@
           enable = true;
           highlight.enable = true;
           indent.enable = false;
+          nixvimInjections = true;
           folding.enable = false;
-          grammarPackages = with pkgs.vimPlugins.nvim-treesitter.builtGrammars; [
-            nix
-            lua
-            bash
-            python
-            markdown
-          ];
         };
+
         blink-cmp = {
           enable = true;
 
@@ -254,6 +248,7 @@
               accept.auto_brackets.enabled = true;
               documentation.auto_show = true;
             };
+
             signature.enabled = true;
 
             keymap = {
@@ -287,11 +282,28 @@
             };
           };
         };
+
+        neo-tree = {
+          enable = true;
+
+          settings = {
+            close_if_last_window = true;
+
+            filesystem = {
+              filtered_items = {
+                visible = true;
+                show_hidden_count = true;
+              };
+            };
+          };
+        };
+
         none-ls = {
           enable = true;
           sources = {
             diagnostics = {
               deadnix.enable = true;
+              statix.enable = true;
             };
           };
         };
@@ -313,11 +325,10 @@
         comment.enable = true;
         which-key.enable = true;
         web-devicons.enable = true;
-        nui-nvim.enable = true;
-        nvim-notify.enable = true;
+        nui.enable = true;
+        notify.enable = true;
         luasnip.enable = true;
         telescope.enable = true;
-        neo-tree.enable = true;
         trouble.enable = true;
         ts-context-commentstring.enable = true;
         rainbow-delimiters.enable = true;

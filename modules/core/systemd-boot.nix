@@ -1,7 +1,6 @@
 _: {
   nixos.base = _: {
     boot = {
-      bootspec.enable = true;
       tmp.cleanOnBoot = true;
 
       loader = {
