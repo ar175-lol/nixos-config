@@ -7,5 +7,9 @@
       my-iso = lib.mkOption {type = lib.types.deferredModule;};
       home = lib.mkOption {type = lib.types.deferredModule;};
     };
+    repository.flakePath = lib.mkOption {
+      type = lib.types.path;
+      default = /home/ar175/nix-test-v2;
+    };
   };
 }

@@ -4,6 +4,7 @@
 
     programs.nixvim = {
       enable = true;
+      waylandSupport = true;
 
       opts = {
         number = true;
@@ -19,6 +20,14 @@
         cursorline = true;
         splitright = true;
         splitbelow = true;
+        clipboard = "unnamedplus";
+        showmode = false;
+      };
+
+      clipboard = {
+        providers = {
+          wl-copy.enable = true;
+        };
       };
 
       colorschemes.gruvbox = {
@@ -137,27 +146,6 @@
         }
       ];
 
-      autoCmd = [
-        {
-          event = ["CursorHold" "CursorHoldI"];
-          callback = {
-            __raw =
-              # lua
-              ''
-                function()
-                  vim.diagnostic.open_float(nil, {
-                    focusable    = false,
-                    close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-                    border       = "rounded",
-                    source       = "always",
-                    scope        = "cursor",
-                  })
-                end
-              '';
-          };
-        }
-      ];
-
       diagnostic = {
         settings = {
           virtual_text = {
@@ -170,10 +158,16 @@
           update_in_insert = false;
         };
       };
+
       plugins = {
         lsp = {
           enable = true;
           inlayHints = true;
+
+          onAttach = ''
+            client.server_capabilities.documentFormattingProvider = false
+            client.server_capabilities.documentRangeFormattingProvider = false
+          '';
 
           servers = {
             nixd = {
@@ -196,10 +190,10 @@
 
                 options = {
                   nixos = {
-                    expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
+                    expr = "(builtins.getFlake \"\${config.repository.flakePath}\").outputs.nixosConfigurations.victus.options";
                   };
                   home-manager = {
-                    expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                    expr = "(builtins.getFlake \"\${config.repository.flakePath}\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
                   };
                 };
               };
@@ -313,6 +307,27 @@
           settings.options.theme = "gruvbox";
         };
 
+        noice = {
+          enable = true;
+          settings = {
+            cmdline.enabled = true;
+            messages.enabled = true;
+            popupmenu.enabled = true;
+
+            views = {
+              cmdline_popup = {
+                position = {
+                  row = "25%";
+                  col = "50%";
+                };
+                size = {
+                  width = 60;
+                  height = "auto";
+                };
+              };
+            };
+          };
+        };
         nvim-autopairs = {
           enable = true;
           settings = {
