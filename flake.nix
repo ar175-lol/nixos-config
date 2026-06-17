@@ -14,7 +14,7 @@
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
     zen-browser = {
-      url = "github:ar175-lol/zen-browser-flake-fix/fix-places";
+      url = "github:0xc000022070/zen-browser-flake/beta";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
