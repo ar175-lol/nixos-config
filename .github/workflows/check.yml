@@ -6,12 +6,17 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+        with:
+          fetch-depth: 0
+
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
@@ -21,7 +26,7 @@ jobs:
           haskell: true
           large-packages: true
           docker-images: true
-          swap: true
+          swap-storage: true
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
@@ -35,3 +40,10 @@ jobs:
         
       - name: Verify system build
         run: nix build .#nixosConfigurations.victus.config.system.build.toplevel
+
+      - name: Push to release branch
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git push origin HEAD:release --force-with-lease
