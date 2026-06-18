@@ -1,7 +1,12 @@
 _: {
-  nixos.home = _: {
+  nixos.home = {pkgs, ...}: {
     programs.git = {
       enable = true;
+      ignores = [
+        ".envrc"
+        ".direnv"
+        ".pre-commit-config.yaml"
+      ];
       settings = {
         user.name = "ar175-lol";
         user.email = "ghailmbv@proton.me";
@@ -11,5 +16,6 @@ _: {
         core.editor = "nvim";
       };
     };
+    home.packages = with pkgs; [gh];
   };
 }
