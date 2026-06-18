@@ -10,11 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
       
-      - uses: cachix/install-nix-action@v25
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
-            
       - name: Check flake
         run: nix flake check
+        
+      - name: Verify system build
+        run: nix build .#nixosConfigurations.victus.config.system.build.toplevel
