@@ -189,17 +189,19 @@
                 };
 
                 options = {
-                  nixos = {
-                    expr = "(builtins.getFlake \"\${config.repository.flakePath}\").outputs.nixosConfigurations.victus.options";
-                  };
-                  home-manager = {
-                    expr = "(builtins.getFlake \"\${config.repository.flakePath}\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                  options = {
+                    nixos = {
+                      expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
+                    };
+                    home-manager = {
+                      expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
+                    };
                   };
                 };
               };
             };
             pyright.enable = true;
-            jsonls.enable = true;
+            jsonls.enable = false; # Temporarily disabling this because jsonls is incompatible with Node.js v24
           };
         };
 
@@ -328,11 +330,21 @@
             };
           };
         };
+
         nvim-autopairs = {
           enable = true;
           settings = {
             check_ts = true;
             disable_filetype = ["TelescopePrompt" "spectre_panel"];
+          };
+        };
+
+        auto-session = {
+          enable = true;
+          settings = {
+            auto_restore_enabled = true;
+            auto_save_enabled = true;
+            auto_session_use_git_branch = false;
           };
         };
 
@@ -344,7 +356,6 @@
         notify.enable = true;
         luasnip.enable = true;
         telescope.enable = true;
-        trouble.enable = true;
         ts-context-commentstring.enable = true;
         rainbow-delimiters.enable = true;
       };

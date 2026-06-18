@@ -1,15 +1,20 @@
 {lib, ...}: {
   options = {
     nixos = {
-      base = lib.mkOption {type = lib.types.deferredModule;};
-      desktop = lib.mkOption {type = lib.types.deferredModule;};
-      victus = lib.mkOption {type = lib.types.deferredModule;};
+      base = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = null;
+      };
+      desktop = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = null;
+      };
+      victus = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = null;
+      };
       my-iso = lib.mkOption {type = lib.types.deferredModule;};
       home = lib.mkOption {type = lib.types.deferredModule;};
-    };
-    repository.flakePath = lib.mkOption {
-      type = lib.types.path;
-      default = /home/ar175/nix-test-v2;
     };
   };
 }
