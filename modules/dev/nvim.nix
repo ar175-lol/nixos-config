@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  nixos.base = {...}: {
+  nixos.base = {pkgs, ...}: {
     imports = [inputs.nixvim.nixosModules.default];
 
     programs.nixvim = {
@@ -339,6 +339,7 @@
           };
         };
 
+        telescope.enable = true;
         gitsigns.enable = true;
         comment.enable = true;
         which-key.enable = true;
@@ -346,10 +347,18 @@
         nui.enable = true;
         notify.enable = true;
         luasnip.enable = true;
-        telescope.enable = true;
         ts-context-commentstring.enable = true;
         rainbow-delimiters.enable = true;
       };
+      extraPackages = with pkgs; [
+        alejandra
+        deadnix
+        statix
+        ripgrep
+        tree-sitter
+        fd
+        jq
+      ];
     };
   };
 }

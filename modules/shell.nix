@@ -21,17 +21,6 @@
       name = "nix-test-shell";
 
       inherit (self'.checks.pre-commit-check) shellHook;
-
-      nativeBuildInputs = with pkgs; [
-        git
-        ripgrep
-        tree-sitter
-        fd
-        jq
-        alejandra
-        deadnix
-        statix
-      ];
     };
   };
 }
