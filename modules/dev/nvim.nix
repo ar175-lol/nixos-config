@@ -186,6 +186,8 @@
                 options = {
                   nixos = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";};
                   home-manager = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";};
+                  flake-parts = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").debug.options";};
+                  flake-parts-per-system = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").currentSystem.options";};
                 };
               };
             };
