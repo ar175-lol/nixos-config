@@ -1,7 +1,5 @@
 name: "Check code"
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -20,13 +18,13 @@ jobs:
       - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
-          tool-cache: true
+          tool-cache: false
           android: true
           dotnet: true
           haskell: true
-          large-packages: true
+          large-packages: false
           docker-images: true
-          swap-storage: true
+          swap-storage: false
 
       - uses: DeterminateSystems/determinate-nix-action@v3
 
@@ -40,10 +38,3 @@ jobs:
         
       - name: Verify system build
         run: nix build .#nixosConfigurations.victus.config.system.build.toplevel
-
-      - name: Push to release branch
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git push origin HEAD:release --force-with-lease
