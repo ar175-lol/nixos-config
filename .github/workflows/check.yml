@@ -11,7 +11,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap: true
+
       - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - uses: cachix/cachix-action@v14
+        with:
+          name: ar175-lol-nix
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       
       - name: Check flake
         run: nix flake check
