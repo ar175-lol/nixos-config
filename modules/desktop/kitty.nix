@@ -31,8 +31,12 @@
         foreground = "#ebdbb2";
         selection_background = "#ebdbb2";
         selection_foreground = "#282828";
+
         cursor = "#a89984";
         cursor_text_color = "#282828";
+        cursor_trail = 8;
+
+        confirm_os_window_close = 0;
 
         color0 = "#282828"; # black
         color8 = "#928374"; # bright black
