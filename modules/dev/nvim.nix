@@ -175,7 +175,7 @@
               rootMarkers = ["flake.nix" ".git"];
               settings = {
                 nixpkgs = {
-                  expr = "import <nixpkgs> {}";
+                  expr = "import (builtins.getFlake (builtins.toString ./.)).inputs.nixpkgs {}";
                 };
 
                 completion = {
@@ -183,20 +183,9 @@
                   startWithSpace = true;
                 };
 
-                target = {
-                  path = "/home/ar175/nix-test-v2";
-                  installable = ".#nixosConfigurations.victus";
-                };
-
                 options = {
-                  options = {
-                    nixos = {
-                      expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options";
-                    };
-                    home-manager = {
-                      expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").outputs.nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
-                    };
-                  };
+                  nixos = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";};
+                  home-manager = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";};
                 };
               };
             };
