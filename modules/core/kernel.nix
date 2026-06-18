@@ -1,5 +1,5 @@
 _: {
-  nixos.victus = {pkgs, ...}: {
+  nixos.base = {pkgs, ...}: {
     boot = {
       kernelParams = [
         "quiet"
@@ -12,10 +12,6 @@ _: {
       ];
 
       kernelPackages = pkgs.linuxPackages_xanmod_latest;
-
-      consoleLogLevel = 0;
-      initrd.verbose = false;
-      plymouth.enable = true;
     };
   };
 }

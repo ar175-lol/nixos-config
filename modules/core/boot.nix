@@ -1,8 +1,6 @@
 _: {
   nixos.base = _: {
     boot = {
-      tmp.cleanOnBoot = true;
-
       loader = {
         efi.canTouchEfiVariables = true;
         timeout = 0;
@@ -13,6 +11,12 @@ _: {
           configurationLimit = 5;
         };
       };
+
+      tmp.cleanOnBoot = true;
+
+      initrd.verbose = false;
+      plymouth.enable = true;
+      consoleLogLevel = 0;
     };
   };
 }

@@ -9,13 +9,14 @@ _: {
     imports = [inputs.spicetify-nix.homeModules.default];
 
     programs.spicetify = {
-      enable = true;
+      enable = false;
       enabledExtensions = with spicePkgs.extensions; [
         adblockify
       ];
       enabledCustomApps = with spicePkgs.apps; [
         marketplace
       ];
+      theme = spicePkgs.themes.gruvbox;
       colorScheme = "Base";
     };
   };

@@ -34,7 +34,7 @@
 
         cursor = "#a89984";
         cursor_text_color = "#282828";
-        cursor_trail = 8;
+        cursor_trail = 1;
 
         confirm_os_window_close = 0;
 

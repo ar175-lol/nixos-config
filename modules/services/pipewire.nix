@@ -1,17 +1,20 @@
 _: {
   nixos.desktop = _: {
     security.rtkit.enable = true;
-    services.pulseaudio.enable = false;
 
-    services.pipewire = {
-      enable = true;
-      alsa = {
+    services = {
+      pulseaudio.enable = false;
+
+      pipewire = {
         enable = true;
-        support32Bit = true;
+        alsa = {
+          enable = true;
+          support32Bit = true;
+        };
+        jack.enable = true;
+        pulse.enable = true;
+        wireplumber.enable = true;
       };
-      jack.enable = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
     };
   };
 }
