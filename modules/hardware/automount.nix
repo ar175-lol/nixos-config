@@ -1,5 +1,5 @@
 _: {
-  nixos.base = {
+  nixos.laptop = {
     fileSystems."/mnt/ventoy" = {
       device = "/dev/disk/by-uuid/4E21-0000";
       fsType = "exfat";

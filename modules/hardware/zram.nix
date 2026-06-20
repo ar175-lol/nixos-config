@@ -1,5 +1,5 @@
 _: {
-  nixos.victus = {
+  nixos.laptop = {
     zramSwap = {
       enable = true;
       algorithm = "zstd";

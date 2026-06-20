@@ -1,5 +1,5 @@
 _: {
-  nixos.victus = _: {
+  nixos.laptop = _: {
     services = {
       power-profiles-daemon.enable = false;
       thermald.enable = false;
