@@ -7,11 +7,6 @@ _: {
     ];
     programs.steam.enable = true;
 
-    environment.variables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-    };
-
     system.stateVersion = "26.05";
   };
 }

@@ -11,7 +11,6 @@ _: {
       sessionVariables = {
         EDITOR = "nvim";
         VISUAL = "nvim";
-        NH_FLAKE = "/home/ar175/nix-test-v2";
       };
     };
   };
