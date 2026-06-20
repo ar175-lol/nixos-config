@@ -1,5 +1,5 @@
 _: {
-  nixos.base = _: {
+  nixos.base = {
     services.resolved.enable = false;
     services.dnscrypt-proxy = {
       enable = true;

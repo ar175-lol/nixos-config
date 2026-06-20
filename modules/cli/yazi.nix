@@ -15,13 +15,14 @@
       inherit pkgs;
       settings.yazi = {
         mgr = {
-          sort_sensetive = false;
+          sort_sensitive = false;
           sort_by = "none";
           sort_dir_first = true;
 
           show_hidden = true;
           show_symlink = true;
         };
+
         opener = {
           edit = [
             {
@@ -30,12 +31,14 @@
               for = "linux";
             }
           ];
+
           open = [
             {
               run = "cd";
             }
           ];
         };
+
         open = {
           rules = [
             {
@@ -43,7 +46,6 @@
               use = "open";
             }
             {
-              # not sure is it working
               url = "*/";
               use = "open";
             }

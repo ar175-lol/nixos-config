@@ -1,5 +1,5 @@
 _: {
-  nixos.base = _: {
+  nixos.base = {
     networking = {
       firewall = {
         enable = true;

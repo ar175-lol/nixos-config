@@ -1,5 +1,5 @@
 _: {
-  nixos.base = _: {
+  nixos.base = {
     boot = {
       loader = {
         efi.canTouchEfiVariables = true;

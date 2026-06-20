@@ -39,7 +39,13 @@
         };
 
         layout = {
-          gaps = 5;
+          focus-ring = {
+            width = 4;
+            active-color = "#fe8019";
+            inactive-color = "#504945";
+          };
+          border = {off = _: {};};
+          gaps = 16;
         };
 
         gestures = {

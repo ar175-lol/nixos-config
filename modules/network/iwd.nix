@@ -1,5 +1,5 @@
 _: {
-  nixos.base = _: {
+  nixos.base = {
     networking = {
       networkmanager.enable = false;
 

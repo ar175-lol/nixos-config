@@ -1,5 +1,5 @@
 _: {
-  nixos.home = _: {
+  nixos.home = {
     programs.direnv = {
       enable = true;
       silent = true;
