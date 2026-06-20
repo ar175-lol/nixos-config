@@ -18,30 +18,6 @@ _: {
       extraModulePackages = [];
     };
 
-    #fileSystems."/" = {
-    #  device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
-    #  fsType = "btrfs";
-    #  options = ["subvol=root" "compress=zstd" "noatime"];
-    #};
-
-    #fileSystems."/home" = {
-    #  device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
-    #  fsType = "btrfs";
-    #  options = ["subvol=home" "compress=zstd"];
-    #};
-
-    #fileSystems."/nix" = {
-    #  device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
-    #  fsType = "btrfs";
-    #  options = ["subvol=nix" "compress=zstd" "noatime"];
-    #};
-
-    #fileSystems."/boot" = {
-    #  device = "/dev/disk/by-uuid/1E13-C40B";
-    #  fsType = "vfat";
-    #  options = ["fmask=0022" "dmask=0022"];
-    #};
-
     fileSystems = {
       "/" = {
         device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
