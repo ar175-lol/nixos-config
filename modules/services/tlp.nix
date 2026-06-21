@@ -10,18 +10,26 @@ _: {
           # CPU
           CPU_SCALING_GOVERNOR_ON_AC = "powersave";
           CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-          CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
+
+          CPU_ENERGY_PERF_POLICY_ON_AC = "balance_power";
+          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+
           CPU_BOOST_ON_AC = 0;
           CPU_BOOST_ON_BAT = 0;
 
+          CPU_SCALING_MAX_FREQ_ON_BAT = 1600000;
+          CPU_SCALING_MAX_FREQ_ON_AC = 2000000;
+
+          CPU_HWP_DYN_BOOST_ON_AC = 0;
+          CPU_HWP_DYN_BOOST_ON_BAT = 0;
+
           # Platform profile
-          PLATFORM_PROFILE_ON_AC = "balanced";
-          PLATFORM_PROFILE_ON_BAT = "balanced";
+          PLATFORM_PROFILE_ON_AC = "quiet";
+          PLATFORM_PROFILE_ON_BAT = "quiet";
 
           # PCIe
-          PCIE_ASPM_ON_AC = "default";
-          PCIE_ASPM_ON_BAT = "default";
+          PCIE_ASPM_ON_AC = "powersupersave";
+          PCIE_ASPM_ON_BAT = "powersupersave";
 
           # WiFi
           WIFI_PWR_ON_AC = "off";
