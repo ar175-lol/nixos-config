@@ -10,15 +10,23 @@
         type = lib.types.deferredModule;
         default = {};
       };
+
       desktop = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};
       };
+
       victus = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};
       };
+
       home = lib.mkOption {type = lib.types.deferredModule;};
+
+      laptop = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = {};
+      };
 
       configurations = lib.mkOption {
         type = lib.types.attrsOf (lib.types.submodule {

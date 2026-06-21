@@ -3,7 +3,12 @@ _: {
     inputs,
     pkgs,
     ...
-  }: {
+  }: let
+    mkLockedAttrs = builtins.mapAttrs (_: value: {
+      Value = value;
+      Status = "locked";
+    });
+  in {
     imports = [inputs.zen-browser.homeModules.beta];
 
     programs.zen-browser = {
@@ -13,6 +18,7 @@ _: {
         DisableTelemetry = true;
         DisableFirefoxAccounts = true;
         DisableFirefoxStudies = true;
+        DontCheckDefaultBrowser = true;
 
         UserMessaging = {
           Locked = true;
@@ -23,6 +29,7 @@ _: {
           MoreFromMozilla = false;
           FirefoxLabs = false;
         };
+
         EnableTrackingProtection = {
           Value = true;
           Locked = true;
@@ -31,6 +38,34 @@ _: {
           EmailTracking = true;
           Category = "strict";
         };
+
+        SanitizeOnShutdown = {
+          Locked = true;
+          Cache = true;
+          History = true;
+          FormData = true;
+          Cookies = false;
+          Sessions = false;
+          SiteSettings = false;
+        };
+
+        Preferences = mkLockedAttrs {
+          "gfx.webrender.all" = true;
+          "media.hardware-video-decoding.enabled" = true;
+          "media.hardware-video-decoding.force-enabled" = true;
+          "media.navigator.mediadatadecoder_vpx_enabled" = true;
+          "media.ffvpx.enabled" = false;
+          "media.ffmpeg.vaapi.enabled" = true;
+          "network.http.max-persistent-connections-per-proxy" = 256;
+          "network.http.max-persistent-connections-per-server" = 12;
+          "network.dns.disableIPv6" = true;
+          "network.http.max-connections" = 1500;
+
+          "zen.view.compact.enable-at-startup" = true;
+          "general.smoothScroll" = true;
+          "browser.discovery.enabled" = false;
+        };
+
         Proxy = {
           Mode = "manual";
           Locked = true;
@@ -39,9 +74,10 @@ _: {
           UseProxyForDNS = true;
           Passthrough = "<local>";
         };
+
         FirefoxHome = {
           Search = false;
-          TopSites = true;
+          TopSites = false;
           SponsoredTopSites = false;
           Highlights = false;
           Pocket = false;
@@ -49,14 +85,13 @@ _: {
           SponsoredStories = false;
           Snippets = false;
         };
+
         AIControls = {
           Default = {
             Value = "blocked";
             Locked = true;
           };
         };
-
-        DontCheckDefaultBrowser = true;
 
         ExtensionSettings = {
           "uBlock0@raymondhill.net" = {
@@ -77,6 +112,7 @@ _: {
           };
         };
       };
+
       profiles.default = {
         isDefault = true;
         pinsForce = true;
@@ -84,6 +120,9 @@ _: {
 
         mods = [
           "7190e4e9-bead-4b40-8f57-95d852ddc941"
+          "a6335949-4465-4b71-926c-4a52d34bc9c0"
+          "f7c71d9a-bce2-420f-ae44-a64bd92975ab"
+          "d8b79d4a-6cba-4495-9ff6-d6d30b0e94fe"
         ];
 
         pins = {
@@ -93,9 +132,9 @@ _: {
             position = 1;
             isEssential = true;
           };
-          "Gemini" = {
+          "Claude" = {
             id = "09d13387-b5cc-4188-ac16-046041387c40";
-            url = "https://gemini.google.com";
+            url = "https://claude.ai/new";
             position = 2;
             isEssential = true;
           };
@@ -138,45 +177,35 @@ _: {
               urls = [
                 {
                   template = "https://wiki.archlinux.org/title/Special:Search/%s";
+                  params = [
+                    {
+                      name = "query";
+                      value = "searchTerms";
+                    }
+                  ];
                 }
               ];
               definedAliases = ["@aw"];
             };
           };
         };
+
         settings = {
           "browser.aboutConfig.showWarning" = false;
-          "browser.discovery.enabled" = false;
-          "gfx.webrender.all" = true;
-          "media.ffmpeg.vaapi.enabled" = true;
-          "general.smoothScroll" = true;
           "network.predictor.enable-prefetch" = false;
-          "network.dns.disableIPv6" = true;
           "network.http.referer.XOriginTrimmingPolicy" = 2;
           "network.http.referer.trimmingPolicy" = 2;
           "app.normandy.enabled" = false;
           "app.normandy.first_run" = false;
           "geo.enabled" = false;
           "media.peerconnection.enabled" = false;
-          "privacy.clearOnShutdown.formdata" = true;
-          "privacy.clearOnShutdown.downloads" = true;
-          "privacy.clearOnShutdown.offlineApps" = true;
-          "privacy.clearOnShutdown.history" = true;
-          "privacy.clearOnShutdown.cache" = true;
-          "privacy.clearOnShutdown.sessions" = true;
-          "privacy.clearOnShutdown.cookies" = false;
-          "privacy.sanitize.sanitizeOnShutdown" = true;
           "privacy.donottrackheader.enabled" = true;
           "dom.deviceMemory" = 8;
           "dom.battery.enabled" = false;
           "dom.webdriver.enabled" = false;
           "dom.maxHardwareConcurrency" = 4;
           "privacy.resistFingerprinting.testGranularityMask" = 4;
-          "network.http.max-connections" = 1500;
-          "network.http.max-persistent-connections-per-proxy" = 256;
-          "network.http.max-persistent-connections-per-server" = 12;
           "privacy.resistFingerprinting.letterboxing" = false;
-          "zen.view.compact.enable-at-startup" = true;
         };
       };
     };
