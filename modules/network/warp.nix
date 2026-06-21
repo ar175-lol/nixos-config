@@ -2,6 +2,8 @@ _: {
   nixos.victus = {pkgs, ...}: {
     services.cloudflare-warp.enable = true;
 
+    systemd.services.warp-svc.serviceConfig.LogLevelMax = "warning";
+
     systemd.services.warp-auto-config = {
       description = "Configure Cloudflare WARP in Proxy Mode";
 

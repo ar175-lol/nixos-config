@@ -246,13 +246,11 @@
                 "snippet_forward"
                 "fallback"
               ];
-
               "<S-Tab>" = [
                 "select_prev"
                 "snippet_backward"
                 "fallback"
               ];
-
               "<C-d>" = [
                 "scroll_documentation_up"
                 "fallback"
@@ -350,6 +348,7 @@
         ts-context-commentstring.enable = true;
         rainbow-delimiters.enable = true;
       };
+
       extraPackages = with pkgs; [
         alejandra
         deadnix

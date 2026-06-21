@@ -34,13 +34,11 @@ _: {
 
         extraPackages = with pkgs; [
           intel-media-driver
-          libvdpau-va-gl
           nvidia-vaapi-driver
           intel-vaapi-driver
           vulkan-loader
           libva
           mesa
-          egl-wayland
         ];
       };
     };
@@ -48,7 +46,6 @@ _: {
     environment.systemPackages = with pkgs; [
       vulkan-tools
       libva-utils
-      qbittorrent
     ];
   };
 }

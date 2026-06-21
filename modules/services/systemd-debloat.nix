@@ -25,8 +25,8 @@ _: {
       settings.Manager = {DefaultTimeoutStopSec = "10s";};
     };
     services.journald.extraConfig = ''
-      SystemMaxUse=50M
-      SystemMaxFileSize=10M
+      SystemMaxUse=500M
+      SystemMaxFileSize=50M
     '';
   };
 }

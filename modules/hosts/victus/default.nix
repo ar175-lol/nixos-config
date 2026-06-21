@@ -16,7 +16,6 @@
           backupFileExtension = "backup";
           users.ar175 = config.nixos.home;
         };
-        nixpkgs.hostPlatform = "x86_64-linux";
       }
     ];
   };
