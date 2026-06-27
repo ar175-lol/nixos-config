@@ -7,11 +7,16 @@ _: {
         enable = true;
         enableCompletion = true;
         syntaxHighlighting.enable = true;
-        autocd = true;
 
         autosuggestion = {
           enable = true;
           strategy = ["history" "completion"];
+        };
+
+        history = {
+          size = 750;
+          ignoreAllDups = true;
+          ignoreSpace = true;
         };
 
         historySubstringSearch = {

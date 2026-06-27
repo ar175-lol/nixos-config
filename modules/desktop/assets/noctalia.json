@@ -292,7 +292,7 @@
     "wallpaper": {
       "enabled": true,
       "overviewEnabled": false,
-      "directory": "/home/ar175/nix-test-v2/modules/desktop/assets/",
+      "directory": "/home/ar175/nixos-config/modules/desktop/assets/",
       "monitorDirectories": [],
       "enableMultiMonitorDirectories": false,
       "showHiddenFiles": false,

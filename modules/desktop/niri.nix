@@ -55,11 +55,11 @@
                 y = 4;
               };
             };
-            color = "#000000a0";
+            color = "#262626";
           };
 
           border = {off = _: {};};
-          gaps = 16;
+          gaps = 9;
         };
 
         gestures.hot-corners = {off = _: {};};
@@ -94,7 +94,9 @@
             "Mod+F".maximize-column = _: {};
             "Mod+Grave".toggle-overview = _: {};
 
-            "Mod+Return".spawn-sh = lib.getExe self'.packages.myKitty;
+            "Mod+Return".spawn = lib.getExe self'.packages.myFoot;
+            "Mod+Shift+Return".spawn = lib.getExe self'.packages.myKitty;
+
             "Mod+D".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
             "Mod+V".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher clipboard";
           }

@@ -2,7 +2,7 @@ _: {
   nixos.home = {pkgs, ...}: {
     programs.nh = {
       enable = true;
-      flake = "/home/ar175/nix-test-v2";
+      flake = "/home/ar175/nixos-config";
       clean = {
         enable = true;
         extraArgs = "--no-direnv";

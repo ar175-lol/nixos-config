@@ -9,9 +9,7 @@ _: {
         size = 24;
       };
 
-      packages = with pkgs; [
-        bibata-cursors
-      ];
+      packages = with pkgs; [bibata-cursors];
     };
   };
 }

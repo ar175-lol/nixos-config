@@ -184,12 +184,17 @@
                 };
 
                 options = {
-                  nixos = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options";};
-                  home-manager = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";};
-                  flake-parts = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").debug.options";};
-                  flake-parts-per-system = {expr = "(builtins.getFlake \"/home/ar175/nix-test-v2\").currentSystem.options";};
+                  nixos = {expr = "(builtins.getFlake \"/home/ar175/nixos-config\").nixosConfigurations.victus.options";};
+                  home-manager = {expr = "(builtins.getFlake \"/home/ar175/nixos-config\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";};
+                  flake-parts = {expr = "(builtins.getFlake \"/home/ar175/nixos-config\").debug.options";};
+                  flake-parts-per-system = {expr = "(builtins.getFlake \"/home/ar175/nixos-config\").currentSystem.options";};
                 };
               };
+            };
+            rust_analyzer = {
+              enable = true;
+              installCargo = false;
+              installRustc = false;
             };
             pyright.enable = true;
             jsonls.enable = false; # Temporarily disabling this because jsonls is incompatible with Node.js v24
@@ -202,6 +207,7 @@
             formatters_by_ft = {
               nix = ["alejandra"];
               json = ["jq"];
+              rust = ["rustfmt"];
             };
             format_on_save = {
               timeout_ms = 500;
@@ -234,6 +240,7 @@
             completion = {
               accept.auto_brackets.enabled = true;
               documentation.auto_show = true;
+              trigger.show_on_insert_on_trigger_character = true;
             };
 
             signature.enabled = true;
@@ -262,6 +269,10 @@
 
               "<CR>" = [
                 "accept"
+                "fallback"
+              ];
+              "<C-Space>" = [
+                "show"
                 "fallback"
               ];
             };
