@@ -1,0 +1,171 @@
+@define-color rosewater #f5e0dc;
+@define-color flamingo #f2cdcd;
+@define-color pink #f5c2e7;
+@define-color mauve #cba6f7;
+@define-color red #f38ba8;
+@define-color maroon #eba0ac;
+@define-color peach #fab387;
+@define-color yellow #f9e2af;
+@define-color green #a6e3a1;
+@define-color teal #94e2d5;
+@define-color sky #89dceb;
+@define-color sapphire #74c7ec;
+@define-color blue #89b4fa;
+@define-color lavender #b4befe;
+@define-color text #cdd6f4;
+@define-color subtext1 #bac2de;
+@define-color subtext0 #a6adc8;
+@define-color overlay2 #9399b2;
+@define-color overlay1 #7f849c;
+@define-color overlay0 #6c7086;
+@define-color surface2 #585b70;
+@define-color surface1 #45475a;
+@define-color surface0 #313244;
+@define-color base #1e1e2e;
+@define-color mantle #181825;
+@define-color crust #11111b;
+
+@define-color bg @base;
+@define-color fg @blue;
+@define-color fg2 @mauve;
+
+* {
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 14px;
+}
+
+tooltip {
+  background: @mantle;
+  color: @text;
+  border: 1px solid @mauve;
+}
+
+window#waybar {
+  background: transparent;
+  color: @text;
+  padding: 0px;
+  border-radius: 50px;
+}
+
+#workspaces {
+  border-radius: 15px;
+  background: @bg;
+  color: @fg;
+}
+
+#workspaces button {
+  padding: 0px 6px;
+  margin: 0px 2px;
+  border-radius: 15px;
+  color: @text;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#workspaces button.active {
+  color: @crust;
+  padding: 0px 5px;
+  font-weight: bold;
+  background: @lavender;
+  min-width: 40px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#workspaces button.urgent {
+  color: @crust;
+  font-weight: bold;
+  background: @red;
+  transition: all 0.3s;
+}
+
+#workspaces button:hover {
+  color: @crust;
+  font-weight: bold;
+  background: @lavender;
+}
+
+#clock, #pulseaudio, #cpu, #memory, #bluetooth {
+  padding: 0px 12px;
+  margin: 1px 0px;
+  border-radius: 6px;
+  background: @bg;
+  color: @fg;
+}
+
+#tray, #battery, #custom-battery {
+  padding: 0px 12px;
+  margin: 1px 0px;
+  border-radius: 6px;
+  background: @bg;
+  color: @fg2;
+}
+
+#language {
+    padding: 0px 12px;
+    margin: 1px 0px;
+    border-radius: 6px;
+    background: @bg;
+    color: @fg;
+    font-weight: bold;
+}
+
+#cpu { color: @maroon; }
+
+#pulseaudio { color: @blue; }
+#pulseaudio:hover {
+  color: @base;
+  background-color: @blue;
+  border: 1px solid @blue;
+}
+
+#bluetooth.on,
+#bluetooth.connected,
+#bluetooth.connected-battery {
+  color: @base;
+  font-weight: bold;
+  background-color: @sapphire;
+  border: 1px solid @sapphire;
+}
+
+#battery { color: @fg2; }
+
+#battery.charging {
+  color: @base;
+  font-weight: bold;
+  background-color: @green;
+  border: 1px solid @green;
+}
+
+#battery.full {
+  color: @base;
+  background-color: @peach;
+  border: 1px solid @peach;
+}
+
+#battery.warning:not(.charging),
+#battery.critical:not(.charging) {
+  color: @base;
+  font-weight: bold;
+  background-color: @red;
+  border: 1px solid @red;
+}
+
+#custom-battery.charging {
+  color: @base;
+  font-weight: bold;
+  background-color: @green;
+  border: 1px solid @green;
+}
+
+#custom-battery.full {
+  color: @base;
+  background-color: @peach;
+  border: 1px solid @peach;
+}
+
+#custom-battery.warning,
+#custom-battery.critical {
+  color: @base;
+  font-weight: bold;
+  background-color: @red;
+  border: 1px solid @red;
+}
