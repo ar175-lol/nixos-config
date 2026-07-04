@@ -17,8 +17,16 @@ _: {
         ];
       };
     };
-    security.sudo.wheelNeedsPassword = false;
+    security = {
+      sudo.enable = false;
+      sudo-rs = {
+        enable = true;
+        wheelNeedsPassword = false;
+        execWheelOnly = true;
 
+        extraRules = [];
+      };
+    };
     programs.zsh.enable = true;
   };
 }

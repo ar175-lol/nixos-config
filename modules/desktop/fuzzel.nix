@@ -11,6 +11,7 @@
           terminal = "foot";
 
           y-margin = 16;
+          minimal-lines = true;
           width = 60;
           inner-pad = 16;
           horizontal-pad = 32;

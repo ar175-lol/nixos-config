@@ -15,11 +15,8 @@ _: {
           "unmojang.cachix.org-1:OfHnbBNduZ6Smx9oNbLFbYyvOWSoxb2uPcnXPj4EDQY="
         ];
       };
-      gc = {
-        automatic = true;
-        dates = "daily";
-        options = "--delete-older-than 5d";
-      };
+
+      gc.automatic = false;
 
       extraOptions = ''
         warn-dirty = false
