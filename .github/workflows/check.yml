@@ -40,10 +40,3 @@ jobs:
         
       - name: Verify system build
         run: nix build .#nixosConfigurations.victus.config.system.build.toplevel --fallback
-
-      - name: Push to release branch
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git push origin HEAD:release --force-with-lease
