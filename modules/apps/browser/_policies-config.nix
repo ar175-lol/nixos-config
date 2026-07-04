@@ -51,7 +51,6 @@ in {
     "network.http.max-connections" = 1500;
 
     "zen.view.compact.enable-at-startup" = true;
-    "general.smoothScroll" = true;
     "browser.discovery.enabled" = false;
     "general.autoScroll" = true;
   };
