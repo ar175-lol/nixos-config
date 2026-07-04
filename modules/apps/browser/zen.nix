@@ -104,7 +104,6 @@ _: {
           "dom.maxHardwareConcurrency" = 4;
           "privacy.resistFingerprinting.testGranularityMask" = 4;
           "privacy.resistFingerprinting.letterboxing" = false;
-          "general.smoothScroll" = true;
         };
       };
     };
