@@ -28,8 +28,8 @@ _: {
         zsh-abbr = {
           enable = true;
           abbreviations = {
-            update = "git add . && nh os switch";
-            upgrade = "git add . && nix flake update && nh os switch";
+            nos = "git add . && nh os switch";
+            unos = "git add . && nix flake update && nh os switch";
             ncg = "nh clean all";
           };
         };

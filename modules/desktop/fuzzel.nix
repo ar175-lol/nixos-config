@@ -17,10 +17,9 @@
           vertical-pad = 24;
           line-height = 32;
           lines = 10;
-          minimal-lines = true;
           prompt = "\"  \"";
 
-          history = "~/.cache/fuzzel";
+          history = "~/.cache/fuzzel-history";
           sort-result = "yes";
         };
 
