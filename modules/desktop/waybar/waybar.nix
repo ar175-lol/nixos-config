@@ -5,7 +5,7 @@
 }: {
   nixos.desktop = {pkgs, ...}: {
     programs.waybar = {
-      enable = true;
+      enable = false;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.myWaybar;
     };
   };

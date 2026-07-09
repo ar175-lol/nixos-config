@@ -18,6 +18,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    helium = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixvim = {
       url = "github:nix-community/nixvim";
     };
@@ -36,7 +41,6 @@
 
       imports = [
         (inputs.import-tree ./modules)
-        inputs.home-manager.flakeModules.home-manager
       ];
       debug = true;
     };

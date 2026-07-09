@@ -28,6 +28,10 @@
         default = {};
       };
 
+      shell = lib.mkOption {
+        type = lib.types.enum ["bash" "zsh" "fish"];
+      };
+
       configurations = lib.mkOption {
         type = lib.types.attrsOf (lib.types.submodule {
           options = {

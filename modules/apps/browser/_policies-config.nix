@@ -50,18 +50,8 @@ in {
     "network.dns.disableIPv6" = true;
     "network.http.max-connections" = 1500;
 
-    "zen.view.compact.enable-at-startup" = true;
     "browser.discovery.enabled" = false;
     "general.autoScroll" = true;
-  };
-
-  Proxy = {
-    Mode = "manual";
-    Locked = true;
-    SOCKSProxy = "127.0.0.1:40000";
-    SOCKSVersion = 5;
-    UseProxyForDNS = true;
-    Passthrough = "<local>";
   };
 
   FirefoxHome = {
@@ -89,10 +79,6 @@ in {
     };
     "sponsorBlocker@ajay.app" = {
       install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
-      installation_mode = "force_installed";
-    };
-    "addon@darkreader.org" = {
-      install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
       installation_mode = "force_installed";
     };
     "ru@dictionaries.addons.mozilla.org" = {

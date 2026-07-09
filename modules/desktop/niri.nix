@@ -25,7 +25,7 @@
       settings = {
         spawn-at-startup = [
           (lib.getExe' pkgs.awww "awww-daemon")
-          [(lib.getExe pkgs.awww) "./assets/catppuccin.png"]
+
           "${mako-rs}/bin/mako-rs"
         ];
 

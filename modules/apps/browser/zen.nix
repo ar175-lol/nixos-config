@@ -7,8 +7,8 @@ _: {
     imports = [inputs.zen-browser.homeModules.beta];
 
     programs.zen-browser = {
-      enable = true;
-      setAsDefaultBrowser = true;
+      enable = false;
+      setAsDefaultBrowser = false;
       policies = import ./_policies-config.nix;
 
       profiles.default = {
@@ -90,6 +90,8 @@ _: {
 
         settings = {
           "browser.aboutConfig.showWarning" = false;
+          "dom.ipc.processCount" = 3;
+          "zen.view.compact.enable-at-startup" = true;
           "network.predictor.enable-prefetch" = false;
           "network.http.referer.XOriginTrimmingPolicy" = 2;
           "network.http.referer.trimmingPolicy" = 2;

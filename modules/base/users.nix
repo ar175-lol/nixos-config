@@ -1,10 +1,9 @@
 _: {
-  nixos.base = {pkgs, ...}: {
+  nixos.base = {
     users.users = {
       ar175 = {
         isNormalUser = true;
         hashedPassword = "$6$nxk4tJSRBd8udBQm$rKcgUIaowcy8TKnMwTAcLcrjGyBL.qs4b75dxRUT4GSB75txej3rEZ6R40Bg6Adh6vq3cHhOLtxPJljhzUvIy1";
-        shell = pkgs.zsh;
         description = "ar175";
         extraGroups = [
           "wheel"
@@ -17,6 +16,7 @@ _: {
         ];
       };
     };
+
     security = {
       sudo.enable = false;
       sudo-rs = {
@@ -27,6 +27,5 @@ _: {
         extraRules = [];
       };
     };
-    programs.zsh.enable = true;
   };
 }

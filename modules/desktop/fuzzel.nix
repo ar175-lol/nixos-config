@@ -20,7 +20,6 @@
           lines = 10;
           prompt = "\"  \"";
 
-          history = "~/.cache/fuzzel-history";
           sort-result = "yes";
         };
 
