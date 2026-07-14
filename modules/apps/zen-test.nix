@@ -1,28 +1,15 @@
-_: {
-  nixos.home = {
-    inputs,
-    pkgs,
-    ...
-  }: {
+{inputs, ...}: {
+  nixos.home = _: {
     imports = [inputs.zen-browser.homeModules.beta];
 
-    # TODO: Rewrite this test config
     programs.zen-browser = {
-      enable = false;
+      enable = true;
       setAsDefaultBrowser = true;
 
       policies = {
         DisableAppUpdate = true;
         DisableTelemetry = true;
         DisablePocket = true;
-      };
-
-      nativeMessagingHosts = [
-        pkgs.firefoxpwa
-      ];
-
-      env = {
-        GTK_THEME = "Adwaita";
       };
 
       profiles.default = {
@@ -79,6 +66,24 @@ _: {
             position = 2000;
             icon = "💼";
             container = 1;
+
+            # Space-scoped form: same options as `pins.*` minus `workspace`,
+            # which is derived from this space's id.
+            pins."Tickets" = {
+              id = "7f2c91de-3b58-4c2a-9e47-d31f08a6b5c2";
+              url = "https://linear.app/";
+              position = 102;
+            };
+            # That should work prob
+            liveFolders."Pull requests" = {
+              id = "b7a3d5c1-9e2f-4a68-b0d4-6f1c8e5a2d93";
+              kind = "github:pull-requests";
+              position = 401;
+              github = {
+                assignedMe = true; # default
+                reviewRequested = true;
+              };
+            };
           };
         };
 
@@ -89,7 +94,6 @@ _: {
             id = "48e8a119-5a14-4826-9545-91c8e8dd3bf6";
             url = "https://github.com";
             position = 101;
-            workspace = "cdd10fab-4fc5-494b-9041-325e5759195b";
           };
         };
 
@@ -131,16 +135,6 @@ _: {
             folderIcon = "https://www.prisma.io/favicon.ico";
             position = 400;
             maxItems = 5;
-          };
-
-          "Pull requests" = {
-            id = "b7a3d5c1-9e2f-4a68-b0d4-6f1c8e5a2d93";
-            kind = "github:pull-requests";
-            position = 401;
-            github = {
-              assignedMe = true; # default
-              reviewRequested = true;
-            };
           };
 
           "My issues" = {

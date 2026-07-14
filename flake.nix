@@ -18,7 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nixcord.url = "github:FlameFlag/nixcord";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
     git-hooks.url = "github:cachix/git-hooks.nix";
     mako-rs.url = "github:ar175-lol/mako-rs";
   };
