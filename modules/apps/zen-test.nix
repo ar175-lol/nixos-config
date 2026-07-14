@@ -1,12 +1,4 @@
-# Complete real-world setup combining multiple features
-# This example shows a fully configured Zen Browser with spaces, containers, pins, and shortcuts.
-# ⚠ Close Zen before home-manager switch
-# (uses spacesForce, pinsForce, pinsForceAction, keyboardShortcuts—these modify state files)
-{
-  inputs,
-  pkgs,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.zen-browser.homeModules.beta];
 
   programs.zen-browser = {
@@ -17,14 +9,6 @@
       DisableAppUpdate = true;
       DisableTelemetry = true;
       DisablePocket = true;
-    };
-
-    nativeMessagingHosts = [
-      pkgs.firefoxpwa
-      # ... more ...
-    ];
-    env = {
-      GTK_THEME = "Adwaita";
     };
 
     profiles.default = {
