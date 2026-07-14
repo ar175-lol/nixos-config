@@ -11,7 +11,7 @@ _: {
         package = config.boot.kernelPackages.nvidiaPackages.latest;
         modesetting.enable = true;
         open = false;
-        nvidiaSettings = true;
+        nvidiaSettings = false;
 
         powerManagement = {
           enable = true;

@@ -16,6 +16,7 @@
       settings = {
         main = {
           font = "JetBrainsMono NF:size=12";
+          pad = "0x0 center color=1e1e2e";
         };
         scrollback = {
           lines = 10000;

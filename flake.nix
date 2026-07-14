@@ -13,25 +13,13 @@
     import-tree.url = "github:vic/import-tree";
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake/beta";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     helium = {
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-    };
-
-    spicetify-nix.url = "github:ar175-lol/spicetify-nix-fix/feat/homeModules-alias";
-    nixcord.url = "github:FlameFlag/nixcord";
-
+    # nixcord.url = "github:FlameFlag/nixcord";
     git-hooks.url = "github:cachix/git-hooks.nix";
-
     mako-rs.url = "github:ar175-lol/mako-rs";
   };
 

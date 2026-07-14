@@ -40,7 +40,7 @@
 
           shellAliases = {
             nxr = "git add . && nh os switch";
-            nxru = "git add . && nh os switch --upgrade";
+            nxru = "git add . && nh os switch --update";
             ncg = "nh clean all";
           };
 

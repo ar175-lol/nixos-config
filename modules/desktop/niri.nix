@@ -24,8 +24,6 @@
       inherit pkgs;
       settings = {
         spawn-at-startup = [
-          (lib.getExe' pkgs.awww "awww-daemon")
-
           "${mako-rs}/bin/mako-rs"
         ];
 
@@ -81,6 +79,11 @@
         window-rule = {
           clip-to-geometry = true;
           geometry-corner-radius = 12;
+        };
+
+        debug = {
+          render-drm-device = "/dev/dri/by-path/pci-0000:00:02.0-render";
+          ignore-drm-device = "/dev/dri/by-path/pci-0000:01:00.0-render";
         };
 
         binds =

@@ -1,6 +1,6 @@
 {
   "extras": [
-
+    "lazyvim.plugins.extras.lang.nix"
   ],
   "install_version": 8,
   "news": {

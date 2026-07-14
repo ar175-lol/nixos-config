@@ -1,0 +1,156 @@
+_: {
+  nixos.home = {
+    inputs,
+    pkgs,
+    ...
+  }: {
+    imports = [inputs.zen-browser.homeModules.beta];
+
+    # TODO: Rewrite this test config
+    programs.zen-browser = {
+      enable = false;
+      setAsDefaultBrowser = true;
+
+      policies = {
+        DisableAppUpdate = true;
+        DisableTelemetry = true;
+        DisablePocket = true;
+      };
+
+      nativeMessagingHosts = [
+        pkgs.firefoxpwa
+      ];
+
+      env = {
+        GTK_THEME = "Adwaita";
+      };
+
+      profiles.default = {
+        settings = {
+          "zen.workspaces.continue-where-left-off" = true;
+          "zen.view.compact.hide-tabbar" = true;
+          "zen.urlbar.behavior" = "float";
+        };
+
+        mods = [
+          "e122b5d9-d385-4bf8-9971-e137809097d0" # No Top Sites
+          "253a3a74-0cc4-47b7-8b82-996a64f030d5" # Floating History
+        ];
+
+        search = {
+          force = true;
+          default = "ddg";
+        };
+
+        bookmarks = {
+          force = true;
+          settings = [
+            {
+              name = "Quick Links";
+              toolbar = true;
+              bookmarks = [
+                {
+                  name = "GitHub";
+                  url = "https://github.com";
+                }
+              ];
+            }
+          ];
+        };
+
+        containersForce = true; # Delete containers not declared here
+        containers = {
+          Work = {
+            color = "blue";
+            icon = "briefcase";
+            id = 1;
+          };
+        };
+
+        spacesForce = true; # Delete spaces not declared here
+        spaces = {
+          "General" = {
+            id = "c6de089c-410d-4206-961d-ab11f988d40a";
+            position = 1000;
+            icon = "🏠";
+          };
+          "Work" = {
+            id = "cdd10fab-4fc5-494b-9041-325e5759195b";
+            position = 2000;
+            icon = "💼";
+            container = 1;
+          };
+        };
+
+        pinsForce = true;
+        pinsForceAction = "remove"; # "remove" drops undeclared pins; default is "demote"
+        pins = {
+          "GitHub" = {
+            id = "48e8a119-5a14-4826-9545-91c8e8dd3bf6";
+            url = "https://github.com";
+            position = 101;
+            workspace = "cdd10fab-4fc5-494b-9041-325e5759195b";
+          };
+        };
+
+        keyboardShortcutsVersion = 19;
+        keyboardShortcuts = [
+          {
+            id = "zen-compact-mode-toggle";
+            key = "c";
+            modifiers = {
+              control = true;
+              alt = true;
+            };
+          }
+          {
+            id = "key_quitApplication";
+            disabled = true;
+          }
+        ];
+
+        userChrome = ''
+          #navigator-toolbox {
+            background-color: #2b2b2b;
+          }
+
+          #TabsToolbar {
+            min-height: 28px;
+          }
+
+          .tab-icon-image {
+            width: 16px;
+            height: 16px;
+          }
+        '';
+        liveFolders = {
+          "Prisma blog" = {
+            id = "0f3f2f66-64bc-4a43-8f86-01c2a134c4f4";
+            kind = "rss";
+            feedUrl = "https://www.prisma.io/blog/rss.xml";
+            folderIcon = "https://www.prisma.io/favicon.ico";
+            position = 400;
+            maxItems = 5;
+          };
+
+          "Pull requests" = {
+            id = "b7a3d5c1-9e2f-4a68-b0d4-6f1c8e5a2d93";
+            kind = "github:pull-requests";
+            position = 401;
+            github = {
+              assignedMe = true; # default
+              reviewRequested = true;
+            };
+          };
+
+          "My issues" = {
+            id = "3c9e1f7a-5b24-4d80-9a6c-e2f4b8d10c57";
+            kind = "github:issues";
+            position = 402;
+            github.authorMe = true;
+          };
+        };
+      };
+    };
+  };
+}

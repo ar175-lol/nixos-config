@@ -29,7 +29,7 @@
       };
 
       shell = lib.mkOption {
-        type = lib.types.enum ["bash" "zsh" "fish"];
+        type = lib.types.enum ["zsh" "fish"];
       };
 
       configurations = lib.mkOption {

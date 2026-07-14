@@ -1,8 +1,8 @@
-{pkgs, ...}: {
-  nixos.base = _: {
-    environment.systemPackages = with pkgs; [nixd gcc lua-language-server rust-analyzer neovim tree-sitter alejandra];
+_: {
+  nixos.base = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [statix ripgrep nixd gcc lua-language-server rust-analyzer neovim tree-sitter alejandra];
   };
-  nixos.home = {
-    xdg.configFile."nvim".source = ./_nvim;
+  nixos.home = {config, ...}: {
+    home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "/home/ar175/nixos-config/modules/dev/nvim";
   };
 }
