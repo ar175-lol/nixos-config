@@ -30,6 +30,7 @@
             size = 500;
             ignoreAllDups = true;
             ignoreSpace = true;
+            ignorePatterns = ["rm *" "pkill *" "cat *" "grep *" "cd *" "direnv *" "journalctl *" "ls *" "/*"];
           };
 
           historySubstringSearch = {
@@ -53,12 +54,6 @@
             bindkey "^[[1;5D" backward-word
             bindkey "^[[1;5C" forward-word
           '';
-        };
-
-        nix-index = {
-          enable = true;
-          enableFishIntegration = shell == "fish";
-          enableZshIntegration = shell == "zsh";
         };
 
         # ===========================================================================

@@ -1,5 +1,5 @@
-{inputs, ...}: {
-  nixos.home = {pkgs, ...}: {
+_: {
+  nixos.home = {inputs, ...}: {
     imports = [inputs.zen-browser.homeModules.twilight];
 
     programs.zen-browser = {
@@ -8,6 +8,12 @@
       policies = import ./_policies.nix;
 
       profiles.default = {
+        presets.catppuccin = {
+          enable = true;
+          flavor = "Mocha";
+          accent = "Mauve";
+        };
+
         settings = {
           "zen.view.compact.enable-at-startup" = true;
           "zen.window-sync.enabled" = true;
@@ -111,23 +117,6 @@
             disabled = true;
           }
         ];
-      };
-    };
-
-    home.file = let
-      catppuccinZen = pkgs.fetchFromGitHub {
-        owner = "catppuccin";
-        repo = "zen-browser";
-        rev = "c855685442c6040c4dda9c8d3ddc7b708de1cbaa";
-        hash = "sha256-5A57Lyctq497SSph7B+ucuEyF1gGVTsuI3zuBItGfg4=";
-      };
-      flavor = "Mocha";
-      accent = "Mauve";
-    in {
-      ".config/zen/default/chrome" = {
-        source = "${catppuccinZen}/themes/${flavor}/${accent}";
-        recursive = true;
-        force = true;
       };
     };
   };
