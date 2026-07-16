@@ -15,7 +15,10 @@
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
     git-hooks.url = "github:cachix/git-hooks.nix";
+
     mako-rs.url = "github:ar175-lol/mako-rs";
+    battery-notifier.url = "github:ar175-lol/battery-notifier";
+    rustbar.url = "github:ar175-lol/rustbar";
   };
 
   outputs = inputs:

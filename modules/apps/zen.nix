@@ -1,5 +1,5 @@
 _: {
-  nixos.home = {inputs, ...}: {
+  homeManager.ar175 = {inputs, ...}: {
     imports = [inputs.zen-browser.homeModules.twilight];
 
     programs.zen-browser = {
@@ -28,71 +28,71 @@ _: {
         pinsForce = true;
         pinsForceAction = "remove";
 
+        pins = {
+          "Youtube" = {
+            id = "98f8b1d5-e0cc-48bd-b575-e9f8d977ea1b";
+            url = "https://youtube.com";
+            position = 1;
+            isEssential = true;
+          };
+          "GitHub" = {
+            id = "48e8a119-5a14-4826-9545-91c8e8dd3bf6";
+            url = "https://github.com";
+            position = 2;
+            isEssential = true;
+          };
+        };
+
         spacesForce = true;
         spaces = {
-          "Main" = {
-            id = "572910e1-4468-4832-a869-0b3a93e2f165";
-            position = 1000;
-            pins = {
-              "Youtube" = {
-                id = "6cd1b145-0dbf-40d7-8cf3-f5349abd67f1";
-                url = "https://youtube.com";
-                position = 100;
-              };
-              "Proton Mail" = {
-                id = "2db3e219-d8bf-4e30-8633-dc5d9c6a3617";
-                url = "https://mail.proton.me/u/0/inbox";
-                position = 110;
-              };
-            };
-          };
-          "Dev" = {
+          "Github" = {
             id = "3e94141e-d73f-44b4-8f28-ac5199d2399c";
-            position = 2000;
-
-            pins = {
-              "GitHub" = {
-                id = "48e8a119-5a14-4826-9545-91c8e8dd3bf6";
-                url = "https://github.com";
-                position = 200;
-              };
-              "The Book (Rust)" = {
-                id = "960f794b-aa51-430c-8ed4-605bd38591a9";
-                url = "https://doc.rust-lang.org/stable/book/";
-                position = 210;
-              };
-
-              "Nix & NixOS" = {
-                id = "101fcfd8-313c-4c8d-8abc-8f1eac79f542";
-                isGroup = true;
-                position = 230;
-                pins = {
-                  "NixOS options" = {
-                    id = "35fddde4-aed6-48c0-a740-0fd1688d728b";
-                    url = "https://search.nixos.org/options";
-                    position = 235;
-                  };
-                  "MyNixOS" = {
-                    id = "f6fd888d-d1fa-4e6b-934b-122cea186ebf";
-                    url = "https://mynixos.com/";
-                    position = 236;
-                  };
-                };
-              };
-            };
+            position = 1000;
 
             liveFolders = {
               "My Pull Requests" = {
                 id = "b7a3d5c1-9e2f-4a68-b0d4-6f1c8e5a2d93";
                 kind = "github:pull-requests";
-                position = 250;
+                position = 150;
                 github.authorMe = true;
               };
               "My Issues" = {
                 id = "56e9a42b-def8-476c-9926-149e695ba32c";
                 kind = "github:issues";
-                position = 260;
+                position = 160;
                 github.authorMe = true;
+              };
+            };
+          };
+
+          "Docs" = {
+            id = "7d646728-211b-44c2-b507-ba1aaf4bc496";
+            position = 2000;
+
+            pins = {
+              "Nix & NixOS" = {
+                id = "38e9bfa2-a183-424d-bf85-664e91829a46";
+                url = "https://search.nixos.org/options?channel=unstable&type=options";
+                position = 2010;
+              };
+              # ...
+            };
+          };
+
+          "AI" = {
+            id = "56d4bc98-98dc-4b0f-a078-4be1d7f45010";
+            position = 3000;
+
+            pins = {
+              "Claude" = {
+                id = "9b80ed44-b7a2-4dff-adf0-0880d5210125";
+                url = "https://claude.ai";
+                position = 300;
+              };
+              "Gemini" = {
+                id = "e017461d-b73a-4152-b783-84dd1bd94483";
+                url = "https://gemini.google.com/app";
+                position = 310;
               };
             };
           };

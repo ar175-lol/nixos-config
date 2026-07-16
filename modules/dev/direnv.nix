@@ -1,5 +1,5 @@
 _: {
-  nixos.home = {pkgs, ...}: {
+  homeManager.ar175 = {pkgs, ...}: {
     programs.direnv = {
       enable = true;
       silent = true;

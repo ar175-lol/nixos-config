@@ -2,7 +2,7 @@ _: {
   nixos.base = {
     networking = {
       firewall = {
-        enable = true;
+        enable = false;
         allowedTCPPorts = [53317 11000];
         allowedUDPPorts = [53317 11000];
       };

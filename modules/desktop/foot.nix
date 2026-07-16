@@ -15,7 +15,7 @@
 
       settings = {
         main = {
-          font = "JetBrainsMono NF:size=12";
+          font = "JetBrainsMono Nerd Font:size=12.4";
           pad = "0x0 center color=1e1e2e";
         };
         scrollback = {

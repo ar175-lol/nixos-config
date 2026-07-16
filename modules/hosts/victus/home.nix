@@ -1,5 +1,5 @@
 _: {
-  nixos.home = {pkgs, ...}: {
+  homeManager.ar175 = {pkgs, ...}: {
     home = {
       username = "ar175";
       homeDirectory = "/home/ar175";
