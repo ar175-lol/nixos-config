@@ -19,7 +19,7 @@
             shell = config.nixos.shell;
           };
           backupFileExtension = "backup";
-          users.ar175 = config.nixos.home;
+          users.ar175 = config.homeManager.ar175;
         };
       }
     ];

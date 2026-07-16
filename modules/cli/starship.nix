@@ -1,5 +1,5 @@
 _: {
-  nixos.home = {
+  homeManager.ar175 = {
     programs.starship = {
       enable = true;
       enableZshIntegration = true;

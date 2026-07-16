@@ -1,19 +1,9 @@
 _: {
   homeManager.ar175 = {inputs, ...}: {
-    imports = [
-      inputs.mako-rs.homeModules.default
-      inputs.battery-notifier.homeModules.default
-    ];
+    imports = [inputs.rustbar.homeModules.default];
 
-    programs.mako-rs.enable = true;
-    services.battery-notifier = {
-      enable = true;
-      pollIntervalSecs = 15;
-      lowThreshold = 10;
-      warnThreshold = 25;
-    };
+    programs.rustbar.enable = true;
   };
-
   nixos.desktop = {lib, ...}: {
     nix.settings = {
       substituters = lib.mkAfter ["https://rust-cache.cachix.org"];

@@ -5,6 +5,8 @@
   ...
 }: {
   options = {
+    homeManager.ar175 = lib.mkOption {type = lib.types.deferredModule;};
+    homeManager.nixos = lib.mkOption {type = lib.types.deferredModule;};
     nixos = {
       base = lib.mkOption {
         type = lib.types.deferredModule;
@@ -21,7 +23,10 @@
         default = {};
       };
 
-      home = lib.mkOption {type = lib.types.deferredModule;};
+      iso = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = {};
+      };
 
       laptop = lib.mkOption {
         type = lib.types.deferredModule;

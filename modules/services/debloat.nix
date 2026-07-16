@@ -28,5 +28,6 @@ _: {
       SystemMaxUse=200M
       SystemMaxFileSize=50M
     '';
+    services.speechd.enable = false;
   };
 }
