@@ -18,3 +18,9 @@ vim.api.nvim_create_autocmd('QuitPre', {
     end
   end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "nix",
+  callback = function()
+    vim.opt_local.smartindent = false
+  end,
+})

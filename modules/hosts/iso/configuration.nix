@@ -63,22 +63,19 @@
       ms-sys
       xwayland
       xwayland-satellite
+
+      firefox
     ];
   };
 
   homeManager.nixos = {
     inputs,
     pkgs,
-    lib,
     ...
-  } @ args: let
-    zenFile = (import ../../apps/zen.nix) args;
-    zenConfig = zenFile.homeManager.ar175 args;
-  in {
+  }: {
     imports = [
       inputs.rustbar.homeModules.default
       inputs.mako-rs.homeModules.default
-      inputs.zen-browser.homeModules.twilight
     ];
 
     home = {
@@ -107,7 +104,6 @@
         enable = true;
       };
       mako-rs.enable = true;
-      zen-browser = zenConfig.programs.zen-browser;
     };
   };
 }

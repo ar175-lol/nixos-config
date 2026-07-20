@@ -4,5 +4,9 @@ _: {
   };
   homeManager.ar175 = {config, ...}: {
     home.file.".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "/home/ar175/nixos-config/modules/dev/nvim";
+
+    xdg.mimeApps.defaultApplications = {
+      "text/plain" = ["nvim.desktop"];
+    };
   };
 }

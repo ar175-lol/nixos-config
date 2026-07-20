@@ -4,9 +4,16 @@
   ...
 }: {
   homeManager.ar175 = _: {
-    imports = [inputs.mako-rs.homeModules.default];
+    imports = [
+      inputs.battery-notifier.homeModules.default
+    ];
 
-    programs.mako-rs.enable = true;
+    services.battery-notifier = {
+      enable = true;
+      pollIntervalSecs = 15;
+      lowThreshold = 10;
+      warnThreshold = 25;
+    };
   };
 
   nixos.desktop = _: {

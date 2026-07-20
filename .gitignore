@@ -1,6 +1,5 @@
 result/
 result
-.envrc
 .direnv/
 .pre-commit-config.yaml
 core.*

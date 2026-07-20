@@ -171,6 +171,7 @@ M = {
           },
         },
 
+        gopls = {},
         statix = {},
         ruff = {},
         rust_analyzer = {},
@@ -298,7 +299,7 @@ M = {
     for server, server_opts in pairs(opts.servers) do
       if server ~= "*" then
         server_opts = server_opts == true and {} or (not server_opts) and { enabled = false } or
-        server_opts --[[@as lazyvim.lsp.Config]]
+            server_opts --[[@as lazyvim.lsp.Config]]
         if server_opts.enabled ~= false then
           local setup = opts.setup[server] or opts.setup["*"]
           if not (setup and setup(server, server_opts)) then

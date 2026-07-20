@@ -2,11 +2,13 @@ _: {
   homeManager.ar175 = {pkgs, ...}: {
     programs.git = {
       enable = true;
+
       ignores = [
-        ".envrc"
         ".direnv"
-        ".pre-commit-config.yaml"
+        ".devenv"
+        "target"
       ];
+
       settings = {
         user = {
           name = "ar175-lol";
