@@ -24,10 +24,31 @@ _: {
       coredump.enable = false;
       settings.Manager = {DefaultTimeoutStopSec = "10s";};
     };
-    services.journald.extraConfig = ''
-      SystemMaxUse=200M
-      SystemMaxFileSize=50M
-    '';
-    services.speechd.enable = false;
+    services = {
+      journald.extraConfig = ''
+        SystemMaxUse=200M
+        SystemMaxFileSize=50M
+      '';
+      speechd.enable = false;
+      timesyncd.enable = false;
+    };
+    security.pam.loginLimits = [
+      {
+        domain = "*";
+        type = "hard";
+        item = "core";
+        value = "0";
+      }
+      {
+        domain = "*";
+        type = "soft";
+        item = "core";
+        value = "0";
+      }
+    ];
+
+    boot.kernel.sysctl = {
+      "kernel.core_pattern" = "/dev/null";
+    };
   };
 }

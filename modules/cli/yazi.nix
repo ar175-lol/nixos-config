@@ -1,6 +1,6 @@
 {
-  self,
   inputs,
+  self,
   ...
 }: {
   nixos.desktop = {pkgs, ...}: {
@@ -22,6 +22,11 @@
           show_symlink = true;
         };
       };
+    };
+  };
+  homeManager.ar175 = _: {
+    xdg.mimeApps.defaultApplications = {
+      "inode/directory" = ["yazi.desktop"];
     };
   };
 }

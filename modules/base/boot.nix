@@ -12,10 +12,7 @@ _: {
         };
       };
 
-      tmp = {
-        cleanOnBoot = true;
-        # useTmpFs = false;
-      };
+      tmp.cleanOnBoot = true;
 
       initrd.verbose = false;
       plymouth.enable = true;

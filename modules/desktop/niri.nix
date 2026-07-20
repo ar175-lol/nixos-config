@@ -101,7 +101,6 @@
                 "Mod+Ctrl+Up".move-window-up = _: {};
 
                 "Mod+Return".spawn = lib.getExe self'.packages.myFoot;
-
                 "Mod+D".spawn = "${lib.getExe self'.packages.myFuzzel}";
               }
               // (lib.listToAttrs (map (n: {

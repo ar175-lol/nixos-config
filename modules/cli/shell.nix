@@ -27,7 +27,7 @@
         };
 
         history = {
-          size = 100;
+          size = 101;
           ignoreAllDups = true;
           ignoreSpace = true;
           ignorePatterns = ["* rm *" "* pkill *" "* cat *" "* grep *" "* cd *" "direnv *" "* journalctl *" "* ls *" "/*"];
