@@ -37,7 +37,7 @@ _: {
         pictures = "${config.home.homeDirectory}/Pictures";
 
         templates = null;
-        publishShare = null;
+        publicShare = null;
       };
       mimeApps.enable = true;
     };
