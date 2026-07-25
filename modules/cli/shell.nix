@@ -76,8 +76,8 @@
         enable = shell == "fish";
 
         shellAbbrs = {
-          nos = "git add . && nh os switch";
-          unos = "git add . && nh os switch --update";
+          nxr = "git add . && nh os switch";
+          uxru = "git add . && nh os switch --update";
         };
 
         interactiveShellInit = ''

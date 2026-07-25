@@ -1,5 +1,16 @@
 _: {
-  homeManager.ar175 = {inputs, ...}: {
+  homeManager.ar175 = {inputs, ...}: let
+    mkRouting = {
+      url,
+      openIn,
+    }: {
+      reference = url;
+      matchType = "contains";
+      inherit openIn;
+    };
+
+    workId = "3e94141e-d73f-44b4-8f28-ac5199d2399c";
+  in {
     imports = [inputs.zen-browser.homeModules.twilight];
 
     programs.zen-browser = {
@@ -8,12 +19,6 @@ _: {
       policies = import ./_policies.nix;
 
       profiles.default = {
-        presets.catppuccin = {
-          enable = true;
-          flavor = "Mocha";
-          accent = "Mauve";
-        };
-
         settings = {
           "zen.view.compact.enable-at-startup" = true;
           "zen.window-sync.enabled" = true;
@@ -21,8 +26,9 @@ _: {
 
         mods = [
           "1b88a6d1-d931-45e8-b6c3-bfdca2c7e9d6"
-          "a6335949-4465-4b71-926c-4a52d34bc9c0"
           "253a3a74-0cc4-47b7-8b82-996a64f030d5"
+          "b51ff956-6aea-47ab-80c7-d6c047c0d510"
+          "f4866f39-cfd6-4498-ab92-54213b8279dc"
         ];
 
         pinsForce = true;
@@ -43,10 +49,23 @@ _: {
           };
         };
 
+        spaceRouting = {
+          routes = {
+            "github.com" = mkRouting {
+              url = "github.com";
+              openIn = workId;
+            };
+            "gitlab.com" = mkRouting {
+              url = "gitlab.com";
+              openIn = workId;
+            };
+          };
+        };
+
         spacesForce = true;
         spaces = {
-          "Github" = {
-            id = "3e94141e-d73f-44b4-8f28-ac5199d2399c";
+          "Work" = {
+            id = workId;
             position = 1000;
 
             liveFolders = {
@@ -63,36 +82,12 @@ _: {
                 github.authorMe = true;
               };
             };
-          };
-
-          "Docs" = {
-            id = "7d646728-211b-44c2-b507-ba1aaf4bc496";
-            position = 2000;
 
             pins = {
               "Nix & NixOS" = {
                 id = "38e9bfa2-a183-424d-bf85-664e91829a46";
                 url = "https://search.nixos.org/options?channel=unstable&type=options";
-                position = 2010;
-              };
-              # ...
-            };
-          };
-
-          "AI" = {
-            id = "56d4bc98-98dc-4b0f-a078-4be1d7f45010";
-            position = 3000;
-
-            pins = {
-              "Claude" = {
-                id = "9b80ed44-b7a2-4dff-adf0-0880d5210125";
-                url = "https://claude.ai";
-                position = 300;
-              };
-              "Gemini" = {
-                id = "e017461d-b73a-4152-b783-84dd1bd94483";
-                url = "https://gemini.google.com/app";
-                position = 310;
+                position = 170;
               };
             };
           };

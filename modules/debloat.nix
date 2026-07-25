@@ -1,3 +1,4 @@
+# Doing some shit here I guess...
 _: {
   nixos.desktop = {lib, ...}: {
     systemd = {
@@ -46,9 +47,5 @@ _: {
         value = "0";
       }
     ];
-
-    boot.kernel.sysctl = {
-      "kernel.core_pattern" = "/dev/null";
-    };
   };
 }

@@ -1,102 +1,57 @@
-# Stolen from end-4(hyprland) config!!!
-
-# Don't print a new line at the start of the prompt
-add_newline = false
-# Pipes ╰─ ╭─
-# Powerline symbols                                     
-# Wedges 🭧🭒 🭣🭧🭓
-# Random noise 🬖🬥🬔🬗
-# Cool stuff 󰜥   
-
 format = """
-$cmd_duration $directory$git_branch
-  $character"""
+[░▒▓](fg:#a3aed2)\
+$os\
+[](bg:#769ff0 fg:#a3aed2)\
+$directory\
+[](fg:#769ff0 bg:#394260)\
+$git_branch\
+[](fg:#394260 bg:#212736)\
+$time\
+[](fg:#1d2230)
+[╰─](fg:#394260)$character"""
 
-[fill]
-symbol = '-'
-style = 'fg:#494d64'
-
-# Replace the "❯" symbol in the prompt with "➜"
-[character]                # The name of the module we are configuring is "character"
-success_symbol = "[ ](bold fg:#c6a0f6)"
-error_symbol = "[ ](bold fg:#ed8796)"
-
-# Disable the package module, hiding it from the prompt completely
-[package]
-disabled = true
-
-[git_branch]
-style = "bg:#363a4f"
-symbol = "󰘬"
-truncation_length = 12
-truncation_symbol = ""
-format = " 󰜥 [](bold fg:#363a4f)[$symbol $branch(:$remote_branch)](fg:#cad3f5 bg:#363a4f)[ ](bold fg:#363a4f)"
-
-[git_commit]
-commit_hash_length = 4
-tag_symbol = " "
-
-[git_state]
-format = '[\($state( $progress_current of $progress_total)\)]($style) '
-cherry_pick = "[🍒 PICKING](bold red)"
-
-[git_status]
-conflicted = " 🏳 "
-ahead = " 🏎💨 "
-behind = " 😰 "
-diverged = " 😵 "
-untracked = " 🤷 ‍"
-stashed = " 📦 "
-modified = " 📝 "
-staged = '[++\($count\)](green)'
-renamed = " ✍️ "
-deleted = " 🗑 "
-
-[hostname]
-ssh_only = false
-format =  "[•$hostname](bg:#363a4f bold fg:#cad3f5)[](bold fg:#363a4f)"
-trim_at = ".companyname.com"
+[os]
+style = "bg:#a3aed2 fg:#090c0c"
+format = "[$symbol]($style)"
 disabled = false
 
-[line_break]
-disabled = false
-
-[memory_usage]
-disabled = true
-threshold = -1
-symbol = " "
-style = "bold dimmed green"
-
-[time]
-disabled = true
-format = '🕙[\[ $time \]]($style) '
-time_format = "%T"
-
-[username]
-style_user = "bold bg:#363a4f fg:#cad3f5"
-style_root = "red bold"
-format = "[](bold fg:#363a4f)[$user]($style)"
-disabled = false
-show_always = true
+[os.symbols]
+Android = ""
+NixOS = ""
 
 [directory]
-home_symbol = " "
-read_only = "  "
-style = "bg:#494d64 fg:#cad3f5"
-truncation_length = 2
-truncation_symbol = ".../"
-format = '[](bold fg:#494d64)[󰉋 → $path]($style)[](bold fg:#494d64)'
-
+style = "fg:#e3e5e5 bg:#769ff0"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
 
 [directory.substitutions]
-"Desktop" = "  "
-"Documents" = "  "
-"Downloads" = "  "
-"Music" = " 󰎈 "
-"Pictures" = "  "
-"Videos" = "  "
-"GitHub" = " 󰊤 "
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
 
-[cmd_duration]
-min_time = 0
-format = '[](bold fg:#b7bdf8)[󰪢 $duration](bold bg:#b7bdf8 fg:#24273a)[](bold fg:#b7bdf8)'
+[git_branch]
+symbol = ""
+style = "bg:#394260"
+format = '[[ $symbol $branch ](fg:#769ff0 bg:#394260)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:#1d2230"
+format = '[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)'
+
+[character]
+format = "$symbol "
+success_symbol = "[❯](bold #769ff0)"
+error_symbol = "[❯](bold #f7768e)"
+
+# [package]
+# disabled = true
+#
+# [hostname]
+# disabled = true
+#
+# [username]
+# disabled = true

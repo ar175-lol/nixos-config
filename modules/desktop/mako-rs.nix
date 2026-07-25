@@ -1,18 +1,7 @@
-{
-  inputs,
-  lib,
-  ...
-}: {
+{inputs, ...}: {
   homeManager.ar175 = _: {
     imports = [inputs.mako-rs.homeModules.default];
 
     programs.mako-rs.enable = true;
-  };
-
-  nixos.desktop = _: {
-    nix.settings = {
-      substituters = lib.mkAfter ["https://rust-cache.cachix.org"];
-      trusted-public-keys = lib.mkAfter ["rust-cache.cachix.org-1:/2rzfpe8mft9zsy2ykhgyyy3bfvoeomhps9pz+okjgm="];
-    };
   };
 }

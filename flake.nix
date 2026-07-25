@@ -19,6 +19,8 @@
     mako-rs.url = "github:ar175-lol/mako-rs";
     battery-notifier.url = "github:ar175-lol/battery-notifier";
     rustbar.url = "github:ar175-lol/rustbar";
+
+    prism-launcher.url = "git+file:///home/ar175/flakes/prism-launcher-flake";
   };
 
   outputs = inputs:

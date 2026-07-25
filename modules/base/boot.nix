@@ -11,6 +11,9 @@ _: {
           configurationLimit = 5;
         };
       };
+      kernel.sysctl = {
+        "kernel.core_pattern" = "/dev/null";
+      };
 
       tmp.cleanOnBoot = true;
 

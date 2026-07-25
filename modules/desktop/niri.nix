@@ -27,6 +27,14 @@
         inherit pkgs;
         settings =
           {
+            spawn-at-startup = [
+              [
+                "${lib.getExe pkgs.swaybg}"
+                "-i"
+                "${./assets/wall1.jpg}"
+              ]
+            ];
+
             prefer-no-csd = true;
 
             input = {

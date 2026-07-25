@@ -6,6 +6,8 @@
   }: {
     nixpkgs.hostPlatform = "x86_64-linux";
 
+    hardware.enableRedistributableFirmware = true;
+
     fonts = {
       packages = with pkgs; [
         nerd-fonts.jetbrains-mono
@@ -23,6 +25,7 @@
       enable = true;
       powerOnBoot = true;
     };
+
     services = {
       displayManager.autoLogin = {
         enable = true;
@@ -49,7 +52,46 @@
       fish.enable = true;
     };
 
-    networking.wireless.enable = lib.mkForce false;
+    networking = {
+      useNetworkd = true;
+
+      networkmanager.enable = lib.mkForce false;
+      dhcpcd.enable = false;
+      wireless.enable = lib.mkForce false;
+
+      wireless.iwd = {
+        enable = true;
+        settings = {
+          Network = {
+            EnableIPv6 = false;
+            NameResolvingService = "none";
+          };
+          General = {
+            EnableNetworkConfiguration = true;
+            AddressRandomization = "network";
+            AddressRandomizationRange = "full";
+            ManagementFrameProtection = "1";
+            ControlPortOverNL80211 = true;
+            DisableANQP = true;
+          };
+          Rank = {
+            BandModifier2_4GHz = 0.5;
+            BandModifier5GHz = 1.5;
+          };
+          Settings = {
+            AutoConnect = true;
+          };
+        };
+      };
+    };
+
+    systemd.network.networks."10-ethernet-dhcp" = {
+      matchConfig.Name = "en* eth*";
+      networkConfig = {
+        DHCP = "ipv4";
+      };
+    };
+
     boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod_latest;
 
     environment.systemPackages = with pkgs; [
@@ -65,6 +107,7 @@
       xwayland-satellite
 
       firefox
+      impala
     ];
   };
 
@@ -99,11 +142,6 @@
       recursive = true;
     };
 
-    programs = {
-      rustbar = {
-        enable = true;
-      };
-      mako-rs.enable = true;
-    };
+    programs.rustbar.enable = true;
   };
 }
