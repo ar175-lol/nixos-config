@@ -19,6 +19,28 @@
         "type": "github"
       }
     },
+    "firefox-addons": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "pkgs/firefox-addons",
+        "lastModified": 1785124937,
+        "narHash": "sha256-hWhwWx7B7hy4I5D7xtleHhIF142BTHrnvRQucdDy4ng=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "6fed20fba941f536b5595a6bb89205209472b777",
+        "type": "gitlab"
+      },
+      "original": {
+        "dir": "pkgs/firefox-addons",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "type": "gitlab"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -430,22 +452,23 @@
         "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1784912258,
-        "narHash": "sha256-3HGj1VVq6tJNiJSgZdVBshQW+s1ysrsl1qsJw+GVQhk=",
-        "ref": "refs/heads/main",
-        "rev": "6f1df8fed4f3579fa3fb36c47aef59fa77e5a09e",
-        "revCount": 3,
-        "type": "git",
-        "url": "file:///home/ar175/flakes/prism-launcher-flake"
+        "lastModified": 1785156110,
+        "narHash": "sha256-s9fhDuEeUTkXxJW0Qiw+GuADBQLGOXHmgx1WEJJW75A=",
+        "owner": "ar175-lol",
+        "repo": "prism-launcher-flake",
+        "rev": "d7c59323c665c50cf2eb9788beb7d26b66b87a56",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/ar175/flakes/prism-launcher-flake"
+        "owner": "ar175-lol",
+        "repo": "prism-launcher-flake",
+        "type": "github"
       }
     },
     "root": {
       "inputs": {
         "battery-notifier": "battery-notifier",
+        "firefox-addons": "firefox-addons",
         "flake-parts": "flake-parts_2",
         "git-hooks": "git-hooks",
         "home-manager": "home-manager",

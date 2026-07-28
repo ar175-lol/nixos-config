@@ -36,6 +36,7 @@
             ];
 
             prefer-no-csd = true;
+            xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
             input = {
               keyboard = {

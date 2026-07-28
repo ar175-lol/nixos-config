@@ -16,15 +16,21 @@ _: {
         ];
       };
     };
-
     security = {
       sudo.enable = false;
-      sudo-rs = {
+      doas = {
         enable = true;
         wheelNeedsPassword = false;
-        execWheelOnly = true;
 
-        extraRules = [];
+        extraRules = [
+          {
+            groups = ["wheel"];
+            noPass = true;
+            keepEnv = true;
+            setEnv = ["SSH_AUTH_SOCK" "TERMINFO" "TERMINFO_DIRS"];
+            runAs = "any";
+          }
+        ];
       };
     };
   };

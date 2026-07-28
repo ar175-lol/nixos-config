@@ -1,5 +1,9 @@
 _: {
-  homeManager.ar175 = {inputs, ...}: let
+  homeManager.ar175 = {
+    inputs,
+    pkgs,
+    ...
+  }: let
     mkRouting = {
       url,
       openIn,
@@ -22,6 +26,36 @@ _: {
         settings = {
           "zen.view.compact.enable-at-startup" = true;
           "zen.window-sync.enabled" = true;
+        };
+
+        extensions = {
+          force = true;
+          packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+            ublock-origin
+            sponsorblock
+          ];
+
+          settings = {
+            "uBlock0@raymondhill.net".settings = {
+              selectedFilterLists = [
+                "ublock-filters"
+                "ublock-badware"
+                "ublock-privacy"
+                "ublock-unbreak"
+                "ublock-quick-fixes"
+
+                "easylist"
+                "easyprivacy"
+                "plowe-0"
+                "urlhaus-1"
+
+                "RUS-0"
+                "RUS-1"
+
+                "ublock-annoyances"
+              ];
+            };
+          };
         };
 
         mods = [
@@ -112,17 +146,6 @@ _: {
             disabled = true;
           }
         ];
-      };
-    };
-
-    xdg.mimeApps = {
-      defaultApplications = {
-        "text/html" = ["zen-twilight.desktop"];
-        "x-scheme-handler/http" = ["zen-twilight.desktop"];
-        "x-scheme-handler/https" = ["zen-twilight.desktop"];
-        "x-scheme-handler/about" = ["zen-twilight.desktop"];
-        "x-scheme-handler/unknown" = ["zen-twilight.desktop"];
-        "application/pdf" = ["zen-twilight.desktop"];
       };
     };
   };

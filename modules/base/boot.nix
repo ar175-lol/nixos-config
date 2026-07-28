@@ -5,10 +5,12 @@ _: {
         efi.canTouchEfiVariables = true;
         timeout = 0;
 
-        systemd-boot = {
+        systemd-boot.enable = false;
+
+        limine = {
           enable = true;
-          consoleMode = "auto";
-          configurationLimit = 5;
+          efiSupport = true;
+          maxGenerations = 5;
         };
       };
       kernel.sysctl = {

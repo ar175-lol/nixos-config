@@ -74,15 +74,15 @@
             ControlPortOverNL80211 = true;
             DisableANQP = true;
           };
-          Rank = {
-            BandModifier2_4GHz = 0.5;
-            BandModifier5GHz = 1.5;
-          };
           Settings = {
             AutoConnect = true;
           };
         };
       };
+    };
+
+    users.users.nixos = {
+      shell = pkgs.fish;
     };
 
     systemd.network.networks."10-ethernet-dhcp" = {
@@ -99,16 +99,14 @@
       arch-install-scripts
       testdisk
       ddrescue
-      parted
 
       chntpw
       ms-sys
-      xwayland
-      xwayland-satellite
 
       firefox
-      impala
     ];
+
+    nix.settings.experimental-features = ["nix-command" "flakes"];
   };
 
   homeManager.nixos = {
@@ -130,8 +128,6 @@
     home.packages = with pkgs; [
       neovim
       git
-      gnumake
-      unzip
       gcc
       ripgrep
       fd
