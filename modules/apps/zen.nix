@@ -14,6 +14,7 @@ _: {
     };
 
     workId = "3e94141e-d73f-44b4-8f28-ac5199d2399c";
+    personalId = "534e746a-898e-4284-b874-6c32a5813640";
   in {
     imports = [inputs.zen-browser.homeModules.twilight];
 
@@ -26,6 +27,8 @@ _: {
         settings = {
           "zen.view.compact.enable-at-startup" = true;
           "zen.window-sync.enabled" = true;
+          "theme.custom_uifont.custom" = "JetBrainsMono Nerd Font";
+          "theme.custom_uifont.default" = "Custom";
         };
 
         extensions = {
@@ -63,6 +66,7 @@ _: {
           "253a3a74-0cc4-47b7-8b82-996a64f030d5"
           "b51ff956-6aea-47ab-80c7-d6c047c0d510"
           "f4866f39-cfd6-4498-ab92-54213b8279dc"
+          "e74cb40a-f3b8-445a-9826-1b1b6e41b846"
         ];
 
         pinsForce = true;
@@ -102,26 +106,31 @@ _: {
             id = workId;
             position = 1000;
 
-            liveFolders = {
-              "My Pull Requests" = {
-                id = "b7a3d5c1-9e2f-4a68-b0d4-6f1c8e5a2d93";
-                kind = "github:pull-requests";
-                position = 150;
-                github.authorMe = true;
-              };
-              "My Issues" = {
-                id = "56e9a42b-def8-476c-9926-149e695ba32c";
-                kind = "github:issues";
-                position = 160;
-                github.authorMe = true;
-              };
-            };
-
             pins = {
               "Nix & NixOS" = {
                 id = "38e9bfa2-a183-424d-bf85-664e91829a46";
                 url = "https://search.nixos.org/options?channel=unstable&type=options";
-                position = 170;
+                position = 151;
+                editedTitle = true;
+              };
+            };
+          };
+          "Personal" = {
+            id = personalId;
+            position = 2000;
+
+            pins = {
+              "Email" = {
+                id = "9cbe689c-65f2-4400-a0ad-5efd052dad4b";
+                url = "https://mail.proton.me/u/1/inbox";
+                position = 251;
+                editedTitle = true;
+              };
+              "Whatsapp" = {
+                id = "e4067f49-45aa-4200-9468-97c7296154f4";
+                url = "https://web.whatsapp.com/";
+                position = 252;
+                editedTitle = true;
               };
             };
           };
@@ -138,7 +147,7 @@ _: {
             disabled = true;
           }
           {
-            id = "zen-copy_url";
+            id = "zen-copy-url";
             disabled = true;
           }
           {

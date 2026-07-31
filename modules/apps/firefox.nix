@@ -1,7 +1,7 @@
 _: {
   homeManager.ar175 = {
     programs.firefox = {
-      enable = true;
+      enable = false;
 
       profiles = {
         "dev-edition-default" = {

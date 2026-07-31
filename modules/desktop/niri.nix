@@ -36,7 +36,7 @@
             ];
 
             prefer-no-csd = true;
-            xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+            # xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
             input = {
               keyboard = {
@@ -110,7 +110,7 @@
                 "Mod+Ctrl+Up".move-window-up = _: {};
 
                 "Mod+Return".spawn = lib.getExe self'.packages.myFoot;
-                "Mod+D".spawn = "${lib.getExe self'.packages.myFuzzel}";
+                "Mod+D".spawn = ["${lib.getExe pkgs.rofi}" "-show" "drun"];
               }
               // (lib.listToAttrs (map (n: {
                 name = "Mod+${toString n}";

@@ -17,16 +17,15 @@ in {
 
     "general.autoScroll" = true;
     "general.smoothScroll.msdPhysics.enabled" = true;
-    "general.smoothScroll.currentVelocityWeighting" = "0.15";
-    "general.smoothScroll.stopDecelerationWeighting" = "0.6";
-    "mousewheel.min_line_scroll_amount" = 10;
-    "general.smoothScroll.mouseWheel.durationMinMS" = 80;
     "general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS" = 12;
     "general.smoothScroll.msdPhysics.motionBeginSpringConstant" = 600;
     "general.smoothScroll.msdPhysics.regularSpringConstant" = 650;
     "general.smoothScroll.msdPhysics.slowdownMinDeltaMS" = 25;
     "general.smoothScroll.msdPhysics.slowdownSpringConstant" = 250;
-    "mousewheel.default.delta_multiplier_y" = 200;
+    "general.smoothScroll.msdPhysics.slowdownMinDeltaRatio" = 2;
+    "general.smoothScroll.currentVelocityWeighting" = "1";
+    "general.smoothScroll.stopDecelerationWeighting" = "1";
+    "mousewheel.default.delta_multiplier_y" = 300;
 
     "media.cache_readahead_limit" = 3600;
     "media.cache_resume_threshold" = 1800;

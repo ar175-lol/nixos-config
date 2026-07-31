@@ -21,6 +21,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixcord.url = "github:FlameFlag/nixcord";
+
     mako-rs.url = "github:ar175-lol/mako-rs";
     battery-notifier.url = "github:ar175-lol/battery-notifier";
     rustbar.url = "github:ar175-lol/rustbar";

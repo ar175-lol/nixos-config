@@ -14,8 +14,11 @@ _: {
       ];
     };
 
-    programs.steam.enable = true;
+    environment.systemPackages = with pkgs.kdePackages; [
+      kdenlive
+    ];
 
+    programs.steam.enable = true;
     system.stateVersion = "26.05";
   };
 }
