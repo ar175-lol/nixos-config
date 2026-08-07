@@ -193,12 +193,12 @@ M = {
                   nixos = {
                     expr = string.format(
                       [[(let
-                        flake = builtins.getFlake "%s";
-                        pkgs = import flake.inputs.nixpkgs {};
+                        f = builtins.getFlake "%s";
+                        pkgs = import f.inputs.nixpkgs {};
                       in (pkgs.lib.evalModules {
-                        modules = (import "${flake.inputs.nixpkgs}/nixos/modules/module-list.nix") ++ [
+                        modules = (import (f.inputs.nixpkgs + "/nixos/modules/module-list.nix")) ++ [
                           ({ ... }: { nixpkgs.hostPlatform = builtins.currentSystem; })
-                      ];
+                        ];
                       }).options)]],
                       flake
                     ),
@@ -206,15 +206,16 @@ M = {
                   ["home-manager"] = {
                     expr = string.format(
                       [[(let
-                flake = builtins.getFlake "%s";
-                pkgs = import flake.inputs.nixpkgs {};
-                lib = import "${flake.inputs["home-manager"]}/modules/lib/stdlib-extended.nix" pkgs.lib;
-              in (lib.evalModules {
-                modules = (import "${flake.inputs["home-manager"]}/modules/modules.nix") {
-                  inherit lib pkgs;
-                  check = false;
-                };
-              }).options)]],
+                        f = builtins.getFlake "%s";
+                        pkgs = import f.inputs.nixpkgs {};
+                        hm = f.inputs.home-manager;
+                        lib = import (hm + "/modules/lib/stdlib-extended.nix") pkgs.lib;
+                      in (lib.evalModules {
+                        modules = (import (hm + "/modules/modules.nix")) {
+                          inherit lib pkgs;
+                          check = false;
+                        };
+                      }).options)]],
                       flake
                     ),
                   },

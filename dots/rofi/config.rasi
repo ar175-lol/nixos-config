@@ -23,6 +23,7 @@ configuration{
     kb-move-char-forward: "Control+f";
     kb-mode-complete: "Control+o";
 
+    // rofi freezing on dbus launch fix (disabling dbus launch lol)
     drun {
       DBusActivatable: false;
     }
