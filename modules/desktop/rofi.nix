@@ -1,6 +1,6 @@
 _: {
   homeManager.ar175 = {config, ...}: {
-    home.file.".config/rofi".source = config.lib.file.mkOutOfStoreSymlink "/home/ar175/nixos-config/modules/desktop/rofi";
+    home.file.".config/rofi".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/nixos-config/dots/rofi";
 
     xdg.desktopEntries = {
       rofi = {

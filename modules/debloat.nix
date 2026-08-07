@@ -1,4 +1,3 @@
-# Doing some shit here I guess...
 _: {
   nixos.desktop = {lib, ...}: {
     systemd = {

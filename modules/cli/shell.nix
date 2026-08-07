@@ -9,13 +9,7 @@
       users.users.ar175.shell = pkgs.${config.nixos.shell};
     };
   };
-  homeManager.ar175 = {
-    shell,
-    pkgs,
-    ...
-  }: {
-    home.packages = [pkgs.fastfetch];
-
+  homeManager.ar175 = {shell, ...}: {
     programs = {
       zsh = {
         enable = shell == "zsh";

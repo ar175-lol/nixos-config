@@ -6,12 +6,28 @@
   nixos.desktop = {
     pkgs,
     config,
+    lib,
     ...
   }: {
     programs.niri = {
       enable = true;
       package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri.override {
         hostName = config.networking.hostName;
+      };
+    };
+
+    environment.systemPackages = [pkgs.nautilus];
+
+    xdg.portal = {
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gnome
+      ];
+      config = {
+        niri = {
+          default = lib.mkForce ["gnome"];
+          "org.freedesktop.impl.portal.FileChooser" = ["gnome"];
+          "org.freedesktop.impl.portal.Inhibit" = lib.mkForce ["none"];
+        };
       };
     };
   };
@@ -36,7 +52,58 @@
             ];
 
             prefer-no-csd = true;
-            # xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+
+            animations = {
+              workspace-switch = {
+                spring = _: {
+                  props = {
+                    damping-ratio = 0.8;
+                    stiffness = 500;
+                    epsilon = 0.0001;
+                  };
+                };
+              };
+
+              window-movement = {
+                spring = _: {
+                  props = {
+                    damping-ratio = 0.8;
+                    stiffness = 500;
+                    epsilon = 0.0001;
+                  };
+                };
+              };
+
+              window-resize = {
+                spring = _: {
+                  props = {
+                    damping-ratio = 0.8;
+                    stiffness = 500;
+                    epsilon = 0.0001;
+                  };
+                };
+              };
+
+              overview-open-close = {
+                spring = _: {
+                  props = {
+                    damping-ratio = 0.8;
+                    stiffness = 500;
+                    epsilon = 0.0001;
+                  };
+                };
+              };
+
+              window-open = {
+                duration-ms = 200;
+                curve = "ease-out-expo";
+              };
+
+              window-close = {
+                duration-ms = 150;
+                curve = "ease-out-quad";
+              };
+            };
 
             input = {
               keyboard = {
@@ -44,7 +111,6 @@
                   layout = "us,ru";
                   options = "grp:alt_shift_toggle";
                 };
-                numlock = _: {};
               };
               touchpad = {
                 tap = _: {};
@@ -54,9 +120,15 @@
 
             layout = {
               focus-ring = {
-                width = 2.5;
+                width = 1;
                 active-color = "#c6a0f6";
                 inactive-color = "#494d64";
+              };
+
+              border = {
+                width = 1;
+                active-color = "#0DB7D455";
+                inactive-color = "#31313600";
               };
 
               shadow = {
@@ -71,7 +143,6 @@
                 };
                 color = "#181926";
               };
-              border = {off = _: {};};
               gaps = 9;
             };
 
@@ -90,27 +161,46 @@
               geometry-corner-radius = 12;
             };
 
+            window-rules = [
+              {
+                matches = [
+                  {is-focused = false;}
+                ];
+                shadow = {
+                  off = _: {};
+                };
+              }
+            ];
+
             binds =
               {
-                "Mod+Shift+S".screenshot = _: {};
-
                 "Mod+Left".focus-column-left = _: {};
                 "Mod+Right".focus-column-right = _: {};
                 "Mod+Up".focus-window-up = _: {};
                 "Mod+Down".focus-window-down = _: {};
+                "Mod+Ctrl+Left".move-column-left = _: {};
+                "Mod+Ctrl+Right".move-column-right = _: {};
+                "Mod+Ctrl+Down".move-window-down = _: {};
+                "Mod+Ctrl+Up".move-window-up = _: {};
+
+                "Mod+H".focus-column-left = _: {};
+                "Mod+L".focus-column-right = _: {};
+                "Mod+J".focus-window-up = _: {};
+                "Mod+K".focus-window-down = _: {};
+                "Mod+Ctrl+H".move-column-left = _: {};
+                "Mod+Ctrl+L".move-column-right = _: {};
+                "Mod+Ctrl+J".move-window-down = _: {};
+                "Mod+Ctrl+K".move-window-up = _: {};
 
                 "Mod+Space".toggle-window-floating = _: {};
                 "Mod+Q".close-window = _: {};
                 "Mod+F".maximize-column = _: {};
                 "Mod+Grave".toggle-overview = _: {};
 
-                "Mod+Ctrl+Left".move-column-left = _: {};
-                "Mod+Ctrl+Right".move-column-right = _: {};
-                "Mod+Ctrl+Down".move-window-down = _: {};
-                "Mod+Ctrl+Up".move-window-up = _: {};
-
                 "Mod+Return".spawn = lib.getExe self'.packages.myFoot;
                 "Mod+D".spawn = ["${lib.getExe pkgs.rofi}" "-show" "drun"];
+
+                "Mod+Shift+S".screenshot = _: {};
               }
               // (lib.listToAttrs (map (n: {
                 name = "Mod+${toString n}";

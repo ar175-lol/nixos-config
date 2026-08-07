@@ -7,10 +7,8 @@ _: {
         description = "ar175";
         extraGroups = [
           "wheel"
-          "networkmanager"
           "video"
           "audio"
-          "libvirtd"
           "input"
           "adbusers"
         ];

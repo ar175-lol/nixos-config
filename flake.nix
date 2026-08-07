@@ -14,7 +14,6 @@
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
-    git-hooks.url = "github:cachix/git-hooks.nix";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -25,8 +24,7 @@
 
     mako-rs.url = "github:ar175-lol/mako-rs";
     battery-notifier.url = "github:ar175-lol/battery-notifier";
-    rustbar.url = "github:ar175-lol/rustbar";
-
+    rustbar.url = "github:ar175-lol/oxidizedbar";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
   };
 

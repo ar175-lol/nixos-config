@@ -22,5 +22,9 @@ configuration{
     kb-remove-char-back: "BackSpace";
     kb-move-char-forward: "Control+f";
     kb-mode-complete: "Control+o";
+
+    drun {
+      DBusActivatable: false;
+    }
 }
 @theme "./tokyonight.rasi"

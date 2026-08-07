@@ -5,7 +5,6 @@ _: {
       flake = "/home/ar175/nixos-config";
       clean = {
         enable = true;
-        extraArgs = "--no-direnv --keep 5";
       };
     };
     home.packages = with pkgs; [

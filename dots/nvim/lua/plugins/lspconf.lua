@@ -182,23 +182,50 @@ M = {
                 command = { "alejandra" },
               },
               nixpkgs = {
-                expr = "import (builtins.getFlake (builtins.toString ./.)).inputs.nixpkgs {}",
+                expr = string.format(
+                  'import ((builtins.getFlake "%s").inputs.nixpkgs) {}',
+                  vim.fn.expand("~/nixos-config")
+                ),
               },
-              options = {
-                nixos = {
-                  expr = '(builtins.getFlake "/home/ar175/nixos-config").nixosConfigurations.victus.options',
-                },
-                ["home-manager"] = {
-                  expr =
-                  '(builtins.getFlake "/home/ar175/nixos-config").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []',
-                },
-                ["flake-parts"] = {
-                  expr = '(builtins.getFlake "/home/ar175/nixos-config").debug.options',
-                },
-                ["flake-parts-per-system"] = {
-                  expr = '(builtins.getFlake "/home/ar175/nixos-config").currentSystem.options',
-                },
-              },
+              options = (function()
+                local flake = vim.fn.expand("~/nixos-config")
+                return {
+                  nixos = {
+                    expr = string.format(
+                      [[(let
+                        flake = builtins.getFlake "%s";
+                        pkgs = import flake.inputs.nixpkgs {};
+                      in (pkgs.lib.evalModules {
+                        modules = (import "${flake.inputs.nixpkgs}/nixos/modules/module-list.nix") ++ [
+                          ({ ... }: { nixpkgs.hostPlatform = builtins.currentSystem; })
+                      ];
+                      }).options)]],
+                      flake
+                    ),
+                  },
+                  ["home-manager"] = {
+                    expr = string.format(
+                      [[(let
+                flake = builtins.getFlake "%s";
+                pkgs = import flake.inputs.nixpkgs {};
+                lib = import "${flake.inputs["home-manager"]}/modules/lib/stdlib-extended.nix" pkgs.lib;
+              in (lib.evalModules {
+                modules = (import "${flake.inputs["home-manager"]}/modules/modules.nix") {
+                  inherit lib pkgs;
+                  check = false;
+                };
+              }).options)]],
+                      flake
+                    ),
+                  },
+                  ["flake-parts"] = {
+                    expr = string.format('(builtins.getFlake "%s").debug.options', flake),
+                  },
+                  ["flake-parts-per-system"] = {
+                    expr = string.format('(builtins.getFlake "%s").currentSystem.options', flake),
+                  },
+                }
+              end)(),
             },
           },
         },
