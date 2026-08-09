@@ -4,8 +4,10 @@
 # https://flake-file.denful.dev/
 {
   outputs = inputs: import ./outputs.nix inputs;
-
   inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+
     battery-notifier.url = "github:ar175-lol/battery-notifier";
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
