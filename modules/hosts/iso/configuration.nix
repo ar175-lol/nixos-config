@@ -1,23 +1,29 @@
-{self, ...}: {
-  nixos.iso = {
-    lib,
-    pkgs,
-    ...
-  }: {
-    nixpkgs.hostPlatform = "x86_64-linux";
+{
+  mkModuleOption,
+  config,
+  self,
+  lib,
+  ...
+}: {
+  options.nixos.iso = mkModuleOption {
+    key = "iso";
+    static = {
+      imports = [
+        config.nixos.modules.bluetooth
+        config.nixos.modules.iwd
+      ];
+    };
+  };
 
+  config.nixos.iso = {pkgs, ...}: {
+    nixpkgs.hostPlatform = "x86_64-linux";
     hardware.enableRedistributableFirmware = true;
 
     fonts = {
-      packages = with pkgs; [
-        nerd-fonts.jetbrains-mono
-      ];
-
+      packages = with pkgs; [nerd-fonts.jetbrains-mono];
       fontconfig = {
         enable = true;
-        defaultFonts = {
-          monospace = ["JetBrainsMono Nerd Font"];
-        };
+        defaultFonts.monospace = ["JetBrainsMono Nerd Font"];
       };
     };
 
@@ -33,11 +39,9 @@
       };
       greetd = {
         enable = true;
-        settings = {
-          default_session = {
-            command = "${pkgs.dbus}/bin/dbus-run-session ${self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri}/bin/niri --session";
-            user = "nixos";
-          };
+        settings.default_session = {
+          command = "${pkgs.dbus}/bin/dbus-run-session ${self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri}/bin/niri --session";
+          user = "nixos";
         };
       };
       speechd.enable = false;
@@ -48,49 +52,16 @@
         enable = true;
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.myNiri;
       };
-
       fish.enable = true;
     };
 
     networking = {
-      useNetworkd = true;
-
       networkmanager.enable = lib.mkForce false;
-      dhcpcd.enable = false;
+      dhcpcd.enable = true;
       wireless.enable = lib.mkForce false;
-
-      wireless.iwd = {
-        enable = true;
-        settings = {
-          Network = {
-            EnableIPv6 = false;
-            NameResolvingService = "none";
-          };
-          General = {
-            EnableNetworkConfiguration = true;
-            AddressRandomization = "network";
-            AddressRandomizationRange = "full";
-            ManagementFrameProtection = "1";
-            ControlPortOverNL80211 = true;
-            DisableANQP = true;
-          };
-          Settings = {
-            AutoConnect = true;
-          };
-        };
-      };
     };
 
-    users.users.nixos = {
-      shell = pkgs.fish;
-    };
-
-    systemd.network.networks."10-ethernet-dhcp" = {
-      matchConfig.Name = "en* eth*";
-      networkConfig = {
-        DHCP = "ipv4";
-      };
-    };
+    users.users.nixos.shell = pkgs.fish;
 
     boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod_latest;
 
@@ -99,17 +70,15 @@
       arch-install-scripts
       testdisk
       ddrescue
-
       chntpw
       ms-sys
-
       firefox
     ];
 
     nix.settings.experimental-features = ["nix-command" "flakes"];
   };
 
-  homeManager.nixos = {
+  config.homeManager.nixos = {
     inputs,
     pkgs,
     ...
@@ -134,7 +103,7 @@
     ];
 
     xdg.configFile."nvim" = {
-      source = ../../../dots/nvim/.;
+      source = ../../../dots/nvim;
       recursive = true;
     };
 

@@ -28,6 +28,11 @@
         default = {};
       };
 
+      # modules = lib.mkOption {
+      #   type = lib.types.attrsOf lib.types.deferredModule;
+      #   default = {};
+      # };
+
       laptop = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};

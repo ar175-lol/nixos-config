@@ -1,5 +1,7 @@
-_: {
-  nixos.laptop = {
+{mkModuleOption, ...}: {
+  options.nixos.modules.bluetooth = mkModuleOption {key = "bluetooth";};
+
+  config.nixos.modules.bluetooth = {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
@@ -9,9 +11,7 @@ _: {
           FastConnectable = true;
           KernelExperimental = true;
         };
-        Policy = {
-          AutoEnable = true;
-        };
+        Policy.AutoEnable = true;
       };
     };
   };

@@ -1,10 +1,17 @@
 {
+  mkModuleOption,
   config,
-  lib,
   ...
 }: {
-  config.nixos.laptop = lib.mkMerge [
-    config.nixos.desktop
-    config.nixos.base
-  ];
+  options.nixos.laptop = mkModuleOption {
+    key = "laptop";
+    static = {
+      imports = [
+        config.nixos.modules.bluetooth
+        config.nixos.modules.iwd
+        config.nixos.desktop
+        config.nixos.base
+      ];
+    };
+  };
 }
