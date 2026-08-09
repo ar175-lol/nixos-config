@@ -34,9 +34,9 @@
         };
 
         shellAliases = {
-          nxr = "git add . && nh os switch";
-          nxru = "git add . && nh os switch --update";
-          ncg = "nh clean all";
+          sync = "nix run .#write-flake && git add . && nh os switch";
+          update = "nix run .#write-flake && git add . && nh os switch --update";
+          clean = "nh clean all";
         };
 
         initContent = ''
