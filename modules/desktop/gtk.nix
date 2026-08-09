@@ -20,13 +20,13 @@ _: {
     };
   in {
     home.sessionVariables = {
-      GTK_THEME = "Tokyonight-Dark";
+      GTK_THEME = "adw-gtk3-dark";
     };
 
     dconf.settings = {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
-        gtk-theme = "Tokyonight-Dark";
+        gtk-theme = "adw-gtk3-dark";
         icon-theme = "TokyoNight-SE";
       };
     };
@@ -35,8 +35,8 @@ _: {
       enable = true;
 
       theme = {
-        name = "Tokyonight-Dark";
-        package = pkgs.tokyonight-gtk-theme;
+        name = "adw-gtk3-dark";
+        package = pkgs.adw-gtk3;
       };
 
       iconTheme = {

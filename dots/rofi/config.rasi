@@ -1,14 +1,13 @@
 configuration{
     modi: ["drun", "window", "run"];
     show-icons: true;
-    terminal: "foot";
+    terminal: "foot"; /* oops it is broken cuz i am using wrapper modules xDDD */
     drun-display-format: "{icon} {name}";
     location: 0;
     disable-history: false;
     sidebar-mode: false;
-    display-drun: " ";
-    display-run: " ";
-    display-window: " ";
+    display-drun: "Launch: ";
+    display-run: "Exec: ";
     
     kb-row-up: "Up,Control+k";
     kb-row-left: "Left,Control+h";

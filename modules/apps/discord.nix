@@ -1,4 +1,6 @@
-_: {
+{...}: {
+  flake-file.inputs.nixcord.url = "github:FlameFlag/nixcord";
+
   homeManager.ar175 = {inputs, ...}: {
     imports = [inputs.nixcord.homeModules.default];
     programs.nixcord = {

@@ -1,5 +1,8 @@
 {
   "extras": [
+    "lazyvim.plugins.extras.coding.mini-surround",
+    "lazyvim.plugins.extras.coding.yanky",
+    "lazyvim.plugins.extras.editor.outline",
     "lazyvim.plugins.extras.lang.nix"
   ],
   "install_version": 8,

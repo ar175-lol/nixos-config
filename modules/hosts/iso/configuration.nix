@@ -73,6 +73,7 @@
       chntpw
       ms-sys
       firefox
+      calamares-nixos
     ];
 
     nix.settings.experimental-features = ["nix-command" "flakes"];

@@ -28,7 +28,7 @@ window {
     location: center;
     anchor: center;
     transparency: "screenshot";
-    border-color: @transparent;   
+    border-color: @transparent;
     border: 0px;
     border-radius: 6px;
     spacing: 0;
@@ -37,7 +37,6 @@ window {
 
 mainbox {
     spacing: 0;
-    children: [ inputbar, message, listview ];
 }
 
 inputbar {
@@ -69,7 +68,6 @@ prompt {
 
 listview {
     layout: vertical;
-    //spacing: 5px;
     padding: 8px;
     lines: 7;
     columns: 2;

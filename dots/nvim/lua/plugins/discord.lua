@@ -1,6 +1,6 @@
 return {
   "vyfor/cord.nvim",
-  build = "./build", -- Compares and builds the native binary automatically
+  build = './gradlew linkReleaseSharedNative --no-daemon --no-build-cache',
   event = "VeryLazy",
-  opts = {},         -- Leave empty for default settings, or add custom configuration here
+  opts = {}, -- Leave empty for default settings, or add custom configuration here
 }

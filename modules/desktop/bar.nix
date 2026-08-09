@@ -1,4 +1,10 @@
-{lib, ...}: {
+{
+  lib,
+  inputs,
+  ...
+}: {
+  flake-file.inputs.rustbar.url = "github:ar175-lol/oxidizedbar";
+
   homeManager.ar175 = {inputs, ...}: {
     imports = [inputs.rustbar.homeModules.default];
 
