@@ -12,10 +12,11 @@
         network.nm
         network.firewall
         desktop.plasma
-        desktop.fonts # Does my friend wants jetbrains mono nf? probably yeah...
+        desktop.fonts
         desktop.audio
         boot.grub
-        locale.kirk
+        locale.dkirk
+        users.kirk
         base
       ];
     };

@@ -34,6 +34,10 @@
         type = lib.types.deferredModule;
         default = {};
       };
+      pc = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = {};
+      };
 
       configurations = lib.mkOption {
         type = lib.types.attrsOf (lib.types.submodule {

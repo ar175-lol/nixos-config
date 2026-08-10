@@ -1,8 +1,12 @@
 _: {
-  homeManager.kirk = {pkgs, ...}: {
+  homeManager.kirk = {
+    pkgs,
+    lib,
+    ...
+  }: {
     home = {
-      username = "kirk";
-      homeDirectory = "/home/kirk";
+      username = lib.mkForce "kirk";
+      homeDirectory = lib.mkForce "/home/kirk";
       stateVersion = "26.11";
 
       packages = [pkgs.telegram-desktop];

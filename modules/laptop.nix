@@ -18,6 +18,7 @@
         locale.ar175
         apps.obs
         apps.yazi
+        users.ar175
         base
         debloat
       ];

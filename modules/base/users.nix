@@ -6,13 +6,14 @@
 
   config.nixos.users = {
     ar175 = _: {
-      users.users.ar175 = {
-        isNormalUser = true;
+      config.users.users.ar175 = {
+        isNormalUser = true; # HELP ME WHY IS IT BREAKS????????
         hashedPassword = "$6$4ObEABrHkyfFS35K$DkgMD.MLEY7N0FQehWWlJBvrFlmZS9kX3cNQ1L6Gok0VAsMFrRhdX1PoBgV7uC0NFzmzyZAQ2u6PW4jPSZV5M.";
         description = "ar175";
         extraGroups = ["wheel" "video" "audio" "input" "adbusers"];
       };
-      security = {
+
+      config.security = {
         sudo.enable = false;
         doas = {
           enable = true;
@@ -30,8 +31,9 @@
     };
 
     kirk = _: {
-      users.users.kirk = {
+      config.users.users.kirk = {
         isNormalUser = true;
+        hashedPassword = "$6$kbiOzcmbb755xoLr$eGNZKNOFh9P0.knRyQj72eT2HxLgx9VROYeyjgQXSP0hx1RXcMx9Fvmde0ubFOQrOt3HS3eDM8EOcG1JoPXwm0";
         description = "kirk";
         extraGroups = ["wheel" "video" "audio" "input" "adbusers"];
       };
