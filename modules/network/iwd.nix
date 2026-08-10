@@ -1,4 +1,8 @@
-{mkModuleOption, ...}: {
+{
+  mkModuleOption,
+  lib,
+  ...
+}: {
   options.nixos.network.iwd = mkModuleOption {key = "iwd";};
 
   config.nixos.network.iwd = {
@@ -25,7 +29,7 @@
           Settings.AutoConnect = true;
         };
       };
-      dhcpcd.enable = false;
+      dhcpcd.enable = lib.mkDefault false;
       networkmanager.enable = false;
     };
   };

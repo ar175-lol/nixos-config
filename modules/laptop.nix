@@ -15,7 +15,7 @@
         desktop.fonts
         desktop.audio
         boot.limine
-        locale.ar175
+        locale.victus
         apps.obs
         apps.yazi
         users.ar175

@@ -50,9 +50,8 @@ _: let
     };
   };
 in {
-  nixos.base = {pkgs, ...}: {
+  nixos.base = {
     programs.zsh.enable = true;
-    users.users.ar175.shell = pkgs.zsh;
   };
 
   nixos.kirk = {pkgs, ...}: {
