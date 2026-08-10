@@ -20,6 +20,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
     rustbar.url = "github:ar175-lol/oxidizedbar";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
