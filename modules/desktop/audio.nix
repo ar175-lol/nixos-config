@@ -1,5 +1,5 @@
 {mkModuleOption, ...}: {
-  options.nixos.desktop.audio = mkModuleOption {key = "fonts";};
+  options.nixos.desktop.audio = mkModuleOption {key = "audio";};
   config.nixos.desktop.audio = _: {
     security.rtkit.enable = true;
 
