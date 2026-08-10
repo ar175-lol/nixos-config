@@ -3,17 +3,17 @@
   config,
   ...
 }: {
-  options.nixos.laptop = mkModuleOption {
-    key = "laptop";
+  options.nixos.pc = mkModuleOption {
+    key = "pc";
     static = {
       imports = with config.nixos; [
+        hardware.amd
         modules.bluetooth
-        network.iwd
-        network.dnscrypt
+        network.nm
         network.firewall
-        desktop.niri
-        boot.limine
-        locale.ar175
+        desktop.plasma
+        boot.grub
+        locale.kirk
         base
       ];
     };

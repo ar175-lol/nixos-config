@@ -1,11 +1,14 @@
 {
+  mkModuleOption,
   self,
   inputs,
   ...
 }: {
   flake-file.inputs.wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
 
-  nixos.desktop = {
+  options.nixos.desktop.niri = mkModuleOption {key = "niri";};
+
+  config.nixos.desktop.niri = {
     pkgs,
     config,
     lib,
@@ -21,15 +24,11 @@
     environment.systemPackages = [pkgs.nautilus];
 
     xdg.portal = {
-      extraPortals = [
-        pkgs.xdg-desktop-portal-gnome
-      ];
-      config = {
-        niri = {
-          default = lib.mkForce ["gnome"];
-          "org.freedesktop.impl.portal.FileChooser" = ["gnome"];
-          "org.freedesktop.impl.portal.Inhibit" = lib.mkForce ["none"];
-        };
+      extraPortals = [pkgs.xdg-desktop-portal-gnome];
+      config.niri = {
+        default = lib.mkForce ["gnome"];
+        "org.freedesktop.impl.portal.FileChooser" = ["gnome"];
+        "org.freedesktop.impl.portal.Inhibit" = lib.mkForce ["none"];
       };
     };
   };
@@ -46,61 +45,44 @@
         settings =
           {
             spawn-at-startup = [
-              [
-                "${lib.getExe pkgs.swaybg}"
-                "-i"
-                "${./assets/wall1.jpg}"
-              ]
+              ["${lib.getExe pkgs.swaybg}" "-i" "${./assets/wall1.jpg}"]
             ];
 
             prefer-no-csd = true;
 
             animations = {
-              workspace-switch = {
-                spring = _: {
-                  props = {
-                    damping-ratio = 0.8;
-                    stiffness = 500;
-                    epsilon = 0.0001;
-                  };
+              workspace-switch.spring = _: {
+                props = {
+                  damping-ratio = 0.8;
+                  stiffness = 500;
+                  epsilon = 0.0001;
                 };
               };
-
-              window-movement = {
-                spring = _: {
-                  props = {
-                    damping-ratio = 0.8;
-                    stiffness = 500;
-                    epsilon = 0.0001;
-                  };
+              window-movement.spring = _: {
+                props = {
+                  damping-ratio = 0.8;
+                  stiffness = 500;
+                  epsilon = 0.0001;
                 };
               };
-
-              window-resize = {
-                spring = _: {
-                  props = {
-                    damping-ratio = 0.8;
-                    stiffness = 500;
-                    epsilon = 0.0001;
-                  };
+              window-resize.spring = _: {
+                props = {
+                  damping-ratio = 0.8;
+                  stiffness = 500;
+                  epsilon = 0.0001;
                 };
               };
-
-              overview-open-close = {
-                spring = _: {
-                  props = {
-                    damping-ratio = 0.8;
-                    stiffness = 500;
-                    epsilon = 0.0001;
-                  };
+              overview-open-close.spring = _: {
+                props = {
+                  damping-ratio = 0.8;
+                  stiffness = 500;
+                  epsilon = 0.0001;
                 };
               };
-
               window-open = {
                 duration-ms = 200;
                 curve = "ease-out-expo";
               };
-
               window-close = {
                 duration-ms = 150;
                 curve = "ease-out-quad";
@@ -108,11 +90,9 @@
             };
 
             input = {
-              keyboard = {
-                xkb = {
-                  layout = "us,ru";
-                  options = "grp:alt_shift_toggle";
-                };
+              keyboard.xkb = {
+                layout = "us,ru";
+                options = "grp:alt_shift_toggle";
               };
               touchpad = {
                 tap = _: {};
@@ -126,13 +106,11 @@
                 active-color = "#c6a0f6";
                 inactive-color = "#494d64";
               };
-
               border = {
                 width = 1;
                 active-color = "#0DB7D455";
                 inactive-color = "#31313600";
               };
-
               shadow = {
                 on = _: {};
                 softness = 30;
@@ -149,7 +127,6 @@
             };
 
             screenshot-path = null;
-
             gestures.hot-corners = {off = _: {};};
 
             cursor = {
@@ -162,15 +139,10 @@
               clip-to-geometry = true;
               geometry-corner-radius = 12;
             };
-
             window-rules = [
               {
-                matches = [
-                  {is-focused = false;}
-                ];
-                shadow = {
-                  off = _: {};
-                };
+                matches = [{is-focused = false;}];
+                shadow.off = _: {};
               }
             ];
 
@@ -193,7 +165,6 @@
                 "Mod+Ctrl+L".move-column-right = _: {};
                 "Mod+Ctrl+J".move-window-down = _: {};
                 "Mod+Ctrl+K".move-window-up = _: {};
-
                 "Mod+Space".toggle-window-floating = _: {};
                 "Mod+Q".close-window = _: {};
                 "Mod+F".maximize-column = _: {};

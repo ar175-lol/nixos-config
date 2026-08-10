@@ -1,83 +1,77 @@
-{config, ...}: {
-  nixos = {
-    shell = "zsh";
+_: let
+  zsh = shellAliases: {
+    programs.zsh = {
+      enable = true;
+      syntaxHighlighting.enable = true;
 
-    base = {pkgs, ...}: {
-      programs.zsh.enable = config.nixos.shell == "zsh";
-      programs.fish.enable = config.nixos.shell == "fish";
+      autosuggestion = {
+        enable = true;
+        strategy = ["history" "completion"];
+      };
 
-      users.users.ar175.shell = pkgs.${config.nixos.shell};
+      history = {
+        size = 101;
+        ignoreAllDups = true;
+        ignoreSpace = true;
+        ignorePatterns = ["* rm *" "* pkill *" "* cat *" "* grep *" "* cd *" "direnv *" "* journalctl *" "* ls *" "/*"];
+      };
+
+      historySubstringSearch = {
+        enable = true;
+        searchUpKey = "^[[A";
+        searchDownKey = "^[[B";
+      };
+
+      inherit shellAliases;
+
+      initContent = ''
+        autoload -Uz compinit && compinit -C
+        export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=25
+        export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+        bindkey '^H' backward-kill-word
+        bindkey "^[[1;5D" backward-word
+        bindkey "^[[1;5C" forward-word
+
+        accept-line() {
+          {
+            unfunction _al_f_
+            functions[_al_f_]=$BUFFER
+          } 2> /dev/null
+          if (( $+functions[_al_f_] )); then
+            zle .$WIDGET
+          else
+            zle beep
+            zle -M "Command unfinished or invalid."
+          fi
+        }
+        zle -N accept-line
+      '';
     };
   };
-  homeManager.ar175 = {shell, ...}: {
-    programs = {
-      zsh = {
-        enable = shell == "zsh";
-        syntaxHighlighting.enable = true;
+in {
+  nixos.base = {pkgs, ...}: {
+    programs.zsh.enable = true;
+    users.users.ar175.shell = pkgs.zsh;
+  };
 
-        autosuggestion = {
-          enable = true;
-          strategy = ["history" "completion"];
-        };
+  nixos.kirk = {pkgs, ...}: {
+    programs.fish.enable = true;
+    users.users.kirk.shell = pkgs.fish;
+  };
 
-        history = {
-          size = 101;
-          ignoreAllDups = true;
-          ignoreSpace = true;
-          ignorePatterns = ["* rm *" "* pkill *" "* cat *" "* grep *" "* cd *" "direnv *" "* journalctl *" "* ls *" "/*"];
-        };
+  homeManager.ar175 = zsh {
+    sync = "nix run .#write-flake && git add . && nh os switch";
+    update = "nix run .#write-flake && git add . && nh os switch --update";
+    clean = "nh clean all";
+  };
 
-        historySubstringSearch = {
-          enable = true;
-          searchUpKey = "^[[A";
-          searchDownKey = "^[[B";
-        };
-
-        shellAliases = {
-          sync = "nix run .#write-flake && git add . && nh os switch";
-          update = "nix run .#write-flake && git add . && nh os switch --update";
-          clean = "nh clean all";
-        };
-
-        initContent = ''
-          autoload -Uz compinit && compinit -C
-          export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=25
-          export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
-
-          bindkey '^H' backward-kill-word
-          bindkey "^[[1;5D" backward-word
-          bindkey "^[[1;5C" forward-word
-
-          accept-line() {
-            {
-              unfunction _al_f_
-              functions[_al_f_]=$BUFFER
-            } 2> /dev/null
-            if (( $+functions[_al_f_] )); then
-              zle .$WIDGET
-            else
-              zle beep
-              zle -M "Command unfinished or invalid."
-            fi
-          }
-          zle -N accept-line
-        '';
-      };
-
-      # ===========================================================================
-
-      fish = {
-        enable = shell == "fish";
-
-        shellAbbrs = {
-          nxr = "git add . && nh os switch";
-          uxru = "git add . && nh os switch --update";
-        };
-
-        interactiveShellInit = ''
-          set fish_greeting
-        '';
-      };
+  homeManager.kirk = {
+    programs.fish = {
+      enable = true;
+      interactiveShellInit = ''
+        set fish_greeting
+      '';
     };
   };
 }

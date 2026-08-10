@@ -8,7 +8,7 @@
 Just get the NixOS ISO, do the basics (formatting disks, mounting root to `/mnt`, and boot to `/mnt/boot`). 
 
 ```bash
-git clone https://github.com/ar175-lol/nixos-config.git) /mnt/etc/nixos
+git clone https://github.com/ar175-lol/nixos-config.git /mnt/etc/nixos
 cd /mnt/etc/nixos
 nixos-generate-config --root /mnt
 
@@ -20,3 +20,5 @@ sudo nixos-install --root /mnt --flake .#victus --experimental-features "nix-com
 > Otherwise your boot is **cooked**.
 
 No screenshots, because I am **lazy**. 
+
+<!-->Managed to write README, yay!!!<!-->

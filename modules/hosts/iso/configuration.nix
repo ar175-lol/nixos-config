@@ -10,7 +10,7 @@
     static = {
       imports = [
         config.nixos.modules.bluetooth
-        config.nixos.modules.iwd
+        config.nixos.network.iwd
       ];
     };
   };

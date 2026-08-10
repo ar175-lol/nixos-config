@@ -3,11 +3,10 @@
   inputs,
   ...
 }: {
-  nixos.configurations.victus = {
+  nixos.configurations.dkirk = {
     modules = [
-      config.nixos.victus
-      config.nixos.laptop
-
+      config.nixos.pc
+      config.nixos.kirk
       inputs.home-manager.nixosModules.default
 
       {
@@ -16,7 +15,7 @@
           useUserPackages = true;
           extraSpecialArgs = {inherit inputs;};
           backupFileExtension = "backup";
-          users.ar175 = config.homeManager.ar175;
+          users.kirk = config.homeManager.kirk; # TODO: split user configs between machines
         };
       }
     ];
