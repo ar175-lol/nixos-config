@@ -1,5 +1,6 @@
-_: {
-  nixos.desktop = {lib, ...}: {
+{mkModuleOption, ...}: {
+  options.nixos.debloat = mkModuleOption {key = "debloat";};
+  config.nixos.debloat = {lib, ...}: {
     systemd = {
       services = {
         ModemManager = {

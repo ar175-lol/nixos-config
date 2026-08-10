@@ -12,9 +12,14 @@
         network.dnscrypt
         network.firewall
         desktop.niri
+        desktop.fonts
+        desktop.audio
         boot.limine
         locale.ar175
+        apps.obs
+        apps.yazi
         base
+        debloat
       ];
     };
   };

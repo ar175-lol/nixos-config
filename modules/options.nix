@@ -16,11 +16,6 @@
         default = {};
       };
 
-      desktop = lib.mkOption {
-        type = lib.types.deferredModule;
-        default = {};
-      };
-
       victus = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};

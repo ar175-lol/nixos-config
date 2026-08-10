@@ -1,5 +1,5 @@
 _: {
-  nixos.desktop = {pkgs, ...}: {
+  nixos.desktop.niri = {pkgs, ...}: {
     console.useXkbConfig = false;
 
     services = {
