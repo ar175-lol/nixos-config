@@ -13,7 +13,6 @@ _: let
         size = 101;
         ignoreAllDups = true;
         ignoreSpace = true;
-        ignorePatterns = ["* rm *" "* pkill *" "* cat *" "* grep *" "* cd *" "direnv *" "* journalctl *" "* ls *" "/*"];
       };
 
       historySubstringSearch = {
@@ -50,15 +49,6 @@ _: let
     };
   };
 in {
-  nixos.base = {
-    programs.zsh.enable = true;
-  };
-
-  nixos.kirk = {pkgs, ...}: {
-    programs.fish.enable = true;
-    users.users.kirk.shell = pkgs.fish;
-  };
-
   homeManager.ar175 = zsh {
     sync = "nix run .#write-flake && git add . && nh os switch";
     update = "nix run .#write-flake && git add . && nh os switch --update";
