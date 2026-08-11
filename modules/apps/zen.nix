@@ -12,15 +12,6 @@ _: {
     pkgs,
     ...
   }: let
-    mkRouting = {
-      url,
-      openIn,
-    }: {
-      reference = url;
-      matchType = "contains";
-      inherit openIn;
-    };
-
     workId = "3e94141e-d73f-44b4-8f28-ac5199d2399c";
     personalId = "534e746a-898e-4284-b874-6c32a5813640";
   in {
@@ -92,19 +83,6 @@ _: {
             url = "https://github.com";
             position = 2;
             isEssential = true;
-          };
-        };
-
-        spaceRouting = {
-          routes = {
-            "github.com" = mkRouting {
-              url = "github.com";
-              openIn = workId;
-            };
-            "gitlab.com" = mkRouting {
-              url = "gitlab.com";
-              openIn = workId;
-            };
           };
         };
 

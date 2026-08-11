@@ -17,10 +17,9 @@ _: {
         '';
       }
     ];
-
     warnings = lib.flatten [
       (lib.optional
-        (!config.networking.wireless.iwd.enable)
+        (config.networking.hostName == "victus" && !config.networking.wireless.iwd.enable)
         "iwd is disabled. You may lose wireless connectivity.")
     ];
   };

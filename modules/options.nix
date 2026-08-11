@@ -5,20 +5,22 @@
   ...
 }: {
   options = {
-    homeManager.ar175 = lib.mkOption {type = lib.types.deferredModule;};
-    homeManager.nixos = lib.mkOption {type = lib.types.deferredModule;};
+    homeManager = {
+      kirk = lib.mkOption {type = lib.types.deferredModule;};
+      ar175 = lib.mkOption {type = lib.types.deferredModule;};
+      nixos = lib.mkOption {type = lib.types.deferredModule;};
+    };
     nixos = {
       base = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};
       };
 
-      desktop = lib.mkOption {
+      victus = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};
       };
-
-      victus = lib.mkOption {
+      kirk = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};
       };
@@ -28,18 +30,13 @@
         default = {};
       };
 
-      # modules = lib.mkOption {
-      #   type = lib.types.attrsOf lib.types.deferredModule;
-      #   default = {};
-      # };
-
       laptop = lib.mkOption {
         type = lib.types.deferredModule;
         default = {};
       };
-
-      shell = lib.mkOption {
-        type = lib.types.enum ["zsh" "fish"];
+      pc = lib.mkOption {
+        type = lib.types.deferredModule;
+        default = {};
       };
 
       configurations = lib.mkOption {

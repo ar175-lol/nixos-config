@@ -6,6 +6,10 @@ _: {
   }: {
     services.xserver.videoDrivers = ["nvidia"];
 
+    boot.kernelParams = [
+      "nvidia-drm.modeset=1"
+    ];
+
     hardware = {
       nvidia = {
         package = config.boot.kernelPackages.nvidiaPackages.latest;

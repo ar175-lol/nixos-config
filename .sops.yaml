@@ -1,0 +1,13 @@
+keys:
+  - &victus age1mnzyhm83j2taen5k795jytdcjq99urtgc4fzr6e9unw5xdc4s4rsw8efzc
+  # - &dkirk  REPLACE ME!
+  - &ar175  age1mnzyhm83j2taen5k795jytdcjq99urtgc4fzr6e9unw5xdc4s4rsw8efzc
+
+creation_rules:
+  - path_regex: secrets/secrets\.yaml$
+    key_groups:
+      - pgp: []
+        age:
+          - *victus
+          # - *dkirk
+          - *ar175

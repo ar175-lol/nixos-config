@@ -23,6 +23,7 @@ _: {
           "kernel"
           "packages"
           "wm"
+          "memory"
           "disk"
         ];
       };

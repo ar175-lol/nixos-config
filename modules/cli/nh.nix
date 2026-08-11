@@ -1,8 +1,12 @@
 _: {
-  homeManager.ar175 = {pkgs, ...}: {
+  homeManager.ar175 = {
+    pkgs,
+    config,
+    ...
+  }: {
     programs.nh = {
       enable = true;
-      flake = "/home/ar175/nixos-config";
+      flake = "${config.home.homeDirectory}/nixos-config";
       clean = {
         enable = true;
       };
