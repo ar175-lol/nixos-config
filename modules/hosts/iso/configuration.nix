@@ -103,11 +103,6 @@
       fd
     ];
 
-    xdg.configFile."nvim" = {
-      source = ../../../dots/nvim;
-      recursive = true;
-    };
-
     programs.rustbar.enable = true;
   };
 }

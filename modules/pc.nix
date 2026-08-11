@@ -18,6 +18,7 @@
         locale.dkirk
         users.kirk
         base
+        # You know, my friend? Fuck you, sit with bloated systemd.
       ];
     };
   };
