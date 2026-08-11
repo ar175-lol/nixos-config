@@ -7,25 +7,27 @@ _: {
     vim = pkgs.vimPlugins;
 
     toLua = v:
-      if builtins.isNull v then
-        "nil"
-      else if builtins.isBool v then
-        (if v then "true" else "false")
-      else if builtins.isInt v then
-        toString v
-      else if builtins.isFloat v then
-        toString v
-      else if builtins.isString v then
-        ''"${lib.replaceStrings ["\\" "\"" "\n"] ["\\\\" "\\\"" "\\n"] v}"''
-      else if builtins.isList v then
-        "{ ${lib.concatMapStringsSep ", " toLua v} }"
-      else if builtins.isAttrs v then
-        if v ? __raw then
-          v.__raw
-        else
-          "{ ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: val: "${luaKey k} = ${toLua val}") v)} }"
-      else
-        throw "toLua: unsupported type ${builtins.typeOf v}";
+      if isNull v
+      then "nil"
+      else if builtins.isBool v
+      then
+        (
+          if v
+          then "true"
+          else "false"
+        )
+      else if builtins.isInt v
+      then toString v
+      else if builtins.isFloat v
+      then toString v
+      else if builtins.isString v
+      then ''"${lib.replaceStrings ["\\" "\"" "\n"] ["\\\\" "\\\"" "\\n"] v}"''
+      else if builtins.isList v
+      then "{ ${lib.concatMapStringsSep ", " toLua v} }"
+      else if builtins.isAttrs v
+      then v.__raw
+        or "{ ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: val: "${luaKey k} = ${toLua val}") v)} }"
+      else throw "toLua: unsupported type ${builtins.typeOf v}";
 
     luaKey = k:
       if builtins.match "^[A-Za-z_][A-Za-z0-9_]*$" k != null
@@ -33,26 +35,21 @@ _: {
       else ''["${lib.replaceStrings ["\\" "\"" "\n"] ["\\\\" "\\\"" "\\n"] k}"]'';
 
     genOption = o:
-      if o ? append then
-        "vim.opt.${o.name}:append(${toLua o.value})"
-      else
-        "vim.opt.${o.name} = ${toLua o.value}";
+      if o ? append
+      then "vim.opt.${o.name}:append(${toLua o.value})"
+      else "vim.opt.${o.name} = ${toLua o.value}";
 
     genGlobal = name: value: "vim.g.${name} = ${toLua value}";
 
     genKeymap = k: let
-      opts = (k.opts or {}) // lib.optionalAttrs (k ? desc) {desc = k.desc;};
-    in
-      "vim.keymap.set(${toLua k.mode}, ${toLua k.lhs}, ${toLua k.rhs}, ${toLua opts})";
+      opts = (k.opts or {}) // lib.optionalAttrs (k ? desc) {inherit (k) desc;};
+    in "vim.keymap.set(${toLua k.mode}, ${toLua k.lhs}, ${toLua k.rhs}, ${toLua opts})";
 
-    genAutocmd = a:
-      "vim.api.nvim_create_autocmd(${toLua a.event}, ${toLua (lib.removeAttrs a ["event"])})";
+    genAutocmd = a: "vim.api.nvim_create_autocmd(${toLua a.event}, ${toLua (lib.removeAttrs a ["event"])})";
 
-    genCall = c:
-      "vim.${c.fn}(${lib.concatMapStringsSep ", " toLua c.args})";
+    genCall = c: "vim.${c.fn}(${lib.concatMapStringsSep ", " toLua c.args})";
 
-    genPlugin = p:
-      "require(${toLua p.module}).${p.call or "setup"}(${toLua (p.config or {})})";
+    genPlugin = p: "require(${toLua p.module}).${p.call or "setup"}(${toLua (p.config or {})})";
 
     genLspAttach = keymaps: ''
       vim.api.nvim_create_autocmd("LspAttach", {
@@ -71,67 +68,250 @@ _: {
     };
 
     options = [
-      {name = "number"; value = true;}
-      {name = "relativenumber"; value = true;}
-      {name = "signcolumn"; value = "yes";}
-      {name = "termguicolors"; value = true;}
-      {name = "cursorline"; value = true;}
-      {name = "expandtab"; value = true;}
-      {name = "shiftwidth"; value = 2;}
-      {name = "softtabstop"; value = 2;}
-      {name = "tabstop"; value = 2;}
-      {name = "ignorecase"; value = true;}
-      {name = "smartcase"; value = true;}
-      {name = "smartindent"; value = true;}
-      {name = "scrolloff"; value = 8;}
-      {name = "splitright"; value = true;}
-      {name = "splitbelow"; value = true;}
-      {name = "updatetime"; value = 300;}
-      {name = "undofile"; value = true;}
-      {name = "mouse"; value = "a";}
-      {name = "termsync"; value = false;}
-      {name = "completeopt"; value = "menu,menuone,noselect";}
-      {name = "pumheight"; value = 10;}
-      {name = "laststatus"; value = 2;}
-      {name = "sessionoptions"; value = "blank,curdir,help,tabpages,winsize";}
-      {name = "backup"; value = false;}
-      {name = "writebackup"; value = false;}
-      {name = "wrap"; value = false;}
-      {name = "clipboard"; value = "unnamedplus"; append = true;}
+      {
+        name = "number";
+        value = true;
+      }
+      {
+        name = "relativenumber";
+        value = true;
+      }
+      {
+        name = "signcolumn";
+        value = "yes";
+      }
+      {
+        name = "termguicolors";
+        value = true;
+      }
+      {
+        name = "cursorline";
+        value = true;
+      }
+      {
+        name = "expandtab";
+        value = true;
+      }
+      {
+        name = "shiftwidth";
+        value = 2;
+      }
+      {
+        name = "softtabstop";
+        value = 2;
+      }
+      {
+        name = "tabstop";
+        value = 2;
+      }
+      {
+        name = "ignorecase";
+        value = true;
+      }
+      {
+        name = "smartcase";
+        value = true;
+      }
+      {
+        name = "smartindent";
+        value = true;
+      }
+      {
+        name = "scrolloff";
+        value = 8;
+      }
+      {
+        name = "splitright";
+        value = true;
+      }
+      {
+        name = "splitbelow";
+        value = true;
+      }
+      {
+        name = "updatetime";
+        value = 300;
+      }
+      {
+        name = "undofile";
+        value = true;
+      }
+      {
+        name = "mouse";
+        value = "a";
+      }
+      {
+        name = "termsync";
+        value = false;
+      }
+      {
+        name = "completeopt";
+        value = "menu,menuone,noselect";
+      }
+      {
+        name = "pumheight";
+        value = 10;
+      }
+      {
+        name = "laststatus";
+        value = 2;
+      }
+      {
+        name = "sessionoptions";
+        value = "blank,curdir,help,tabpages,winsize";
+      }
+      {
+        name = "backup";
+        value = false;
+      }
+      {
+        name = "writebackup";
+        value = false;
+      }
+      {
+        name = "wrap";
+        value = false;
+      }
+      {
+        name = "clipboard";
+        value = "unnamedplus";
+        append = true;
+      }
     ];
 
     keymaps = [
-      {mode = "n"; lhs = "<space><space>"; rhs = "<Cmd>lua Snacks.picker.files()<CR>"; desc = "Find files";}
-      {mode = "n"; lhs = "<space>ff"; rhs = "<Cmd>lua Snacks.picker.files()<CR>"; desc = "Find files";}
-      {mode = "n"; lhs = "<space>fr"; rhs = "<Cmd>lua Snacks.picker.recent()<CR>"; desc = "Recent files";}
-      {mode = "n"; lhs = "<space>fb"; rhs = "<Cmd>lua Snacks.picker.buffers()<CR>"; desc = "Buffers";}
-      {mode = "n"; lhs = "<space>fw"; rhs = "<Cmd>lua Snacks.picker.grep_word()<CR>"; desc = "Grep word";}
-      {mode = "n"; lhs = "<space>gt"; rhs = "<Cmd>lua Snacks.picker.git_files()<CR>"; desc = "Git files";}
-      {mode = "n"; lhs = "<space>e"; rhs = "<Cmd>lua Snacks.explorer.open()<CR>"; desc = "Explorer";}
-      {mode = "n"; lhs = "<space>s"; rhs = "<Cmd>lua Snacks.picker.lsp_symbols()<CR>"; desc = "LSP symbols";}
-      {mode = "n"; lhs = "<space>/"; rhs = "<Cmd>lua Snacks.picker.grep()<CR>"; desc = "Grep root dir";}
-      {mode = "n"; lhs = "<space>um"; rhs = "<Cmd>RenderMarkdown toggle<CR>"; desc = "Toggle markdown";}
+      {
+        mode = "n";
+        lhs = "<space><space>";
+        rhs = "<Cmd>lua Snacks.picker.files()<CR>";
+        desc = "Find files";
+      }
+      {
+        mode = "n";
+        lhs = "<space>ff";
+        rhs = "<Cmd>lua Snacks.picker.files()<CR>";
+        desc = "Find files";
+      }
+      {
+        mode = "n";
+        lhs = "<space>fr";
+        rhs = "<Cmd>lua Snacks.picker.recent()<CR>";
+        desc = "Recent files";
+      }
+      {
+        mode = "n";
+        lhs = "<space>fb";
+        rhs = "<Cmd>lua Snacks.picker.buffers()<CR>";
+        desc = "Buffers";
+      }
+      {
+        mode = "n";
+        lhs = "<space>fw";
+        rhs = "<Cmd>lua Snacks.picker.grep_word()<CR>";
+        desc = "Grep word";
+      }
+      {
+        mode = "n";
+        lhs = "<space>gt";
+        rhs = "<Cmd>lua Snacks.picker.git_files()<CR>";
+        desc = "Git files";
+      }
+      {
+        mode = "n";
+        lhs = "<space>e";
+        rhs = "<Cmd>lua Snacks.explorer.open()<CR>";
+        desc = "Explorer";
+      }
+      {
+        mode = "n";
+        lhs = "<space>s";
+        rhs = "<Cmd>lua Snacks.picker.lsp_symbols()<CR>";
+        desc = "LSP symbols";
+      }
+      {
+        mode = "n";
+        lhs = "<space>/";
+        rhs = "<Cmd>lua Snacks.picker.grep()<CR>";
+        desc = "Grep root dir";
+      }
+      {
+        mode = "n";
+        lhs = "<space>um";
+        rhs = "<Cmd>RenderMarkdown toggle<CR>";
+        desc = "Toggle markdown";
+      }
 
-      {mode = "n"; lhs = "<space>qs"; rhs = {__raw = "function() require('persistence').load() end";}; desc = "Restore session";}
-      {mode = "n"; lhs = "<space>ql"; rhs = {__raw = "function() require('persistence').load({ last = true }) end";}; desc = "Restore last session";}
-      {mode = "n"; lhs = "<space>qd"; rhs = {__raw = "function() require('persistence').stop() end";}; desc = "Stop session persistence";}
+      {
+        mode = "n";
+        lhs = "<space>qs";
+        rhs = {__raw = "function() require('persistence').load() end";};
+        desc = "Restore session";
+      }
+      {
+        mode = "n";
+        lhs = "<space>ql";
+        rhs = {__raw = "function() require('persistence').load({ last = true }) end";};
+        desc = "Restore last session";
+      }
+      {
+        mode = "n";
+        lhs = "<space>qd";
+        rhs = {__raw = "function() require('persistence').stop() end";};
+        desc = "Stop session persistence";
+      }
     ];
 
     lspKeymaps = [
-      {key = "gd"; fn = "definition";}
-      {key = "gr"; fn = "references";}
-      {key = "gI"; fn = "implementation";}
-      {key = "gy"; fn = "type_definition";}
-      {key = "gD"; fn = "declaration";}
-      {key = "K"; fn = "hover";}
-      {key = "<C-k>"; fn = "signature_help"; mode = "i";}
-      {key = "<space>cr"; fn = "rename";}
-      {key = "<space>ca"; fn = "code_action";}
-      {key = "<space>ca"; fn = "code_action"; mode = "x";}
+      {
+        key = "gd";
+        fn = "definition";
+      }
+      {
+        key = "gr";
+        fn = "references";
+      }
+      {
+        key = "gI";
+        fn = "implementation";
+      }
+      {
+        key = "gy";
+        fn = "type_definition";
+      }
+      {
+        key = "gD";
+        fn = "declaration";
+      }
+      {
+        key = "K";
+        fn = "hover";
+      }
+      {
+        key = "<C-k>";
+        fn = "signature_help";
+        mode = "i";
+      }
+      {
+        key = "<space>cr";
+        fn = "rename";
+      }
+      {
+        key = "<space>ca";
+        fn = "code_action";
+      }
+      {
+        key = "<space>ca";
+        fn = "code_action";
+        mode = "x";
+      }
     ];
 
     autocmds = [
-      {event = "FileType"; pattern = "nix"; command = "setlocal nosmartindent indentexpr=";}
+      {
+        event = "FileType";
+        pattern = "nix";
+        command = "setlocal nosmartindent indentexpr=";
+      }
       {
         event = "FileType";
         callback = {__raw = "function() pcall(vim.treesitter.start) end";};
@@ -145,13 +325,19 @@ _: {
       }
       {
         fn = "diagnostic.config";
-        args = [{
-          severity_sort = true;
-          update_in_insert = false;
-          virtual_text = {spacing = 4; source = "if_many"; prefix = "●";};
-          underline = true;
-          signs = true;
-        }];
+        args = [
+          {
+            severity_sort = true;
+            update_in_insert = false;
+            virtual_text = {
+              spacing = 4;
+              source = "if_many";
+              prefix = "●";
+            };
+            underline = true;
+            signs = true;
+          }
+        ];
       }
       {
         fn = "lsp.config";
@@ -160,7 +346,10 @@ _: {
           {
             capabilities = {
               workspace = {
-                fileOperations = {didRename = true; willRename = true;};
+                fileOperations = {
+                  didRename = true;
+                  willRename = true;
+                };
               };
             };
           }
@@ -275,14 +464,23 @@ _: {
           {__raw = ''{ mode = { "n", "x" }, { "<leader><tab>", group = "tabs" }, { "<leader>c", group = "code" }, { "<leader>d", group = "debug" }, { "<leader>dp", group = "profiler" }, { "<leader>f", group = "file/find" }, { "<leader>g", group = "git" }, { "<leader>gh", group = "hunks" }, { "<leader>q", group = "quit/session" }, { "<leader>s", group = "search" }, { "<leader>u", group = "ui" }, { "<leader>x", group = "diagnostics/quickfix" }, { "[", group = "prev" }, { "]", group = "next" }, { "g", group = "goto" }, { "gs", group = "surround" }, { "z", group = "fold" }, { "<leader>b", group = "buffer", expand = function() return require("which-key.extras").expand.buf() end }, { "<leader>w", group = "windows", proxy = "<c-w>", expand = function() return require("which-key.extras").expand.win() end }, { "gx", desc = "Open with system app" } }'';}
         ];
       }
-      {module = "gitsigns"; config = {};}
+      {
+        module = "gitsigns";
+        config = {};
+      }
       {
         module = "lualine";
         config = {
           options = {
             theme = "tokyonight";
-            component_separators = {left = "|"; right = "|";};
-            section_separators = {left = ""; right = "";};
+            component_separators = {
+              left = "|";
+              right = "|";
+            };
+            section_separators = {
+              left = "";
+              right = "";
+            };
           };
         };
       }
@@ -290,11 +488,17 @@ _: {
         module = "nvim-treesitter";
         config = {
           highlight = {enable = true;};
-          indent = {enable = true; disable = ["nix"];};
+          indent = {
+            enable = true;
+            disable = ["nix"];
+          };
           ensure_installed = {};
         };
       }
-      {module = "nvim-ts-autotag"; config = {};}
+      {
+        module = "nvim-ts-autotag";
+        config = {};
+      }
       {
         module = "blink.cmp";
         config = {
@@ -346,20 +550,67 @@ _: {
             width = 36;
             preset = {
               keys = [
-                {icon = " "; key = "f"; desc = "Find File"; action = "<Cmd>lua Snacks.dashboard.pick('files')<CR>";}
-                {icon = " "; key = "n"; desc = "New File"; action = "<Cmd>ene | startinsert<CR>";}
-                {icon = " "; key = "g"; desc = "Find Text"; action = "<Cmd>lua Snacks.dashboard.pick('live_grep')<CR>";}
-                {icon = " "; key = "r"; desc = "Recent Files"; action = "<Cmd>lua Snacks.dashboard.pick('oldfiles')<CR>";}
-                {icon = " "; key = "c"; desc = "Config"; action = "<Cmd>lua Snacks.explorer.open({ cwd = vim.fn.expand('~/nixos-config') })<CR>";}
-                {icon = " "; key = "s"; desc = "Restore Session"; section = "session";}
-                {icon = " "; key = "q"; desc = "Quit"; action = "<Cmd>qa<CR>";}
+                {
+                  icon = " ";
+                  key = "f";
+                  desc = "Find File";
+                  action = "<Cmd>lua Snacks.dashboard.pick('files')<CR>";
+                }
+                {
+                  icon = " ";
+                  key = "n";
+                  desc = "New File";
+                  action = "<Cmd>ene | startinsert<CR>";
+                }
+                {
+                  icon = " ";
+                  key = "g";
+                  desc = "Find Text";
+                  action = "<Cmd>lua Snacks.dashboard.pick('live_grep')<CR>";
+                }
+                {
+                  icon = " ";
+                  key = "r";
+                  desc = "Recent Files";
+                  action = "<Cmd>lua Snacks.dashboard.pick('oldfiles')<CR>";
+                }
+                {
+                  icon = " ";
+                  key = "c";
+                  desc = "Config";
+                  action = "<Cmd>lua Snacks.explorer.open({ cwd = vim.fn.expand('~/nixos-config') })<CR>";
+                }
+                {
+                  icon = " ";
+                  key = "s";
+                  desc = "Restore Session";
+                  section = "session";
+                }
+                {
+                  icon = " ";
+                  key = "q";
+                  desc = "Quit";
+                  action = "<Cmd>qa<CR>";
+                }
               ];
             };
             sections = [
               {padding = 1;}
               {section = "header";}
-              {icon = " "; title = "Keymaps"; section = "keys"; indent = 2; padding = 1;}
-              {icon = " "; title = "Recent Files"; section = "recent_files"; indent = 2; padding = 1;}
+              {
+                icon = " ";
+                title = "Keymaps";
+                section = "keys";
+                indent = 2;
+                padding = 1;
+              }
+              {
+                icon = " ";
+                title = "Recent Files";
+                section = "recent_files";
+                indent = 2;
+                padding = 1;
+              }
             ];
           };
           picker = {enabled = true;};
@@ -374,7 +625,10 @@ _: {
       {
         module = "noice";
         config = {
-          cmdline = {enabled = true; view = "cmdline_popup";};
+          cmdline = {
+            enabled = true;
+            view = "cmdline_popup";
+          };
           messages = {enabled = true;};
           popupmenu = {enabled = true;};
           presets = {
@@ -387,24 +641,59 @@ _: {
       {
         module = "render-markdown";
         config = {
-          code = {sign = false; width = "block"; left_pad = 2; right_pad = 4;};
+          code = {
+            sign = false;
+            width = "block";
+            left_pad = 2;
+            right_pad = 4;
+          };
           heading = {sign = false;};
           checkbox = {enabled = false;};
           quote = {repeat_linebreak = true;};
           win_options = {
-            showbreak = {default = ""; rendered = "  ";};
-            breakindent = {default = false; rendered = true;};
-            breakindentopt = {default = ""; rendered = "";};
+            showbreak = {
+              default = "";
+              rendered = "  ";
+            };
+            breakindent = {
+              default = false;
+              rendered = true;
+            };
+            breakindentopt = {
+              default = "";
+              rendered = "";
+            };
           };
         };
       }
-      {module = "mini.ai"; config = {};}
-      {module = "mini.pairs"; config = {};}
-      {module = "mini.surround"; config = {};}
-      {module = "mini.icons"; config = {};}
-      {module = "yanky"; config = {highlight = {on_yank = true;};};}
-      {module = "outline"; config = {};}
-      {module = "todo-comments"; config = {};}
+      {
+        module = "mini.ai";
+        config = {};
+      }
+      {
+        module = "mini.pairs";
+        config = {};
+      }
+      {
+        module = "mini.surround";
+        config = {};
+      }
+      {
+        module = "mini.icons";
+        config = {};
+      }
+      {
+        module = "yanky";
+        config = {highlight = {on_yank = true;};};
+      }
+      {
+        module = "outline";
+        config = {};
+      }
+      {
+        module = "todo-comments";
+        config = {};
+      }
       {
         module = "persistence";
         config = {
@@ -412,9 +701,18 @@ _: {
           options = ["buffers" "curdir" "tabpages" "winsize" "help"];
         };
       }
-      {module = "lazydev"; config = {};}
-      {module = "codex"; config = {};}
-      {module = "cord"; config = {};}
+      {
+        module = "lazydev";
+        config = {};
+      }
+      {
+        module = "codex";
+        config = {};
+      }
+      {
+        module = "cord";
+        config = {};
+      }
     ];
 
     rawLua = [
@@ -518,20 +816,22 @@ _: {
       };
     };
 
-    treesitter = vim.nvim-treesitter.withPlugins (p: [
-      p.tree-sitter-bash
-      p.tree-sitter-diff
-      p.tree-sitter-go
-      p.tree-sitter-json
-      p.tree-sitter-lua
-      p.tree-sitter-markdown
-      p.tree-sitter-markdown-inline
-      p.tree-sitter-nix
-      p.tree-sitter-python
-      p.tree-sitter-rust
-      p.tree-sitter-toml
-      p.tree-sitter-yaml
-    ] ++ lib.attrValues extraGrammars);
+    treesitter = vim.nvim-treesitter.withPlugins (p:
+      [
+        p.tree-sitter-bash
+        p.tree-sitter-diff
+        p.tree-sitter-go
+        p.tree-sitter-json
+        p.tree-sitter-lua
+        p.tree-sitter-markdown
+        p.tree-sitter-markdown-inline
+        p.tree-sitter-nix
+        p.tree-sitter-python
+        p.tree-sitter-rust
+        p.tree-sitter-toml
+        p.tree-sitter-yaml
+      ]
+      ++ lib.attrValues extraGrammars);
 
     plugins = with vim; [
       tokyonight-nvim
@@ -572,7 +872,7 @@ _: {
       configure = {
         packages.myNeovim.start = plugins;
 
-        customLuaRC = customLuaRC;
+        inherit customLuaRC;
       };
     };
 
