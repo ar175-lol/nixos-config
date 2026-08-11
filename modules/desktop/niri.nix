@@ -172,7 +172,7 @@
                   "Mod+Grave".toggle-overview = _: {};
 
                   "Mod+Return".spawn = lib.getExe self'.packages.myFoot;
-                  "Mod+D".spawn = ["${lib.getExe pkgs.rofi}" "-show" "drun"];
+                  "Mod+D".spawn = ["${lib.getExe self'.packages.myRofi}" "-show" "drun"];
 
                   "Mod+Shift+S".screenshot = _: {};
                 }
