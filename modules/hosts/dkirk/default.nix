@@ -15,7 +15,7 @@
           useUserPackages = true;
           extraSpecialArgs = {inherit inputs;};
           backupFileExtension = "backup";
-          users.kirk = config.homeManager.kirk; # TODO: split user configs between machines
+          users.kirk = config.homeManager.kirk;
         };
       }
     ];
