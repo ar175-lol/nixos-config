@@ -4,8 +4,6 @@
   lib,
   ...
 }: let
-  # Rasi literal string rendered verbatim (unquoted), for values like colors
-  # and @var references that the generic string renderer would quote.
   rasiLiteral = value: {
     _type = "literal";
     inherit value;

@@ -1,63 +1,50 @@
-{
-  inputs,
-  self,
-  lib,
-  ...
-}: let
-  starshipSettings = {
-    format = "[░▒▓](fg:#a3aed2)$os[](bg:#769ff0 fg:#a3aed2)$directory[](fg:#769ff0 bg:#394260)$git_branch[](fg:#394260 bg:#212736)$time[](fg:#1d2230)\n[╰─](fg:#394260)$character";
+_: {
+  nixos.base = {
+    programs.starship.enable = true;
+    programs.starship.settings = {
+      format = "[░▒▓](fg:#a3aed2)$os[](bg:#769ff0 fg:#a3aed2)$directory[](fg:#769ff0 bg:#394260)$git_branch[](fg:#394260 bg:#212736)$time[](fg:#1d2230)\n[╰─](fg:#394260)$character";
 
-    os = {
-      style = "bg:#a3aed2 fg:#090c0c";
-      format = "[$symbol]($style)";
-      disabled = false;
-      symbols = {
-        Android = "";
-        NixOS = "";
+      os = {
+        style = "bg:#a3aed2 fg:#090c0c";
+        format = "[$symbol]($style)";
+        disabled = false;
+        symbols = {
+          Android = "";
+          NixOS = "";
+        };
+      };
+
+      directory = {
+        style = "fg:#e3e5e5 bg:#769ff0";
+        format = "[ $path ]($style)";
+        truncation_length = 3;
+        truncation_symbol = "…/";
+        substitutions = {
+          Documents = "󰈙 ";
+          Downloads = " ";
+          Music = " ";
+          Pictures = " ";
+        };
+      };
+
+      git_branch = {
+        symbol = "";
+        style = "bg:#394260";
+        format = "[[ $symbol $branch ](fg:#769ff0 bg:#394260)]($style)";
+      };
+
+      time = {
+        disabled = false;
+        time_format = "%R";
+        style = "bg:#1d2230";
+        format = "[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)";
+      };
+
+      character = {
+        format = "$symbol ";
+        success_symbol = "[❯](bold #769ff0)";
+        error_symbol = "[❯](bold #f7768e)";
       };
     };
-
-    directory = {
-      style = "fg:#e3e5e5 bg:#769ff0";
-      format = "[ $path ]($style)";
-      truncation_length = 3;
-      truncation_symbol = "…/";
-      substitutions = {
-        Documents = "󰈙 ";
-        Downloads = " ";
-        Music = " ";
-        Pictures = " ";
-      };
-    };
-
-    git_branch = {
-      symbol = "";
-      style = "bg:#394260";
-      format = "[[ $symbol $branch ](fg:#769ff0 bg:#394260)]($style)";
-    };
-
-    time = {
-      disabled = false;
-      time_format = "%R";
-      style = "bg:#1d2230";
-      format = "[[  $time ](fg:#a0a9cb bg:#1d2230)]($style)";
-    };
-
-    character = {
-      format = "$symbol ";
-      success_symbol = "[❯](bold #769ff0)";
-      error_symbol = "[❯](bold #f7768e)";
-    };
-  };
-in {
-  perSystem = {pkgs, ...}: {
-    packages.myStarship = inputs.wrapper-modules.wrappers.starship.wrap {
-      inherit pkgs;
-      env.STARSHIP_CONFIG = lib.mkForce ((pkgs.formats.toml {}).generate "starship.toml" starshipSettings);
-    };
-  };
-
-  nixos.base = {pkgs, ...}: {
-    environment.systemPackages = [self.packages.${pkgs.stdenv.hostPlatform.system}.myStarship];
   };
 }
