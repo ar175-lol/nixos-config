@@ -33,7 +33,7 @@
       };
     };
 
-    kirk = {pkgs,...}: {
+    kirk = {pkgs, ...}: {
       users.users.kirk = {
         isNormalUser = true;
         shell = pkgs.fish;

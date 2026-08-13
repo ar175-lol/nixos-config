@@ -1,66 +1,14 @@
-_: {
+{luaGen, ...}: {
   nixos.base = {
     pkgs,
     lib,
     ...
   }: let
+    inherit (luaGen) mkLuaInline genOption genGlobal genKeymap genAutocmd genCall genPlugin genLspAttach genFormatOnSave;
+
     vim = pkgs.vimPlugins;
 
-    toLua = v:
-      if isNull v
-      then "nil"
-      else if builtins.isBool v
-      then
-        (
-          if v
-          then "true"
-          else "false"
-        )
-      else if builtins.isInt v
-      then toString v
-      else if builtins.isFloat v
-      then toString v
-      else if builtins.isString v
-      then ''"${lib.replaceStrings ["\\" "\"" "\n"] ["\\\\" "\\\"" "\\n"] v}"''
-      else if builtins.isList v
-      then "{ ${lib.concatMapStringsSep ", " toLua v} }"
-      else if builtins.isAttrs v
-      then v.__raw
-        or "{ ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: val: "${luaKey k} = ${toLua val}") v)} }"
-      else throw "toLua: unsupported type ${builtins.typeOf v}";
-
-    luaKey = k:
-      if builtins.match "^[A-Za-z_][A-Za-z0-9_]*$" k != null
-      then k
-      else ''["${lib.replaceStrings ["\\" "\"" "\n"] ["\\\\" "\\\"" "\\n"] k}"]'';
-
-    genOption = o:
-      if o ? append
-      then "vim.opt.${o.name}:append(${toLua o.value})"
-      else "vim.opt.${o.name} = ${toLua o.value}";
-
-    genGlobal = name: value: "vim.g.${name} = ${toLua value}";
-
-    genKeymap = k: let
-      opts = (k.opts or {}) // lib.optionalAttrs (k ? desc) {inherit (k) desc;};
-    in "vim.keymap.set(${toLua k.mode}, ${toLua k.lhs}, ${toLua k.rhs}, ${toLua opts})";
-
-    genAutocmd = a: "vim.api.nvim_create_autocmd(${toLua a.event}, ${toLua (lib.removeAttrs a ["event"])})";
-
-    genCall = c: "vim.${c.fn}(${lib.concatMapStringsSep ", " toLua c.args})";
-
-    genPlugin = p: "require(${toLua p.module}).${p.call or "setup"}(${toLua (p.config or {})})";
-
-    genLspAttach = keymaps: ''
-      vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-          local map = function(mode, keys, fn)
-            vim.keymap.set(mode, keys, function() vim.lsp.buf[fn]() end, { buffer = args.buf, desc = "LSP: " .. fn })
-          end
-          ${lib.concatMapStringsSep "\n" (k: "map(${toLua (k.mode or "n")}, ${toLua k.key}, ${toLua k.fn})") keymaps}
-        end,
-      })
-    '';
+    formatCapableLspNames = ["nixd"];
 
     globals = {
       mapleader = " ";
@@ -240,23 +188,22 @@ _: {
         rhs = "<Cmd>RenderMarkdown toggle<CR>";
         desc = "Toggle markdown";
       }
-
       {
         mode = "n";
         lhs = "<space>qs";
-        rhs = {__raw = "function() require('persistence').load() end";};
+        rhs = mkLuaInline "function() require('persistence').load() end";
         desc = "Restore session";
       }
       {
         mode = "n";
         lhs = "<space>ql";
-        rhs = {__raw = "function() require('persistence').load({ last = true }) end";};
+        rhs = mkLuaInline "function() require('persistence').load({ last = true }) end";
         desc = "Restore last session";
       }
       {
         mode = "n";
         lhs = "<space>qd";
-        rhs = {__raw = "function() require('persistence').stop() end";};
+        rhs = mkLuaInline "function() require('persistence').stop() end";
         desc = "Stop session persistence";
       }
     ];
@@ -314,7 +261,7 @@ _: {
       }
       {
         event = "FileType";
-        callback = {__raw = "function() pcall(vim.treesitter.start) end";};
+        callback = mkLuaInline "function() pcall(vim.treesitter.start) end";
       }
     ];
 
@@ -364,57 +311,47 @@ _: {
               nixd = {
                 formatting = {command = ["alejandra"];};
                 nixpkgs = {
-                  expr = {
-                    __raw = ''
-                      string.format('import ((builtins.getFlake "%s").inputs.nixpkgs) {}', vim.fn.expand("~/nixos-config"))
-                    '';
-                  };
+                  expr = mkLuaInline ''
+                    string.format('import ((builtins.getFlake "%s").inputs.nixpkgs) {}', vim.fn.expand("~/nixos-config"))
+                  '';
                 };
                 options = {
                   nixos = {
-                    expr = {
-                      __raw = ''
-                        string.format([[(let
-                          f = builtins.getFlake "%s";
-                          pkgs = import f.inputs.nixpkgs {};
-                        in (pkgs.lib.evalModules {
-                          modules = (import (f.inputs.nixpkgs + "/nixos/modules/module-list.nix")) ++ [
-                            ({ ... }: { nixpkgs.hostPlatform = builtins.currentSystem; })
-                          ];
-                        }).options)]], vim.fn.expand("~/nixos-config"))
-                      '';
-                    };
+                    expr = mkLuaInline ''
+                      string.format([[(let
+                        f = builtins.getFlake "%s";
+                        pkgs = import f.inputs.nixpkgs {};
+                      in (pkgs.lib.evalModules {
+                        modules = (import (f.inputs.nixpkgs + "/nixos/modules/module-list.nix")) ++ [
+                          ({ ... }: { nixpkgs.hostPlatform = builtins.currentSystem; })
+                        ];
+                      }).options)]], vim.fn.expand("~/nixos-config"))
+                    '';
                   };
                   "home-manager" = {
-                    expr = {
-                      __raw = ''
-                        string.format([[(let
-                          f = builtins.getFlake "%s";
-                          pkgs = import f.inputs.nixpkgs {};
-                          hm = f.inputs.home-manager;
-                          lib = import (hm + "/modules/lib/stdlib-extended.nix") pkgs.lib;
-                        in (lib.evalModules {
-                          modules = (import (hm + "/modules/modules.nix")) {
-                            inherit lib pkgs;
-                            check = false;
-                          };
-                        }).options)]], vim.fn.expand("~/nixos-config"))
-                      '';
-                    };
+                    expr = mkLuaInline ''
+                      string.format([[(let
+                        f = builtins.getFlake "%s";
+                        pkgs = import f.inputs.nixpkgs {};
+                        hm = f.inputs.home-manager;
+                        lib = import (hm + "/modules/lib/stdlib-extended.nix") pkgs.lib;
+                      in (lib.evalModules {
+                        modules = (import (hm + "/modules/modules.nix")) {
+                          inherit lib pkgs;
+                          check = false;
+                        };
+                      }).options)]], vim.fn.expand("~/nixos-config"))
+                    '';
                   };
                   "flake-parts" = {
-                    expr = {
-                      __raw = ''
-                        string.format('(builtins.getFlake "%s").debug.options', vim.fn.expand("~/nixos-config"))
-                      '';
-                    };
+                    expr = mkLuaInline ''
+                      string.format('(builtins.getFlake "%s").debug.options', vim.fn.expand("~/nixos-config"))
+                    '';
                   };
                   "flake-parts-per-system" = {
-                    expr = {
-                      __raw = ''
-                        string.format('(builtins.getFlake "%s").currentSystem.options', vim.fn.expand("~/nixos-config"))
-                      '';
-                    };
+                    expr = mkLuaInline ''
+                      string.format('(builtins.getFlake "%s").currentSystem.options', vim.fn.expand("~/nixos-config"))
+                    '';
                   };
                 };
               };
@@ -461,7 +398,7 @@ _: {
         module = "which-key";
         call = "add";
         config = [
-          {__raw = ''{ mode = { "n", "x" }, { "<leader><tab>", group = "tabs" }, { "<leader>c", group = "code" }, { "<leader>d", group = "debug" }, { "<leader>dp", group = "profiler" }, { "<leader>f", group = "file/find" }, { "<leader>g", group = "git" }, { "<leader>gh", group = "hunks" }, { "<leader>q", group = "quit/session" }, { "<leader>s", group = "search" }, { "<leader>u", group = "ui" }, { "<leader>x", group = "diagnostics/quickfix" }, { "[", group = "prev" }, { "]", group = "next" }, { "g", group = "goto" }, { "gs", group = "surround" }, { "z", group = "fold" }, { "<leader>b", group = "buffer", expand = function() return require("which-key.extras").expand.buf() end }, { "<leader>w", group = "windows", proxy = "<c-w>", expand = function() return require("which-key.extras").expand.win() end }, { "gx", desc = "Open with system app" } }'';}
+          (mkLuaInline ''{ mode = { "n", "x" }, { "<leader><tab>", group = "tabs" }, { "<leader>c", group = "code" }, { "<leader>d", group = "debug" }, { "<leader>dp", group = "profiler" }, { "<leader>f", group = "file/find" }, { "<leader>g", group = "git" }, { "<leader>gh", group = "hunks" }, { "<leader>q", group = "quit/session" }, { "<leader>s", group = "search" }, { "<leader>u", group = "ui" }, { "<leader>x", group = "diagnostics/quickfix" }, { "[", group = "prev" }, { "]", group = "next" }, { "g", group = "goto" }, { "gs", group = "surround" }, { "z", group = "fold" }, { "<leader>b", group = "buffer", expand = function() return require("which-key.extras").expand.buf() end }, { "<leader>w", group = "windows", proxy = "<c-w>", expand = function() return require("which-key.extras").expand.win() end }, { "gx", desc = "Open with system app" } }'')
         ];
       }
       {
@@ -517,24 +454,22 @@ _: {
             };
           };
           snippets = {
-            expand = {__raw = "function(snippet, _) vim.snippet.expand(snippet) end";};
-            active = {__raw = "function() return vim.snippet.active() end";};
-            jump = {__raw = "function(direction) vim.snippet.jump(direction) end";};
+            expand = mkLuaInline "function(snippet, _) vim.snippet.expand(snippet) end";
+            active = mkLuaInline "function() return vim.snippet.active() end";
+            jump = mkLuaInline "function(direction) vim.snippet.jump(direction) end";
           };
           completion = {
             documentation = {auto_show = true;};
             menu = {
               draw = {
-                columns = {
-                  __raw = ''
-                    {
-                      { "kind_icon" },
-                      { "label", "label_description", gap = 1 },
-                      { "source_name" },
-                      { "kind" },
-                    }
-                  '';
-                };
+                columns = mkLuaInline ''
+                  {
+                    { "kind_icon" },
+                    { "label", "label_description", gap = 1 },
+                    { "source_name" },
+                    { "kind" },
+                  }
+                '';
               };
             };
           };
@@ -551,43 +486,43 @@ _: {
             preset = {
               keys = [
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "f";
                   desc = "Find File";
                   action = "<Cmd>lua Snacks.dashboard.pick('files')<CR>";
                 }
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "n";
                   desc = "New File";
                   action = "<Cmd>ene | startinsert<CR>";
                 }
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "g";
                   desc = "Find Text";
                   action = "<Cmd>lua Snacks.dashboard.pick('live_grep')<CR>";
                 }
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "r";
                   desc = "Recent Files";
                   action = "<Cmd>lua Snacks.dashboard.pick('oldfiles')<CR>";
                 }
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "c";
                   desc = "Config";
                   action = "<Cmd>lua Snacks.explorer.open({ cwd = vim.fn.expand('~/nixos-config') })<CR>";
                 }
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "s";
                   desc = "Restore Session";
                   section = "session";
                 }
                 {
-                  icon = " ";
+                  icon = " ";
                   key = "q";
                   desc = "Quit";
                   action = "<Cmd>qa<CR>";
@@ -598,14 +533,14 @@ _: {
               {padding = 1;}
               {section = "header";}
               {
-                icon = " ";
+                icon = " ";
                 title = "Keymaps";
                 section = "keys";
                 indent = 2;
                 padding = 1;
               }
               {
-                icon = " ";
+                icon = " ";
                 title = "Recent Files";
                 section = "recent_files";
                 indent = 2;
@@ -697,16 +632,12 @@ _: {
       {
         module = "persistence";
         config = {
-          dir = {__raw = ''vim.fn.stdpath("state") .. "/sessions/"'';};
+          dir = mkLuaInline ''vim.fn.stdpath("state") .. "/sessions/"'';
           options = ["buffers" "curdir" "tabpages" "winsize" "help"];
         };
       }
       {
         module = "lazydev";
-        config = {};
-      }
-      {
-        module = "codex";
         config = {};
       }
       {
@@ -770,54 +701,12 @@ _: {
       (lib.concatMapStringsSep "\n" genAutocmd autocmds)
       (lib.concatMapStringsSep "\n" genCall calls)
       (lib.concatMapStringsSep "\n" genPlugin pluginSetups)
+      (genFormatOnSave formatCapableLspNames)
       (lib.concatStringsSep "\n\n" rawLua)
     ]);
 
-    extraGrammars = {
-      luadoc = pkgs.tree-sitter.buildGrammar {
-        language = "luadoc";
-        version = "unstable";
-        src = pkgs.fetchFromGitHub {
-          owner = "amaanq";
-          repo = "tree-sitter-luadoc";
-          rev = "4d04632a3a398b78af52e83be074883e722f40be";
-          sha256 = "sha256-PgRCFFOqkNH63VZXr/0Kri3rXm2zmsq8nOEUlrlE1b4=";
-        };
-      };
-      luap = pkgs.tree-sitter.buildGrammar {
-        language = "luap";
-        version = "unstable";
-        src = pkgs.fetchFromGitHub {
-          owner = "amaanq";
-          repo = "tree-sitter-luap";
-          rev = "c134aaec6acf4fa95fe4aa0dc9aba3eacdbbe55a";
-          sha256 = "sha256-4mMUHBsdK4U4uhh8GpKlG3p/s3ZCcLX1qATPyTD4Xhg=";
-        };
-      };
-      printf = pkgs.tree-sitter.buildGrammar {
-        language = "printf";
-        version = "unstable";
-        src = pkgs.fetchFromGitHub {
-          owner = "ObserverOfTime";
-          repo = "tree-sitter-printf";
-          rev = "ec4e5674573d5554fccb87a887c97d4aec489da7";
-          sha256 = "sha256-JddrO4H7b3f/jrYag1lTAqeCzspf18SiIsVV2EJ25ZY=";
-        };
-      };
-      vimdoc = pkgs.tree-sitter.buildGrammar {
-        language = "vimdoc";
-        version = "unstable";
-        src = pkgs.fetchFromGitHub {
-          owner = "neovim";
-          repo = "tree-sitter-vimdoc";
-          rev = "23daa416c1ff5d15f59a1aa648f031d6e3ee15c5";
-          sha256 = "sha256-SG5oz/vXz1rdCjzAo2bE3xz107Hc+qOqfsC5V+j0X1I=";
-        };
-      };
-    };
-
-    treesitter = vim.nvim-treesitter.withPlugins (p:
-      [
+    treesitter = vim.nvim-treesitter.withPlugins (
+      p: [
         p.tree-sitter-bash
         p.tree-sitter-diff
         p.tree-sitter-go
@@ -831,7 +720,7 @@ _: {
         p.tree-sitter-toml
         p.tree-sitter-yaml
       ]
-      ++ lib.attrValues extraGrammars);
+    );
 
     plugins = with vim; [
       tokyonight-nvim
@@ -858,7 +747,6 @@ _: {
       todo-comments-nvim
       nvim-lint
       lazydev-nvim
-      codex-nvim
       cord-nvim
       plenary-nvim
     ];
@@ -878,7 +766,6 @@ _: {
 
     environment.systemPackages = with pkgs; [
       alejandra
-      codex
       fd
       gcc
       # go

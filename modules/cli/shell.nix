@@ -24,6 +24,8 @@ _: let
       inherit shellAliases;
 
       initContent = ''
+        eval "$(starship init zsh)"
+
         autoload -Uz compinit && compinit -C
         export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=25
         export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
