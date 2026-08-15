@@ -18,44 +18,26 @@ _: {
       extraModulePackages = [];
     };
 
-    disko.devices.disk.nixos = {
-      type = "disk";
-      device = "/dev/disk/by-id/nvme-eui.00000000000000008ce38e10010b221d";
-      content = {
-        type = "gpt";
-        partitions = {
-          boot = {
-            size = "1022M";
-            type = "EF00";
-            content = {
-              type = "filesystem";
-              format = "vfat";
-              mountpoint = "/boot";
-              mountOptions = ["fmask=0022" "dmask=0022"];
-            };
-          };
-          root = {
-            size = "100%";
-            content = {
-              type = "btrfs";
-              extraArgs = ["-f"];
-              subvolumes = {
-                "/root" = {
-                  mountpoint = "/";
-                  mountOptions = ["compress=zstd" "noatime"];
-                };
-                "/home" = {
-                  mountpoint = "/home";
-                  mountOptions = ["compress=zstd"];
-                };
-                "/nix" = {
-                  mountpoint = "/nix";
-                  mountOptions = ["compress=zstd" "noatime"];
-                };
-              };
-            };
-          };
-        };
+    fileSystems = {
+      "/" = {
+        device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
+        fsType = "btrfs";
+        options = ["x-initrd.mount" "subvol=root" "compress=zstd" "noatime"];
+      };
+      "/home" = {
+        device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
+        fsType = "btrfs";
+        options = ["subvol=home" "compress=zstd"];
+      };
+      "/nix" = {
+        device = "/dev/disk/by-uuid/fa37a150-d297-4056-a4fc-ea56431cbd95";
+        fsType = "btrfs";
+        options = ["x-initrd.mount" "subvol=nix" "compress=zstd" "noatime"];
+      };
+      "/boot" = {
+        device = "/dev/disk/by-uuid/1E13-C40B";
+        fsType = "vfat";
+        options = ["fmask=0022" "dmask=0022"];
       };
     };
 

@@ -26,12 +26,12 @@ modules/
 ├── boot/             # base boot + loaders (grub, limine)
 ├── options/          # nixos.modules.{base,pc,laptop} option declarations
 ├── repository/       # repo concerns (flake-file)
-└── <root>            # base features: audio, nix, starship, tmux, doas, …
+└── <root>            # base features: audio, nix, starship, tmux, ...
 ```
 
 ### Wiring
 
-- `nixos.modules.base` — applies to every machine (audio, nix, boot, debloat, doas,
+- `nixos.modules.base` — applies to every machine (audio, nix, boot, debloat,
   firewall, dnscrypt, iwd, disko module, …).
 - `nixos.modules.pc` / `nixos.modules.laptop` — machine profiles layered on `base`.
 - `users.<name>.nixos.{base,pc}` — system config scoped to a user's machine.

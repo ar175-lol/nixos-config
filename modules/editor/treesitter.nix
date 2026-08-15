@@ -6,7 +6,11 @@ _: {
           enable = true;
 
           highlight.enable = true;
-          indent.enable = true;
+
+          indent = {
+            enable = true;
+            disable = ["nix"];
+          };
 
           grammarPackages = with config.programs.nixvim.plugins.treesitter.package.builtGrammars; [
             bash
