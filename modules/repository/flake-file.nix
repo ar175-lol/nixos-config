@@ -4,12 +4,7 @@
   ...
 }: {
   flake-file = {
-    inputs = {
-      # FIXME: find a file to put these inputs
-      flake-parts.url = "github:hercules-ci/flake-parts";
-      flake-file.url = "github:denful/flake-file";
-      import-tree.url = "github:vic/import-tree";
-    };
+    inputs.flake-file.url = "github:denful/flake-file";
 
     do-not-edit = lib.concatLines (map (line: "# ${line}") (lib.splitString "\n" ''
       Heya! This flake.nix is auto-generated.

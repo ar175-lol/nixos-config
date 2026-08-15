@@ -15,6 +15,8 @@ _: {
         signs = true;
       };
 
+      plugins.lsp.enable = true;
+
       lsp = {
         inlayHints.enable = true;
 

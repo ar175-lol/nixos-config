@@ -30,6 +30,8 @@ _: {
 
         lazydev.enable = true;
 
+        lsp-format.enable = true;
+
         lint = {
           enable = true;
 
