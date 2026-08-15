@@ -1,6 +1,6 @@
 {config, ...}: {
   nixos.configurations.victus.modules = [
-    config.nixos.modules.laptop
+    config.nixos.modules.base
     config.users.ar175.nixos.pc
     {
       networking.hostName = "victus";

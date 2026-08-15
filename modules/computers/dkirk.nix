@@ -1,6 +1,6 @@
 {config, ...}: {
   nixos.configurations.dkirk.modules = [
-    config.nixos.modules.pc
+    config.nixos.modules.base
     config.users.kirk.nixos.pc
     {
       networking.hostName = "dkirk";

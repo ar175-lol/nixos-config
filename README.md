@@ -3,7 +3,7 @@
 The [dendritic pattern](https://github.com/mightyiam/dendritic) applied to my NixOS setup.
 
 > [!WARNING]
-> This is a hardware-specific configuration! Use at your own risk.
+> Use at your own risk.
 
 ## Structure
 
@@ -22,18 +22,17 @@ modules/
 ├── computers/        # machines: victus, dkirk, iso (hardware + assembly)
 ├── hardware/         # machine hardware features (nvidia, tlp, zram, amd, …)
 ├── networking/       # iwd, dnscrypt, firewall
-├── editor/           # nvim via nixvim, one file per feature
+├── editor/           # nvim via nixvim
 ├── boot/             # base boot + loaders (grub, limine)
-├── options/          # nixos.modules.{base,pc,laptop} option declarations
+├── options/          # nixos.modules.base option declaration
 ├── repository/       # repo concerns (flake-file)
-└── <root>            # base features: audio, nix, starship, tmux, ...
+└── <root>            # base features: audio, nix, ...
 ```
 
 ### Wiring
 
 - `nixos.modules.base` — applies to every machine (audio, nix, boot, debloat,
   firewall, dnscrypt, iwd, disko module, …).
-- `nixos.modules.pc` / `nixos.modules.laptop` — machine profiles layered on `base`.
 - `users.<name>.nixos.{base,pc}` — system config scoped to a user's machine.
 - `users.<name>.home.{base,gui}` — home-manager config (base = CLI, gui = graphical).
 
@@ -48,9 +47,8 @@ Machines (`modules/computers/*.nix`) assemble these into
 | dkirk    | `dkirk`  | kirk  | pc: plasma + grub + networkmanager-free |
 | iso      | `nixos`  | nixos | rescue/installer ISO (greetd + niri) |
 
-Disk layout for victus is declared with **disko** in
-`modules/computers/hardware-victus.nix` (btrfs subvols `/root`, `/home`, `/nix` +
-vfat `/boot`).
+Disk layout for victus is declared in
+`modules/computers/hardware-victus.nix`.
 
 ## Adding a feature
 
@@ -86,8 +84,7 @@ nix run .#write-flake
 
 ```bash
 nix flake check
-nix build .#nixosConfigurations.victus.config.system.build.toplevel
-nh os switch          # or: sync/update/clean aliases (ar175 zsh)
+nh os switch          # or: sync aliases (ar175 zsh)
 ```
 
 > [!CAUTION]
