@@ -1,7 +1,5 @@
-{mkModuleOption, ...}: {
-  options.nixos.hardware.amd = mkModuleOption {key = "amd";};
-
-  config.nixos.hardware.amd = {pkgs, ...}: {
+_: {
+  users.kirk.nixos.pc = {pkgs, ...}: {
     hardware = {
       graphics = {
         enable = true;

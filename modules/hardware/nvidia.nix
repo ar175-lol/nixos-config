@@ -1,5 +1,5 @@
 _: {
-  nixos.victus = {
+  users.ar175.nixos.pc = {
     config,
     pkgs,
     ...

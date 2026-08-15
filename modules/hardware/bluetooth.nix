@@ -1,7 +1,5 @@
-{mkModuleOption, ...}: {
-  options.nixos.modules.bluetooth = mkModuleOption {key = "bluetooth";};
-
-  config.nixos.modules.bluetooth = {
+_: {
+  nixos.modules.base = {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;

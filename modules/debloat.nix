@@ -1,6 +1,5 @@
-{mkModuleOption, ...}: {
-  options.nixos.debloat = mkModuleOption {key = "debloat";};
-  config.nixos.debloat = {lib, ...}: {
+_: {
+  nixos.modules.base = {lib, ...}: {
     systemd = {
       services = {
         ModemManager = {

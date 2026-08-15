@@ -1,5 +1,5 @@
 _: {
-  nixos.laptop = {
+  users.ar175.nixos.pc = {
     zramSwap = {
       enable = true;
       algorithm = "zstd";
