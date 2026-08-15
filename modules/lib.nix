@@ -1,5 +1,5 @@
 {lib, ...}: {
-  _module.args.mkModuleOption = args @ {
+  _module.args.mkModuleOption = {
     key,
     static ? {},
     ...
@@ -10,5 +10,6 @@
         inherit key;
         imports = [module];
       };
+      default = {};
     };
 }

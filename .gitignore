@@ -3,5 +3,6 @@ result
 .direnv/
 .pre-commit-config.yaml
 core.*
+!core.nix
 .jj/
 src

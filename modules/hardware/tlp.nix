@@ -1,5 +1,5 @@
 _: {
-  nixos.laptop = _: {
+  users.ar175.nixos.pc = _: {
     services = {
       power-profiles-daemon.enable = false;
       thermald.enable = false;
