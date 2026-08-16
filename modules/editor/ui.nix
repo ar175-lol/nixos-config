@@ -93,15 +93,110 @@ _: {
         lualine = {
           enable = true;
 
-          settings.options = {
-            theme = "tokyonight";
-            component_separators = {
-              left = "|";
-              right = "|";
+          settings = {
+            options = {
+              theme = "tokyonight";
+              globalstatus = true;
+              disabled_filetypes.statusline = ["snacks_dashboard"];
             };
-            section_separators = {
-              left = "";
-              right = "";
+
+            sections = {
+              lualine_a = ["mode"];
+              lualine_b = ["branch"];
+
+              lualine_c = [
+                {
+                  __unkeyed-1.__raw = ''
+                    function()
+                      local root = vim.fs.root(0, ".git") or vim.uv.cwd()
+                      return "󱉭 " .. vim.fs.basename(root)
+                    end
+                  '';
+                  color.__raw = ''function() return { fg = Snacks.util.color("Special") } end'';
+                }
+                {
+                  __unkeyed-1 = "diagnostics";
+                  symbols = {
+                    error = " ";
+                    warn = " ";
+                    info = " ";
+                    hint = " ";
+                  };
+                }
+                {
+                  __unkeyed-1 = "filetype";
+                  icon_only = true;
+                  separator = "";
+                  padding = {
+                    left = 1;
+                    right = 0;
+                  };
+                }
+                {
+                  __unkeyed-1.__raw = ''
+                    function()
+                      local bufname = vim.api.nvim_buf_get_name(0)
+                      if bufname == "" then
+                        return "[No Name]"
+                      end
+                      local root = vim.fs.root(0, ".git") or vim.uv.cwd()
+                      local path = vim.fs.relpath(root, bufname) or vim.fn.fnamemodify(bufname, ":~:.")
+                      if vim.bo.modified then
+                        path = path .. " ●"
+                      end
+                      if vim.bo.readonly then
+                        path = path .. " 󰌾"
+                      end
+                      return path
+                    end
+                  '';
+                }
+              ];
+
+              lualine_x = [
+                {
+                  __unkeyed-1.__raw = ''function() return require("noice").api.status.command.get() end'';
+                  cond.__raw = ''function() return require("noice").api.status.command.has() end'';
+                  color.__raw = ''function() return { fg = Snacks.util.color("Statement") } end'';
+                }
+                {
+                  __unkeyed-1.__raw = ''function() return require("noice").api.status.mode.get() end'';
+                  cond.__raw = ''function() return require("noice").api.status.mode.has() end'';
+                  color.__raw = ''function() return { fg = Snacks.util.color("Constant") } end'';
+                }
+                {
+                  __unkeyed-1 = "diff";
+                  symbols = {
+                    added = " ";
+                    modified = " ";
+                    removed = " ";
+                  };
+                  source.__raw = ''
+                    function()
+                      local gitsigns = vim.b.gitsigns_status_dict
+                      if gitsigns then
+                        return {
+                          added = gitsigns.added,
+                          modified = gitsigns.changed,
+                          removed = gitsigns.removed,
+                        }
+                      end
+                    end
+                  '';
+                }
+              ];
+
+              lualine_y = ["progress" "location"];
+
+              lualine_z = [
+                {
+                  __unkeyed-1.__raw = ''
+                    function()
+                      return " " .. os.date("%R")
+                    end
+                  '';
+                }
+              ];
             };
           };
         };

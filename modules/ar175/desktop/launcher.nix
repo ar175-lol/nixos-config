@@ -11,7 +11,6 @@ in {
   perSystem = {pkgs, ...}: {
     packages.myRofi = inputs.wrapper-modules.wrappers.rofi.wrap {
       inherit pkgs;
-
       settings = {
         modes = ["drun" "window" "run"];
         show-icons = true;

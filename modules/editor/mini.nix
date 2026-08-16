@@ -4,7 +4,11 @@ _: {
       mini-ai.enable = true;
       mini-pairs.enable = true;
       mini-surround.enable = true;
-      mini-icons.enable = true;
+
+      mini-icons = {
+        enable = true;
+        mockDevIcons = true;
+      };
     };
   };
 }

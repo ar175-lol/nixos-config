@@ -37,12 +37,8 @@ _: {
         enable32Bit = true;
 
         extraPackages = with pkgs; [
-          intel-media-driver
           nvidia-vaapi-driver
           intel-vaapi-driver
-          vulkan-loader
-          libva
-          mesa
         ];
       };
     };
