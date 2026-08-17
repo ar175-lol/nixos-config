@@ -18,10 +18,26 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-phone = {
+      url = "github:nix-community/home-manager/release-24.05";
+      inputs.nixpkgs.follows = "nixpkgs-phone";
+    };
     import-tree.url = "github:vic/import-tree";
+    lix-module = {
+      url = "git+https://git.lix.systems/lix-project/nixos-module";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mako-rs.url = "github:ar175-lol/mako-rs";
+    nix-on-droid = {
+      url = "github:nix-community/nix-on-droid/release-24.05";
+      inputs = {
+        home-manager.follows = "home-manager-phone";
+        nixpkgs.follows = "nixpkgs-phone";
+      };
+    };
     nixcord.url = "github:FlameFlag/nixcord";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-phone.url = "github:nixos/nixpkgs/nixos-24.05";
     nixvim.url = "github:nix-community/nixvim";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
     rustbar.url = "github:ar175-lol/oxidizedbar";

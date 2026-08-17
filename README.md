@@ -22,6 +22,14 @@ My main host uses:
 - `dolphin` as main file manager
 - `kate`/`neovim` as editor.
 
+### Installation 
+```bash
+git clone https://github.com/ar175-lol/nixos-config.git
+nix  --experimental-features "nix-command flakes" run \
+    github:nix-community/disko -- --mode disko nixos-config/disko/victus.nix
+nixos-install --root /mnt --flake .#victus # or dkirk
+```
+
 ### Structure
 
 Every Nix file under `modules/` is a top-level module implementing **one feature**
@@ -72,11 +80,4 @@ Machines (`modules/computers/*.nix`) assemble these into
 
 ```bash
 nh os switch # or `sync` alias
-```
-### Installation 
-```bash
-git clone https://github.com/ar175-lol/nixos-config.git
-nix  --experimental-features "nix-command flakes" run \
-    github:nix-community/disko -- --mode disko nixos-config/disko/victus.nix
-nixos-install --root /mnt --flake .#victus # or dkirk
 ```
