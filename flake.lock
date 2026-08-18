@@ -369,6 +369,42 @@
         "type": "github"
       }
     },
+    "ncalayer": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787147680,
+        "narHash": "sha256-wfdprXxI1O9GZNUZKorwDPuMCB5oETerddJXx0cu/ws=",
+        "owner": "ar175-lol",
+        "repo": "ncalayer-nix",
+        "rev": "fa7af33d077bb0311baffcc688c9cc68c76ed653",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ar175-lol",
+        "repo": "ncalayer-nix",
+        "type": "github"
+      }
+    },
+    "nix-flatpak": {
+      "locked": {
+        "lastModified": 1767983141,
+        "narHash": "sha256-7ZCulYUD9RmJIDULTRkGLSW1faMpDlPKcbWJLYHoXcs=",
+        "owner": "gmodena",
+        "repo": "nix-flatpak",
+        "rev": "440818969ac2cbd77bfe025e884d0aa528991374",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gmodena",
+        "ref": "latest",
+        "repo": "nix-flatpak",
+        "type": "github"
+      }
+    },
     "nix-formatter-pack": {
       "inputs": {
         "nixpkgs": [
@@ -862,6 +898,8 @@
         "import-tree": "import-tree",
         "lix-module": "lix-module",
         "mako-rs": "mako-rs",
+        "ncalayer": "ncalayer",
+        "nix-flatpak": "nix-flatpak",
         "nix-on-droid": "nix-on-droid",
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_5",
