@@ -26,7 +26,7 @@ My main host uses:
 ```bash
 git clone https://github.com/ar175-lol/nixos-config.git
 nix  --experimental-features "nix-command flakes" run \
-    github:nix-community/disko -- --mode disko nixos-config/disko/victus.nix
+    github:nix-community/disko -- --mode disko --argstr device /dev/disk/by-id/nvme-eui.00000000000000008ce38e10010b221d nixos-config/disko/victus.nix
 nixos-install --root /mnt --flake .#victus # or dkirk
 ```
 

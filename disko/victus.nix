@@ -1,7 +1,7 @@
-{
+{device, ...}: {
   disko.devices.disk.nixos = {
     type = "disk";
-    device = "/dev/disk/by-id/nvme-eui.00000000000000008ce38e10010b221d";
+    inherit device;
     content = {
       type = "gpt";
       partitions = {
