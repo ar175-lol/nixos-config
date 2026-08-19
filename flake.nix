@@ -28,14 +28,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mako-rs.url = "github:ar175-lol/mako-rs";
-<<<<<<< Updated upstream
-=======
     ncalayer = {
       url = "github:ar175-lol/ncalayer-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
->>>>>>> Stashed changes
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-24.05";
       inputs = {
