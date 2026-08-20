@@ -4,7 +4,10 @@
   lib,
   ...
 }: {
-  flake-file.inputs.wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+  flake-file.inputs.wrapper-modules = {
+    url = "github:BirdeeHub/nix-wrapper-modules";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   users.ar175.nixos.pc = {
     pkgs,

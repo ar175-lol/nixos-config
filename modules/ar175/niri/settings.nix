@@ -72,19 +72,13 @@ _: {
           active-color = "#0DB7D455";
           inactive-color = "#31313600";
         };
-        shadow = {
-          on = _: {};
-          softness = 30;
-          spread = 3;
-          offset = _: {
-            props = {
-              x = 0;
-              y = 4;
-            };
-          };
-          color = "#181926";
+        gaps = 4;
+        struts = {
+          left = -1;
+          right = -1;
+          top = -1;
+          bottom = -1;
         };
-        gaps = 9;
       };
 
       screenshot-path = null;
@@ -96,14 +90,27 @@ _: {
         hide-when-typing = true;
       };
 
-      window-rule = {
-        clip-to-geometry = true;
-        geometry-corner-radius = 12;
-      };
       window-rules = [
+        {
+          geometry-corner-radius = 18;
+          clip-to-geometry = true;
+          shadow = {
+            on = _: {};
+            softness = 20;
+            spread = 2;
+            color = "#00000020";
+            offset = _: {
+              props = {
+                x = 0;
+                y = 2;
+              };
+            };
+          };
+        }
         {
           matches = [{is-focused = false;}];
           shadow.off = _: {};
+          opacity = 0.95;
         }
       ];
     };

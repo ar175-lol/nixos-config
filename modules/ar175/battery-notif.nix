@@ -1,5 +1,8 @@
 {inputs, ...}: {
-  flake-file.inputs.battery-notifier.url = "github:ar175-lol/battery-notifier";
+  flake-file.inputs.battery-notifier = {
+    url = "github:ar175-lol/battery-notifier";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
 
   users.ar175.home.gui = {...}: {
     imports = [inputs.battery-notifier.homeModules.default];

@@ -3,7 +3,7 @@ _: {
     programs.nixvim = {
       plugins = {
         gitsigns.enable = true;
-
+        smear-cursor.enable = true;
         yanky = {
           enable = true;
 
