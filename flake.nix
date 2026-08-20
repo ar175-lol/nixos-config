@@ -6,7 +6,10 @@
   outputs = inputs: import ./outputs.nix inputs;
 
   inputs = {
-    battery-notifier.url = "github:ar175-lol/battery-notifier";
+    battery-notifier = {
+      url = "github:ar175-lol/battery-notifier";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     disko.url = "github:nix-community/disko";
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -45,8 +48,15 @@
     nixpkgs-phone.url = "github:nixos/nixpkgs/nixos-24.05";
     nixvim.url = "github:nix-community/nixvim";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
-    rustbar.url = "github:ar175-lol/oxidizedbar";
-    wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
+    rustbar = {
+      url = "github:ar175-lol/oxidizedbar";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    stylix.url = "github:danth/stylix";
+    wrapper-modules = {
+      url = "github:BirdeeHub/nix-wrapper-modules";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 }

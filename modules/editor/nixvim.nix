@@ -11,4 +11,8 @@
       vimAlias = true;
     };
   };
+
+  users.ar175.nixos.pc = {
+    stylix.targets.nixvim.enable = false;
+  };
 }
