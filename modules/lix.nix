@@ -1,10 +1,18 @@
-{inputs, ...}: {
-  flake-file.inputs.lix-module = {
-    url = "git+https://git.lix.systems/lix-project/nixos-module";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-  nixos.modules.base = {
-    imports = [inputs.lix-module.nixosModules.default];
-    lix.enable = true;
+{
+  nixos.modules.base = {pkgs, ...}: {
+    nixpkgs.overlays = [
+      (final: prev: {
+        inherit (prev.lixPackageSets.stable) nix-eval-jobs;
+      })
+    ];
+
+    nix.package = pkgs.lixPackageSets.stable.lix;
+
+    nix.settings.extra-deprecated-features = [
+      "broken-string-indentation"
+      "rec-set-dynamic-attrs"
+      "broken-string-escape"
+      "or-as-identifier"
+    ];
   };
 }

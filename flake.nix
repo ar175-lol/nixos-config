@@ -26,10 +26,6 @@
       inputs.nixpkgs.follows = "nixpkgs-phone";
     };
     import-tree.url = "github:vic/import-tree";
-    lix-module = {
-      url = "git+https://git.lix.systems/lix-project/nixos-module";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     mako-rs.url = "github:ar175-lol/mako-rs";
     ncalayer = {
       url = "github:ar175-lol/ncalayer-nix";
