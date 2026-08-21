@@ -581,8 +581,8 @@
       "backlightDeviceMappings": []
     },
     "colorSchemes": {
-      "useWallpaperColors": true,
-      "predefinedScheme": "Noctalia (default)",
+      "useWallpaperColors": false,
+      "predefinedScheme": "Catppuccin",
       "darkMode": true,
       "schedulingMode": "off",
       "manualSunrise": "06:30",
@@ -593,7 +593,7 @@
     },
     "templates": {
       "activeTemplates": [],
-      "enableUserTheming": true
+      "enableUserTheming": false
     },
     "nightLight": {
       "enabled": false,
