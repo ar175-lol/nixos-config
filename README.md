@@ -3,7 +3,7 @@
 Modular NixOS configuration which follows [dendritic pattern](https://github.com/mightyiam/dendritic).
 
 > [!CAUTION]
-> Replace `hardware-victus.nix` or `hardware-dkirk.nix` with your own
+> Replace `hardware-victus.nix`  with your own
 > hardware configuration, or your boot is **cooked**.
 
 ## Programs
@@ -15,19 +15,13 @@ My main host uses:
 - `yazi` and `nautilus` as file explorers
 - Zen Browser configured via [zen-browser-flake](https://github.com/0xc000022070/zen-browser-flake)
 - And a lot of other things (maybe...)!
----
-`dkirk` host uses:
-- Debloated KDE Plasma as DE.
-- Zen Browser
-- `dolphin` as main file manager
-- `kate`/`neovim` as editor.
 
 ### Installation 
 ```bash
 git clone https://github.com/ar175-lol/nixos-config.git
 nix  --experimental-features "nix-command flakes" run \
     github:nix-community/disko -- --mode disko --argstr device /dev/disk/by-id/nvme-eui.00000000000000008ce38e10010b221d nixos-config/disko/victus.nix
-nixos-install --root /mnt --flake .#victus # or dkirk
+nixos-install --root /mnt --flake .#victus 
 ```
 
 ### Structure
@@ -43,8 +37,7 @@ modules/
 │   ├── _policies.nix # data file, excluded from auto-import (leading `_`)
 │   ├── niri/         # window manager (system + home)
 │   └── …               
-├── kirk/             # user kirk (dkirk)
-├── computers/        # machines: victus, dkirk, iso (hardware + assembly)
+├── computers/        # machines: victus, iso (hardware + assembly)
 ├── hardware/         # machine hardware features (nvidia, tlp, zram, amd, …)
 ├── networking/       # iwd, dnscrypt, firewall
 ├── editor/           # nvim via nixvim
@@ -61,20 +54,14 @@ modules/
 - `users.<name>.nixos.{base,pc}` — system config scoped to a user's machine.
 - `users.<name>.home.{base,gui}` — home-manager config (base = CLI, gui = graphical).
 
-Machines (`modules/computers/*.nix`) assemble these into
-`nixos.configurations.<machine>.modules`.
-
+Machines (`modules/computers/*.nix`) assemble these into `nixos.configurations.<machine>.modules`.
 ### Machines & users
 
 | Machine | Hostname | User | Profile |
 |---|---|---|---|
 | victus   | `victus` | ar175 | laptop: niri + limine + iwd + xanmod |
-| dkirk    | `dkirk`  | kirk  | pc: plasma + grub + networkmanager-free |
 | iso      | `nixos`  | nixos | rescue/installer ISO (greetd + niri) |
 
-
-> [!NOTE]
-> Main host is `victus`. `dkirk` is my friends configuration (written with me btw).
 
 ### Build & switch
 
