@@ -21,11 +21,4 @@ _: {
       kernelPackages = pkgs.linuxPackages_xanmod_latest;
     };
   };
-
-  users.ar175.nixos.pc = {
-    stylix.targets = {
-      plymouth.enable = false;
-      console.enable = false;
-    };
-  };
 }

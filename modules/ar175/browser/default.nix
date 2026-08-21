@@ -17,7 +17,7 @@ _: {
   in {
     imports = [inputs.zen-browser.homeModules.twilight];
 
-    stylix.targets."zen-browser".enable = false;
+    # stylix.targets."zen-browser".enable = false;
 
     programs.zen-browser = {
       enable = true;

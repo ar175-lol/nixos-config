@@ -1,19 +1,9 @@
 _: {
   nixos.modules.base = _: {
     programs.nixvim = {
-      colorschemes.tokyonight = {
+      colorschemes.catppuccin = {
         enable = true;
-        settings = {
-          style = "moon";
-          styles = {
-            comments = {italic = true;};
-            keywords = {italic = true;};
-            functions = {};
-            variables = {};
-            sidebars = "dark";
-            floats = "dark";
-          };
-        };
+        settings.flavor = "mocha";
       };
 
       plugins = {
@@ -95,7 +85,7 @@ _: {
 
           settings = {
             options = {
-              theme = "tokyonight";
+              theme = "auto";
               globalstatus = true;
               disabled_filetypes.statusline = ["snacks_dashboard"];
             };

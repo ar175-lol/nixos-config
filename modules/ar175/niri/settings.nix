@@ -2,11 +2,12 @@ _: {
   perSystem = {
     lib,
     pkgs,
+    self',
     ...
   }: {
     myNiri.settings = {
       spawn-at-startup = [
-        ["${lib.getExe pkgs.swaybg}" "-i" "${./../assets/wall1.jpg}"]
+        (lib.getExe self'.packages.myNoctalia)
       ];
 
       prefer-no-csd = true;
@@ -70,13 +71,13 @@ _: {
       layout = {
         focus-ring = {
           width = 1;
-          active-color = "#c6a0f6";
-          inactive-color = "#494d64";
+          active-color = "#cba6f7";
+          inactive-color = "#45475a";
         };
         border = {
           width = 1;
-          active-color = "#0DB7D455";
-          inactive-color = "#31313600";
+          active-color = "#89dceb55";
+          inactive-color = "#1e1e2e00";
         };
         gaps = 4;
         struts = {

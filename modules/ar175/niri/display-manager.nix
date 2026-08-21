@@ -2,7 +2,7 @@ _: {
   users.ar175.nixos.pc = {pkgs, ...}: {
     console.useXkbConfig = false;
 
-    stylix.targets.lightdm.enable = false;
+    # stylix.targets.lightdm.enable = false;
 
     services.xserver = {
       enable = true;

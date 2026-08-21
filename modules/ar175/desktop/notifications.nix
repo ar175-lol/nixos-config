@@ -4,6 +4,6 @@
   users.ar175.home.gui = {...}: {
     imports = [inputs.mako-rs.homeModules.default];
 
-    programs.mako-rs.enable = true;
+    programs.mako-rs.enable = false;
   };
 }

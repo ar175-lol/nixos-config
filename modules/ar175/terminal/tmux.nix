@@ -40,25 +40,25 @@ in {
         bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
 
         set -g status "on"
-        set -g status-style "bg=#222436"
+        set -g status-style "bg=#1e1e2e"
         set -g status-justify "left"
         set -g status-left-length "100"
         set -g status-right-length "100"
 
-        set -g message-style "fg=#86e1fc,bg=#3a3f5a,align=centre"
+        set -g message-style "fg=#89dceb,bg=#313244,align=centre"
 
-        set -g window-status-activity-style "fg=#c8d3f5,bg=#222436,none"
+        set -g window-status-activity-style "fg=#cdd6f4,bg=#1e1e2e,none"
         set -g window-status-separator ""
-        set -g window-status-style "fg=#c8d3f5,bg=#222436,none"
+        set -g window-status-style "fg=#a6adc8,bg=#1e1e2e,none"
 
-        set -g window-status-current-format "#[fg=#82aaff,bg=#222436] #I: #[fg=#c099ff,bg=#222436](✓) #[fg=#86e1fc,bg=#222436]#(echo '#{pane_current_path}' | rev | cut -d'/' -f-2 | rev) #[fg=#c099ff,bg=#222436]"
-        set -g window-status-format "#[fg=#82aaff,bg=#222436] #I: #[fg=#c8d3f5,bg=#222436]#W"
+        set -g window-status-current-format "#[fg=#89b4fa,bg=#1e1e2e] #I: #[fg=#cba6f7,bg=#1e1e2e](✓) #[fg=#89dceb,bg=#1e1e2e]#(echo '#{pane_current_path}' | rev | cut -d'/' -f-2 | rev) #[fg=#cba6f7,bg=#1e1e2e]"
+        set -g window-status-format "#[fg=#89b4fa,bg=#1e1e2e] #I: #[fg=#cdd6f4,bg=#1e1e2e]#W"
 
-        set -g status-right "#[fg=#82aaff,bg=#222436,nobold,nounderscore,noitalics]#[fg=#222436,bg=#82aaff,nobold,nounderscore,noitalics] #[fg=#c8d3f5,bg=#3a3f5a] #W #{?client_prefix,#[fg=#c099ff],#[fg=#86e1fc]}#[bg=#3a3f5a]#{?client_prefix,#[bg=#c099ff],#[bg=#86e1fc]}#[fg=#222436] #[fg=#c8d3f5,bg=#3a3f5a] #S "
+        set -g status-right "#[fg=#89b4fa,bg=#1e1e2e,nobold,nounderscore,noitalics]#[fg=#1e1e2e,bg=#89b4fa,nobold,nounderscore,noitalics] #[fg=#cdd6f4,bg=#313244] #W #{?client_prefix,#[fg=#cba6f7],#[fg=#89dceb]}#[bg=#313244]#{?client_prefix,#[bg=#cba6f7],#[bg=#89dceb]}#[fg=#1e1e2e] #[fg=#cdd6f4,bg=#313244] #S "
         set -g status-left ""
 
-        set -g clock-mode-colour "#82aaff"
-        set -g mode-style "fg=#82aaff,bg=#444a73,bold"
+        set -g clock-mode-colour "#89b4fa"
+        set -g mode-style "fg=#89b4fa,bg=#585b70,bold"
       '';
     };
   };

@@ -24,7 +24,7 @@ _: {
         "Mod+Period".expel-window-from-column = _: {};
 
         "Mod+Return".spawn = lib.getExe self'.packages.myTerminal;
-        "Mod+D".spawn = ["${lib.getExe self'.packages.myRofi}" "-show" "drun"];
+        "Mod+D".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
 
         "Mod+Shift+S".screenshot = _: {};
 
