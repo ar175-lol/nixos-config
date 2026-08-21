@@ -8,13 +8,18 @@
     inherit value;
   };
 in {
-  perSystem = {pkgs, ...}: {
+  perSystem = {
+    pkgs,
+    lib,
+    self',
+    ...
+  }: {
     packages.myRofi = inputs.wrapper-modules.wrappers.rofi.wrap {
       inherit pkgs;
       settings = {
         modes = ["drun" "window" "run"];
         show-icons = true;
-        terminal = "foot";
+        terminal = lib.getExe self'.packages.myTerminal;
         drun-display-format = "{icon} {name}";
         location = 0;
         disable-history = false;

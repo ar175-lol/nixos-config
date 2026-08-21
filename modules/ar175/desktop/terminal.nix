@@ -1,6 +1,6 @@
 {inputs, ...}: {
   perSystem = {pkgs, ...}: {
-    packages.myFoot = inputs.wrapper-modules.wrappers.foot.wrap {
+    packages.myTerminal = inputs.wrapper-modules.wrappers.foot.wrap {
       inherit pkgs;
       settings = {
         main = {

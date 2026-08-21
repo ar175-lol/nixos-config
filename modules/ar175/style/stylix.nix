@@ -28,7 +28,7 @@
     stylix = {
       enable = true;
       polarity = "dark";
-      base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-moon.yaml";
+      image = ../assets/wall1.jpg;
 
       cursor = {
         name = "Bibata-Modern-Classic";

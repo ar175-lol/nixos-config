@@ -14,14 +14,14 @@ _: {
       animations = {
         workspace-switch.spring = _: {
           props = {
-            damping-ratio = 0.8;
-            stiffness = 500;
+            damping-ratio = 1.0;
+            stiffness = 700;
             epsilon = 0.0001;
           };
         };
         window-movement.spring = _: {
           props = {
-            damping-ratio = 0.8;
+            damping-ratio = 1.0;
             stiffness = 500;
             epsilon = 0.0001;
           };
@@ -29,35 +29,41 @@ _: {
         window-resize.spring = _: {
           props = {
             damping-ratio = 0.8;
-            stiffness = 500;
+            stiffness = 400;
             epsilon = 0.0001;
           };
         };
         overview-open-close.spring = _: {
           props = {
-            damping-ratio = 0.8;
+            damping-ratio = 1.0;
             stiffness = 500;
             epsilon = 0.0001;
           };
         };
         window-open = {
-          duration-ms = 200;
-          curve = "ease-out-expo";
+          duration-ms = 220;
+          curve = "ease-out-cubic";
         };
         window-close = {
-          duration-ms = 150;
-          curve = "ease-out-quad";
+          duration-ms = 180;
+          curve = "ease-out-cubic";
         };
       };
-
       input = {
-        keyboard.xkb = {
-          layout = "us,ru";
-          options = "grp:alt_shift_toggle";
+        keyboard = {
+          xkb = {
+            layout = "us,ru";
+            options = "grp:alt_shift_toggle";
+          };
+          repeat-delay = 400;
+          repeat-rate = 25;
         };
         touchpad = {
           tap = _: {};
           natural-scroll = _: {};
+          dwt = _: {};
+          click-method = "clickfinger";
+          scroll-factor = 0.7;
         };
       };
 
