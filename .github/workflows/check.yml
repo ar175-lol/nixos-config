@@ -45,8 +45,5 @@ jobs:
       - name: Build victus
         run: nix build .#nixosConfigurations.victus.config.system.build.toplevel --fallback
 
-      - name: Build dkirk
-        run: nix build .#nixosConfigurations.dkirk.config.system.build.toplevel --fallback
-
       - name: Build iso
         run: nix build .#nixosConfigurations.iso.config.system.build.toplevel --fallback
