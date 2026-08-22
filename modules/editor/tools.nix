@@ -10,7 +10,7 @@ _: {
         ripgrep
         statix
         tree-sitter
-        wl-clipboard
+        deadnix
       ];
 
       autoCmd = [

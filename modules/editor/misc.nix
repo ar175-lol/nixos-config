@@ -35,7 +35,7 @@ _: {
         lint = {
           enable = true;
 
-          lintersByFt.nix = ["statix"];
+          lintersByFt.nix = ["statix" "deadnix"];
 
           autoCmd = {
             event = ["BufWritePost" "BufReadPost" "InsertLeave"];

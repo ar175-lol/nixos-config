@@ -1,7 +1,6 @@
 _: {
   perSystem = {
     lib,
-    pkgs,
     self',
     ...
   }: {
@@ -98,6 +97,10 @@ _: {
       };
 
       window-rules = [
+        {
+          matches = [{app-id = "termfilechooser";}];
+          open-floating = true;
+        }
         {
           geometry-corner-radius = 18;
           clip-to-geometry = true;

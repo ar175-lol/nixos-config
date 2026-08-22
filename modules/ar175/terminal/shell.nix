@@ -33,8 +33,8 @@ _: {
       };
 
       shellAliases = {
-        sync = "nix run .#write-flake && git add . && nh os switch";
-        update = "nix run .#write-flake && git add . && nh os switch --update";
+        sync = "git add . && nix run .#write-flake && nh os switch";
+        update = "git add . && nix run .#write-flake && nh os switch --update";
         clean = "nh clean all";
       };
 
@@ -44,6 +44,9 @@ _: {
         autoload -Uz compinit && compinit -C
         export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=25
         export ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+        bindkey -v
+        export KEYTIMEOUT=25
 
         bindkey '^H' backward-kill-word
         bindkey "^[[1;5D" backward-word

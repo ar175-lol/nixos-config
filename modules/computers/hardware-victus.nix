@@ -35,8 +35,6 @@ _: {
         options = ["fmask=0022" "dmask=0022"];
       };
     };
-    boot.binfmt.emulatedSystems = ["aarch64-linux"]; # for building things!
-
     swapDevices = [];
     nixpkgs.hostPlatform = "x86_64-linux";
   };

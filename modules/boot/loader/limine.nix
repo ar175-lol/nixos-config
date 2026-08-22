@@ -9,7 +9,5 @@ _: {
 
       timeout = 0;
     };
-
-    # stylix.targets.limine.enable = false;
   };
 }

@@ -23,24 +23,21 @@
   };
 
   users.ar175.home.gui = {
-    pkgs,
-    ...
-  }: {
     home.sessionVariables.GTK_THEME = "adw-gtk3-dark";
 
-    dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    dconf.settings."org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      font-name = "JetBrainsMono Nerd Font 11";
+    };
+
+    gtk.font = {
+      package = null;
+      name = "JetBrainsMono Nerd Font 11";
+    };
 
     gtk.iconTheme = {
       package = null;
       name = "TokyoNight-SE";
-    };
-
-    home.pointerCursor = {
-      enable = true;
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Classic";
-      size = 24;
-      gtk.enable = true;
     };
   };
 }

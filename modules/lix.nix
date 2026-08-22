@@ -1,12 +1,12 @@
 {
   nixos.modules.base = {pkgs, ...}: {
     nixpkgs.overlays = [
-      (final: prev: {
+      (_final: prev: {
         inherit (prev.lixPackageSets.stable) nix-eval-jobs;
       })
     ];
 
-    nix.package = pkgs.lixPackageSets.stable.lix;
+    nix.package = pkgs.lixPackageSets.latest.lix;
 
     nix.settings.extra-deprecated-features = [
       "broken-string-indentation"

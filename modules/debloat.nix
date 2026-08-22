@@ -32,6 +32,10 @@ _: {
       speechd.enable = false;
       timesyncd.enable = false;
     };
+    documentation = {
+      enable = false;
+      man.enable = true;
+    };
     security.pam.loginLimits = [
       {
         domain = "*";

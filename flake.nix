@@ -17,12 +17,12 @@
     };
     flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    git-hooks.url = "github:cachix/git-hooks.nix";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     import-tree.url = "github:vic/import-tree";
-    mako-rs.url = "github:ar175-lol/mako-rs";
     ncalayer = {
       url = "github:ar175-lol/ncalayer-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,10 +32,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
-    rustbar = {
-      url = "github:ar175-lol/oxidizedbar";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    treefmt.url = "github:numtide/treefmt-nix";
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";

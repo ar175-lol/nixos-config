@@ -20,8 +20,6 @@
         hostName = config.networking.hostName;
       };
     };
-
-    environment.systemPackages = [pkgs.nautilus];
   };
 
   perSystem = {

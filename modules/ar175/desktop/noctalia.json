@@ -307,7 +307,7 @@
       "favorites": []
     },
     "appLauncher": {
-      "enableClipboardHistory": false,
+      "enableClipboardHistory": true,
       "autoPasteClipboard": false,
       "enableClipPreview": true,
       "clipboardWrapText": true,
@@ -325,8 +325,8 @@
       "showCategories": true,
       "iconMode": "tabler",
       "showIconBackground": false,
-      "enableSettingsSearch": true,
-      "enableWindowsSearch": true,
+      "enableSettingsSearch": false,
+      "enableWindowsSearch": false,
       "enableSessionSearch": true,
       "ignoreMouseInput": false,
       "screenshotAnnotationTool": "",
@@ -447,7 +447,7 @@
       "bluetoothRssiPollIntervalMs": 60000,
       "networkPanelView": "wifi",
       "wifiDetailsViewMode": "grid",
-      "bluetoothDetailsViewMode": "grid",
+      "bluetoothDetailsViewMode": "list",
       "bluetoothHideUnnamedDevices": false,
       "disableDiscoverability": false,
       "bluetoothAutoConnect": true
