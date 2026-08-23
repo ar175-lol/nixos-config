@@ -19,6 +19,7 @@ _: {
             lua
             markdown
             nix
+            yaml
             python
             rust
             toml

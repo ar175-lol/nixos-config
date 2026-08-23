@@ -1,10 +1,9 @@
-name: "build & cache"
-
+name: "Build & Cache"
 on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: 'Tag name for ISO Release'
+        description: 'Tag name for ISO Release (optional)'
         required: false
 permissions:
   contents: write
@@ -24,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: free disk space
+      - name: Free Disk Space (Ubuntu)
         uses: jlumbroso/free-disk-space@v1.3.1
         with:
           tool-cache: false
@@ -42,29 +41,54 @@ jobs:
           name: ar175-lol-nix
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
 
-      - name: build ${{ matrix.target.name }}
+      - name: Build ${{ matrix.target.name }}
         run: nix build "${{ matrix.target.attr }}" --fallback
 
-      - name: upload iso (step 0)
+      - name: Prepare ISO artifact
         if: matrix.target.is_iso
         run: |
           mkdir -p output
           cp result/iso/*.iso output/nixos-installer.iso
 
-      - name: upload iso (step 1)
+      - name: Split ISO into release-sized parts
+        if: matrix.target.is_iso
+        run: |
+          cd output
+          sha256sum nixos-installer.iso > SHA256SUMS
+          split -b 1900M -d --additional-suffix=.part nixos-installer.iso nixos-installer.iso.
+          rm nixos-installer.iso
+          ls -la
+
+      - name: Upload split ISO as workflow artifact
         if: matrix.target.is_iso
         uses: actions/upload-artifact@v4
         with:
-          name: nixos-installer-iso
-          path: output/nixos-installer.iso
-          retention-days: 7
+          name: nixos-installer-iso-parts
+          path: |
+            output/nixos-installer.iso.*.part
+            output/SHA256SUMS
+          retention-days: 90
 
-      - name: upload iso (step 2)
+      - name: Upload split ISO to Release
         if: matrix.target.is_iso && github.event.inputs.tag_name != ''
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.event.inputs.tag_name }}
           target_commitish: ${{ github.sha }}
           name: ${{ github.event.inputs.tag_name }}
-          files: output/nixos-installer.iso
+          files: |
+            output/nixos-installer.iso.*.part
+            output/SHA256SUMS
           fail_on_unmatched_files: true
+          body: |
+            The ISO exceeds GitHub's 2 GiB per-file release limit, so it's
+            split into parts below. To reassemble it after downloading all
+            `nixos-installer.iso.*.part` files and `SHA256SUMS`:
+
+            ```bash
+            cat nixos-installer.iso.*.part > nixos-installer.iso
+            sha256sum -c SHA256SUMS
+            ```
+
+            The `sha256sum -c` step confirms the reassembled ISO is
+            byte-identical to the original build output.
