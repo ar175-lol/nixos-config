@@ -22,8 +22,7 @@ features write into them, machines pull them in later.
 Import chain, defined once in `modules/users.nix`:
 
 ```
-users.<name>.nixos.pc ──> users.<name>.nixos.base ──wires──> home-manager.users.<name>
-                                                                   └──> users.<name>.home.gui
+users.<name>.nixos.pc ──> users.<name>.nixos.base ──> wires
 ```
 
 ## Machines
@@ -42,7 +41,7 @@ nixos.configurations.victus.modules = [
 
 ## Wrapped packages
 
-GUI apps are packaged in-repo via [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules),
+Some apps are packaged in-repo via [nix-wrapper-modules](https://github.com/BirdeeHub/nix-wrapper-modules),
 keeping configs out of `$HOME`:
 
 | Package      | Wraps          | Config source                       |

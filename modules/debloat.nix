@@ -34,6 +34,8 @@ _: {
     };
     documentation = {
       enable = false;
+      dev.enable = false;
+      doc.enable = false;
       man.enable = true;
     };
     security.pam.loginLimits = [
