@@ -1,0 +1,40 @@
+name: "formatting"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**/*.nix"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    name: format & commit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: install nix
+        uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: deadnix fix
+        run: nix run nixpkgs#deadnix -- --edit .
+
+      - name: statix fix
+        run: nix run nixpkgs#statix -- fix .
+
+      - name: alejandra fix
+        run: nix run nixpkgs#alejandra .
+
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(nix): formatting"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"

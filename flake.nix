@@ -6,10 +6,6 @@
   outputs = inputs: import ./outputs.nix inputs;
 
   inputs = {
-    battery-notifier = {
-      url = "github:ar175-lol/battery-notifier";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     disko.url = "github:nix-community/disko";
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -17,7 +13,6 @@
     };
     flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    git-hooks.url = "github:cachix/git-hooks.nix";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -32,7 +27,6 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixvim.url = "github:nix-community/nixvim";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
-    treefmt.url = "github:numtide/treefmt-nix";
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";

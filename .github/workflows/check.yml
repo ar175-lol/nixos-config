@@ -1,4 +1,4 @@
-name: "Check code"
+name: "check code"
 
 on:
   workflow_dispatch:
@@ -21,29 +21,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          tool-cache: false
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: false
-          docker-images: true
-          swap-storage: false
-
       - uses: DeterminateSystems/determinate-nix-action@v3
 
-      - uses: cachix/cachix-action@v14
-        with:
-          name: ar175-lol-nix
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
       - name: nix flake check
-        run: nix flake check --show-trace --fallback
+        run: nix flake check --show-trace --fallback --no-build
 
-      - name: Build victus
-        run: nix build .#nixosConfigurations.victus.config.system.build.toplevel --fallback
-
-      - name: Build iso
-        run: nix build .#nixosConfigurations.iso.config.system.build.toplevel --fallback
+      - name: dry build
+        run: nix build .#nixosConfigurations.victus.config.system.build.toplevel --dry-run

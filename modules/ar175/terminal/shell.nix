@@ -33,8 +33,8 @@ _: {
       };
 
       shellAliases = {
-        sync = "git add . && nix run .#write-flake && nh os switch";
-        update = "git add . && nix run .#write-flake && nh os switch --update";
+        sync = "git add . && nix run .#write-flake && git add . && nh os switch";
+        update = "git add . && nix run .#write-flake && git add . && nh os switch --update";
         clean = "nh clean all";
       };
 
@@ -51,6 +51,8 @@ _: {
         bindkey '^H' backward-kill-word
         bindkey "^[[1;5D" backward-word
         bindkey "^[[1;5C" forward-word
+        bindkey -M viins '^ ' autosuggest-accept
+        bindkey -M vicmd '^ ' autosuggest-accept
 
         accept-line() {
           {
@@ -60,7 +62,6 @@ _: {
           if (( $+functions[_al_f_] )); then
             zle .$WIDGET
           else
-            zle beep
             zle -M "Command unfinished or invalid."
           fi
         }
