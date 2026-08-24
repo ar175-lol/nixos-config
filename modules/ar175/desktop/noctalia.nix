@@ -1,23 +1,16 @@
-{
-  inputs,
-  self,
-  ...
-}: {
-  perSystem = {pkgs, ...}: {
-    packages.myNoctalia = inputs.wrapper-modules.wrappers.noctalia-shell.wrap {
-      inherit pkgs;
-      inherit ((builtins.fromJSON (builtins.readFile ./noctalia.json))) settings;
-
-      outOfStoreConfig = "/home/ar175/.config/noctalia";
-    };
-  };
+{self, ...}: {
+  flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
   users.ar175.nixos.pc = {pkgs, ...}: {
     services.upower.enable = true;
 
     environment.systemPackages = [
-      self.packages.${pkgs.stdenv.hostPlatform.system}.myNoctalia # noctalia itself
-      pkgs.wl-clipboard # fix infinite 'Getting clipboard data'
+      self.packages.${pkgs.stdenv.hostPlatform.system}.myNoctalia
     ];
+
+    nix.settings = {
+      extra-substituters = ["https://noctalia.cachix.org"];
+      extra-trusted-public-keys = ["noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="];
+    };
   };
 }

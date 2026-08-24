@@ -1,12 +1,12 @@
 let
   flakePath = "/home/ar175/nixos-config";
 in {
-  nixos.modules.base = _: {
-    programs.nixvim.plugins.snacks = {
+  nixos.modules.base = {lib, ...}: {
+    programs.nvf.settings.vim.utility.snacks-nvim = {
       enable = true;
 
-      settings = {
-        input = {enabled = false;};
+      setupOpts = {
+        input.enabled = false;
 
         dashboard = {
           enabled = true;
@@ -38,7 +38,7 @@ in {
               action = "<Cmd>lua Snacks.dashboard.pick('oldfiles')<CR>";
             }
             {
-              icon = " ";
+              icon = "";
               key = "c";
               desc = "Config";
               action = "<Cmd>lua Snacks.explorer.open({ cwd = '${flakePath}' })<CR>";
@@ -47,7 +47,7 @@ in {
               icon = " ";
               key = "s";
               desc = "Restore Session";
-              section = "session";
+              action = "<Cmd>lua require('persisted').load()<CR>";
             }
             {
               icon = " ";
@@ -58,8 +58,8 @@ in {
           ];
 
           formats = {
-            key.__raw = "function(item) return { { \"[\", hl = \"special\" }, { item.key, hl = \"key\" }, { \"]\", hl = \"special\" } } end";
-            header = {hl = "SnacksIndent6";};
+            key = lib.mkLuaInline "function(item) return { { \"[\", hl = \"special\" }, { item.key, hl = \"key\" }, { \"]\", hl = \"special\" } } end";
+            header = lib.mkLuaInline "{ \"%s\", hl = \"SnacksIndent6\" }";
           };
 
           sections = [
@@ -89,16 +89,20 @@ in {
           ];
         };
 
-        picker.enabled = true;
-        explorer.enabled = true;
+        picker = {
+          enabled = true;
+          ui_select = true;
+        };
+        explorer = {
+          enabled = true;
+          trash = false;
+        };
         indent.enabled = true;
         rename.enabled = true;
         words.enabled = true;
         image.enabled = false;
         notifier.enabled = true;
         lazygit.enabled = false;
-
-        explorer.trash = false;
       };
     };
   };

@@ -2,6 +2,7 @@ _: {
   perSystem = {
     lib,
     self',
+    pkgs,
     ...
   }: {
     myNiri.settings = {
@@ -66,6 +67,8 @@ _: {
           scroll-factor = 0.7;
         };
       };
+
+      xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
       layout = {
         focus-ring = {

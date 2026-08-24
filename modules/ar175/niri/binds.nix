@@ -23,8 +23,8 @@ _: {
         "Mod+Comma".consume-window-into-column = _: {};
         "Mod+Period".expel-window-from-column = _: {};
         "Mod+Return".spawn = lib.getExe self'.packages.myTerminal;
-        "Mod+D".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher toggle";
-        "Mod+V".spawn-sh = "${lib.getExe self'.packages.myNoctalia} ipc call launcher clipboard";
+        "Mod+D".spawn-sh = "${lib.getExe self'.packages.myNoctalia} msg panel-toggle launcher";
+        "Mod+V".spawn-sh = "${lib.getExe self'.packages.myNoctalia} msg panel-toggle clipboard";
 
         "Mod+Shift+S".screenshot = _: {};
 

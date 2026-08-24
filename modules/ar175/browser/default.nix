@@ -30,6 +30,17 @@ _: {
           "theme.custom_uifont.default" = "Custom";
         };
 
+        sine = {
+          enable = true;
+          mods = [
+            "1b88a6d1-d931-45e8-b6c3-bfdca2c7e9d6"
+            "253a3a74-0cc4-47b7-8b82-996a64f030d5"
+            "b51ff956-6aea-47ab-80c7-d6c047c0d510"
+            "f4866f39-cfd6-4498-ab92-54213b8279dc"
+            "e74cb40a-f3b8-445a-9826-1b1b6e41b846"
+          ];
+        };
+
         extensions = {
           force = true;
           packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
@@ -60,13 +71,13 @@ _: {
           };
         };
 
-        mods = [
-          "1b88a6d1-d931-45e8-b6c3-bfdca2c7e9d6"
-          "253a3a74-0cc4-47b7-8b82-996a64f030d5"
-          "b51ff956-6aea-47ab-80c7-d6c047c0d510"
-          "f4866f39-cfd6-4498-ab92-54213b8279dc"
-          "e74cb40a-f3b8-445a-9826-1b1b6e41b846"
-        ];
+        # mods = [
+        #   "1b88a6d1-d931-45e8-b6c3-bfdca2c7e9d6"
+        #   "253a3a74-0cc4-47b7-8b82-996a64f030d5"
+        #   "b51ff956-6aea-47ab-80c7-d6c047c0d510"
+        #   "f4866f39-cfd6-4498-ab92-54213b8279dc"
+        #   "e74cb40a-f3b8-445a-9826-1b1b6e41b846"
+        # ];
 
         pinsForce = true;
         pinsForceAction = "remove";

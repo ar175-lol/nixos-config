@@ -1,5 +1,5 @@
 {lib, ...}: {
-  nixos.modules.base = _: {
+  nixos.modules.base = {
     networking = {
       wireless.iwd = {
         enable = true;
@@ -15,6 +15,7 @@
             ManagementFrameProtection = "1";
             ControlPortOverNL80211 = true;
             DisableANQP = true;
+            Country = "KZ";
           };
           Rank = {
             BandModifier2_4GHz = 0.5;

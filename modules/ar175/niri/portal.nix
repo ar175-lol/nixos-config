@@ -46,7 +46,7 @@
       extraPortals = [pkgs.xdg-desktop-portal-gnome pkgs.xdg-desktop-portal-termfilechooser];
       config.niri = {
         default = lib.mkForce ["gnome"];
-        "org.freedesktop.impl.portal.FileChooser" = ["termfilechooser"];
+        "org.freedesktop.impl.portal.FileChooser" = lib.mkForce ["termfilechooser"];
         "org.freedesktop.impl.portal.Inhibit" = lib.mkForce ["none"];
       };
     };

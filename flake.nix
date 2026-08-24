@@ -25,7 +25,12 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nixcord.url = "github:FlameFlag/nixcord";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixvim.url = "github:nix-community/nixvim";
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    noctalia-greeter = {
+      url = "github:noctalia-dev/noctalia-greeter";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nvf.url = "github:notashelf/nvf";
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
