@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   perSystem = {pkgs, ...}: {
     packages.myNoctalia = let
       noctaliaV5 = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
