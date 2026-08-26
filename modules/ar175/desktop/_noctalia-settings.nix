@@ -263,7 +263,7 @@
       font_family = "JetBrainsMono NF";
       font_weight = 700;
       format = ''
-{:%H %M}'';
+        {:%H %M}'';
       scale = 0.80000000000000004;
       vertical_format = "{:%H %M}";
     };
