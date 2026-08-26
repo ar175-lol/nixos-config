@@ -1,6 +1,6 @@
 {
-  nixos.modules.base = {
-    programs.nvf.settings.vim = {
+  perSystem = {
+    myNvf.settings = {
       git.gitsigns.enable = true;
 
       utility.yanky-nvim.setupOpts.highlight.on_yank = true;

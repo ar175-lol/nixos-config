@@ -1,6 +1,6 @@
 {
-  nixos.modules.base = _: {
-    programs.nvf.settings.vim = {
+  perSystem = {
+    myNvf.settings = {
       lsp = {
         enable = true;
         formatOnSave = true;
@@ -86,11 +86,6 @@
         python.lsp.servers = ["ruff"];
 
         rust.enable = true;
-
-        markdown = {
-          enable = true;
-          extensions.render-markdown-nvim.enable = true;
-        };
 
         bash.enable = true;
         json.enable = true;

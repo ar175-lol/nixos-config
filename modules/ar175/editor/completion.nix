@@ -1,6 +1,6 @@
 {
-  nixos.modules.base = {lib, ...}: {
-    programs.nvf.settings.vim.autocomplete.blink-cmp = {
+  perSystem = {lib, ...}: {
+    myNvf.settings.autocomplete.blink-cmp = {
       enable = true;
       friendly-snippets.enable = true;
 

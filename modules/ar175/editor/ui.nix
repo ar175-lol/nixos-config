@@ -1,6 +1,6 @@
 {
-  nixos.modules.base = _: {
-    programs.nvf.settings.vim = {
+  perSystem = {
+    myNvf.settings = {
       theme = {
         enable = true;
         name = "catppuccin";

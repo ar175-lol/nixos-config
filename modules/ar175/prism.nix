@@ -12,7 +12,7 @@
         username = "ar175";
       };
 
-      jdks = [pkgs.jdk21];
+      jdks = [pkgs.jdk21 pkgs.jdk17];
     };
   };
 }

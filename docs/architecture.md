@@ -15,15 +15,8 @@ features write into them, machines pull them in later.
 | Option                            | Scope                                    |
 |-----------------------------------|------------------------------------------|
 | `nixos.modules.base`              | every NixOS host                         |
-| `homeManager.modules.base/.gui`   | HM layer of all hosts (CLI vs GUI)       |
 | `users.<name>.nixos.base` / `.pc` | system side of a user (pc imports base)  |
 | `users.<name>.home.base` / `.gui` | home-manager side (gui imports base)     |
-
-Import chain, defined once in `modules/users.nix`:
-
-```
-users.<name>.nixos.pc ──> users.<name>.nixos.base ──> wires
-```
 
 ## Machines
 
@@ -34,8 +27,10 @@ A machine is just a list of scopes turned into `nixosSystem` by `modules/nixos.n
 nixos.configurations.victus.modules = [
   config.nixos.modules.base      # everything common
   config.users.ar175.nixos.pc    # whole ar175 stack
-  { networking.hostName = "victus";
-    system.stateVersion = "26.05"; }
+  { 
+    networking.hostName = "victus";
+    system.stateVersion = "26.05"; 
+  }
 ];
 ```
 
@@ -47,7 +42,7 @@ keeping configs out of `$HOME`:
 | Package      | Wraps          | Config source                       |
 |--------------|----------------|-------------------------------------|
 | `myNiri`     | niri           | `perSystem.myNiri.*`, per-hostname  |
-| `myNoctalia` | noctalia-shell | `noctalia.json`                     |
+| `myNoctalia` | noctalia-shell | `noctalia-settings.nix`             |
 | `myTerminal` | foot           | inline ini                          |
 | `myYazi`     | yazi           | inline toml                         |
 | `myTmux`     | tmux           | inline conf                         |
