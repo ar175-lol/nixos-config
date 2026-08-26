@@ -2,18 +2,19 @@
   config_version = 13;
 
   bar.default = {
-    center = ["workspaces" "audio_visualizer" "widget"];
-    end = ["keyboard_layout" "battery" "volume" "control-center"];
+    center = ["group:g3" "group:g4"];
+    end = ["audio_visualizer" "keyboard_layout" "group:g2"];
     font_family = "JetBrainsMono NF";
     font_weight = 700;
     margin_edge = 0;
     margin_ends = 0;
     position = "left";
-    radius = 10;
+    radius = 22;
     radius_bottom_left = 0;
     radius_top_left = 0;
+    radius_top_right = 22;
     scale = 1.5000000149011612;
-    start = ["launcher" "date" "group:g1"];
+    start = ["launcher_nixos" "workspaces"];
     thickness = 40;
 
     capsule_group = [
@@ -22,11 +23,30 @@
         accordion_direction = "end";
         enabled = true;
         fill = "surface_variant";
-        id = "g1";
-        members = ["sysmon_2" "temp" "ram"];
+        id = "g2";
+        members = ["network" "battery" "volume" "session"];
         opacity = 1.0;
         padding = 6.0;
-        radius = 16.0;
+      }
+      {
+        accordion = false;
+        accordion_direction = "end";
+        enabled = true;
+        fill = "surface_variant";
+        id = "g3";
+        members = ["clock_icon" "clock"];
+        opacity = 1.0;
+        padding = 6.0;
+      }
+      {
+        accordion = false;
+        accordion_direction = "start";
+        enabled = true;
+        fill = "surface_variant";
+        id = "g4";
+        members = ["date_icon" "date"];
+        opacity = 1.0;
+        padding = 6.0;
       }
     ];
   };
@@ -49,7 +69,7 @@
   lockscreen_widgets = {
     enabled = true;
     schema_version = 2;
-    widget_order = ["lockscreen-login-box@eDP-1" "lockscreen-widget-0000000000000001"];
+    widget_order = ["lockscreen-login-box@winit" "lockscreen-login-box@eDP-1" "lockscreen-widget-0000000000000001"];
 
     grid = {
       cell_size = 8;
@@ -66,6 +86,35 @@
         output = "eDP-1";
         placement_height = 1080.0;
         placement_width = 1920.0;
+        rotation = 0.0;
+        type = "login_box";
+
+        settings = {
+          background_color = "surface_variant";
+          background_opacity = 0.88;
+          background_radius = 12.0;
+          center_password_text = false;
+          input_opacity = 1.0;
+          input_radius = 6.0;
+          layout = "regular";
+          show_caps_lock = true;
+          show_keyboard_layout = true;
+          show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
+        };
+      };
+
+      "lockscreen-login-box@winit" = {
+        box_height = 196.0;
+        box_width = 810.0;
+        cx = 937.00323486328125;
+        cy = 890.0;
+        output = "winit";
+        placement_height = 1072.0;
+        placement_width = 1872.0;
         rotation = 0.0;
         type = "login_box";
 
@@ -163,8 +212,10 @@
 
   theme = {
     builtin = "Catppuccin";
-    community_palette = "Catppuccin Mocha Blue";
+    community_palette = "Catppuccin Mocha Mauve-Lavender";
     mode = "dark";
+    source = "community";
+    wallpaper_scheme = "m3-tonal-spot";
 
     templates = {
       enable_builtin_templates = false;
@@ -191,11 +242,37 @@
   };
 
   widget = {
+    active_window = {
+      display = "icon_only";
+    };
+
+    audio_visualizer = {
+      bands = 12;
+      width = 48;
+    };
+
     battery = {
       capsule = true;
       display_mode = "graphic";
-      scale = 0.80000000000000004;
+      scale = 0.90000000000000013;
       show_label = false;
+    };
+
+    clock = {
+      capsule = true;
+      font_family = "JetBrainsMono NF";
+      font_weight = 700;
+      format = ''
+{:%H %M}'';
+      scale = 0.80000000000000004;
+      vertical_format = "{:%H %M}";
+    };
+
+    clock_icon = {
+      glyph = "clock-filled";
+      interactive = false;
+      scale = 0.85000000000000009;
+      type = "custom_button";
     };
 
     control-center = {
@@ -206,50 +283,55 @@
 
     date = {
       capsule = true;
-      font_family = "JetBrainsMono NF";
-      font_weight = 700;
-      scale = 0.65000000000000002;
-      vertical_format = "{:%H}\\n{:%M}\\n-\\n{:%d}\\n{:%m}";
+      format = "{:%d %m}";
+      scale = 0.80000000000000004;
+    };
+
+    date_icon = {
+      glyph = "calendar-month";
+      interactive = false;
+      scale = 0.85000000000000009;
+      type = "custom_button";
     };
 
     keyboard_layout = {
       capsule = true;
       capsule_radius = "auto";
       font_weight = 700;
-      scale = 0.80000000000000004;
-    };
-
-    ram = {
-      scale = 0.80000000000000004;
-      show_value = false;
-    };
-
-    sysmon_2 = {
-      scale = 0.80000000000000004;
-      show_value = false;
-      type = "sysmon";
-    };
-
-    temp = {
       scale = 0.75;
-      show_value = false;
+    };
+
+    launcher_nixos = {
+      custom_image = "/home/ar175/Downloads/NixOS.png";
+      custom_image_colorize = true;
+      type = "custom_button";
+    };
+
+    network = {
+      scale = 0.90000000000000013;
+      show_label = false;
+    };
+
+    session = {
+      scale = 0.90000000000000013;
     };
 
     volume = {
       capsule = true;
       capsule_padding = 8;
-      scale = 0.85000000000000009;
+      scale = 0.90000000000000013;
+      show_label = false;
     };
 
-    widget.type = "thepunkoff/pomodoro:widget";
-
     workspaces = {
-      active_pill_size = 2.0;
+      active_pill_size = 2.3999999999999999;
       capsule = true;
       capsule_radius = "auto";
       font_weight = 700;
       labels_only_when_occupied = true;
       occupied_color = "tertiary";
+      scale = 0.80000000000000004;
+      show_labels = false;
     };
   };
 }

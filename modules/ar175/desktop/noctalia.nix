@@ -9,6 +9,10 @@
       trusted-public-keys = ["noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="];
     };
     environment.systemPackages = [pkgs.wl-clipboard];
+
+    system.activationScripts.noctalia-reset = ''
+      rm -f /home/ar175/.local/state/noctalia/settings.toml
+    '';
   };
 
   perSystem = {pkgs, ...}: {

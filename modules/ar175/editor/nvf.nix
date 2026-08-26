@@ -4,7 +4,12 @@
     inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  perSystem = {config, pkgs, lib, ...}: {
+  perSystem = {
+    config,
+    pkgs,
+    lib,
+    ...
+  }: {
     options.myNvf = {
       settings = lib.mkOption {
         type = lib.types.attrsOf lib.types.anything;
@@ -12,11 +17,12 @@
       };
     };
 
-    config.packages.myNvf = (inputs.nvf.lib.neovimConfiguration {
-      inherit pkgs;
-      modules = [
-        {config.vim = config.myNvf.settings;}
-      ];
-    }).neovim;
+    config.packages.myNvf =
+      (inputs.nvf.lib.neovimConfiguration {
+        inherit pkgs;
+        modules = [
+          {config.vim = config.myNvf.settings;}
+        ];
+      }).neovim;
   };
 }
