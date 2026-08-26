@@ -26,6 +26,11 @@ _: {
         "Mod+D".spawn-sh = "${lib.getExe self'.packages.myNoctalia} msg panel-toggle launcher";
         "Mod+V".spawn-sh = "${lib.getExe self'.packages.myNoctalia} msg panel-toggle clipboard";
 
+        "Mod+Alt+H".set-column-width = "-10%";
+        "Mod+Alt+J".set-window-height = "-10%";
+        "Mod+Alt+K".set-window-height = "+10%";
+        "Mod+Alt+L".set-column-width = "+10%";
+
         "Mod+Shift+S".screenshot = _: {};
 
         "Mod+Slash".show-hotkey-overlay = _: {};

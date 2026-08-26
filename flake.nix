@@ -30,7 +30,10 @@
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvf.url = "github:notashelf/nvf";
+    nvf = {
+      url = "github:notashelf/nvf";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";

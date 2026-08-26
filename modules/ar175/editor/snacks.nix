@@ -1,8 +1,8 @@
 let
   flakePath = "/home/ar175/nixos-config";
 in {
-  nixos.modules.base = {lib, ...}: {
-    programs.nvf.settings.vim.utility.snacks-nvim = {
+  perSystem = {lib, ...}: {
+    myNvf.settings.utility.snacks-nvim = {
       enable = true;
 
       setupOpts = {
@@ -14,43 +14,43 @@ in {
 
           preset.keys = [
             {
-              icon = " ";
+              icon = " ";
               key = "f";
               desc = "Find File";
               action = "<Cmd>lua Snacks.dashboard.pick('files')<CR>";
             }
             {
-              icon = " ";
+              icon = " ";
               key = "n";
               desc = "New File";
               action = "<Cmd>ene | startinsert<CR>";
             }
             {
-              icon = " ";
+              icon = " ";
               key = "g";
               desc = "Find Text";
               action = "<Cmd>lua Snacks.dashboard.pick('live_grep')<CR>";
             }
             {
-              icon = " ";
+              icon = " ";
               key = "r";
               desc = "Recent Files";
               action = "<Cmd>lua Snacks.dashboard.pick('oldfiles')<CR>";
             }
             {
-              icon = "";
+              icon = "";
               key = "c";
               desc = "Config";
               action = "<Cmd>lua Snacks.explorer.open({ cwd = '${flakePath}' })<CR>";
             }
             {
-              icon = " ";
+              icon = " ";
               key = "s";
               desc = "Restore Session";
               action = "<Cmd>lua require('persisted').load()<CR>";
             }
             {
-              icon = " ";
+              icon = " ";
               key = "q";
               desc = "Quit";
               action = "<Cmd>qa<CR>";
@@ -66,21 +66,21 @@ in {
             {padding = 1;}
             {section = "header";}
             {
-              icon = " ";
+              icon = " ";
               title = "Keymaps";
               section = "keys";
               indent = 2;
               padding = 1;
             }
             {
-              icon = " ";
+              icon = " ";
               title = "Recent Files";
               section = "recent_files";
               indent = 2;
               padding = 1;
             }
             {
-              icon = " ";
+              icon = " ";
               title = "Projects";
               section = "projects";
               indent = 2;
