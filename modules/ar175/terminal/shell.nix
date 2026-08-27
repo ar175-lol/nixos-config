@@ -33,7 +33,7 @@ _: {
       };
 
       shellAliases = {
-        sync = "git add . && nix run .#write-flake && git add . && nh os switch";
+        sync = "git add . && nix run .#write-flake && cp ~/.local/state/noctalia/settings.toml ~/nixos-config/modules/ar175/desktop/noctalia.toml && git add . && nh os switch";
         update = "git add . && nix run .#write-flake && git add . && nh os switch --update";
         clean = "nh clean all";
       };

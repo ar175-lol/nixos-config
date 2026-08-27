@@ -12,7 +12,6 @@ _: {
     pkgs,
     ...
   }: let
-    workId = "3e94141e-d73f-44b4-8f28-ac5199d2399c";
     personalId = "534e746a-898e-4284-b874-6c32a5813640";
   in {
     imports = [inputs.zen-browser.homeModules.twilight];
@@ -91,35 +90,29 @@ _: {
 
         spacesForce = true;
         spaces = {
-          "Work" = {
-            id = workId;
+          "Main" = {
+            id = personalId;
             position = 1000;
 
             pins = {
-              "Nix & NixOS" = {
-                id = "38e9bfa2-a183-424d-bf85-664e91829a46";
-                url = "https://search.nixos.org/options?channel=unstable&type=options";
-                position = 151;
-                editedTitle = true;
-              };
-            };
-          };
-          "Personal" = {
-            id = personalId;
-            position = 2000;
-
-            pins = {
-              "Email" = {
-                id = "9cbe689c-65f2-4400-a0ad-5efd052dad4b";
-                url = "https://mail.proton.me/u/1/inbox";
-                position = 251;
-                editedTitle = true;
-              };
-              "Whatsapp" = {
-                id = "e4067f49-45aa-4200-9468-97c7296154f4";
-                url = "https://web.whatsapp.com/";
-                position = 252;
-                editedTitle = true;
+              "Personal" = {
+                id = "31b88035-f50d-4fa4-b051-82c51cf16fbb";
+                isFolderCollapsed = true;
+                position = 100;
+                pins = {
+                  "Email" = {
+                    id = "9cbe689c-65f2-4400-a0ad-5efd052dad4b";
+                    url = "https://mail.proton.me/u/1/inbox";
+                    position = 101;
+                    editedTitle = true;
+                  };
+                  "Whatsapp" = {
+                    id = "e4067f49-45aa-4200-9468-97c7296154f4";
+                    url = "https://web.whatsapp.com/";
+                    position = 102;
+                    editedTitle = true;
+                  };
+                };
               };
             };
           };

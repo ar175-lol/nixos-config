@@ -72,15 +72,27 @@ _: {
 
       layout = {
         focus-ring = {
-          width = 1;
+          width = 2;
           active-color = "#cba6f7";
-          inactive-color = "#45475a";
+          inactive-color = "#1e1e2e";
+          urgent-color = "#f38ba8";
         };
         border = {
           width = 1;
-          active-color = "#89dceb55";
-          inactive-color = "#1e1e2e00";
+          active-color = "#cba6f7";
+          inactive-color = "#1e1e2e";
+          urgent-color = "#f38ba8";
         };
+        shadow = {
+          on = _: {};
+          color = "#11111b70";
+        };
+        tab-indicator = {
+          active-color = "#cba6f7";
+          inactive-color = "#6d10da";
+          urgent-color = "#f38ba8";
+        };
+        insert-hint.color = "#cba6f780";
         gaps = 4;
         struts = {
           left = -1;
@@ -109,21 +121,16 @@ _: {
           clip-to-geometry = true;
           shadow = {
             on = _: {};
-            softness = 20;
-            spread = 2;
-            color = "#00000020";
+            softness = 30;
+            spread = 5;
+            color = "#00000080";
             offset = _: {
               props = {
                 x = 0;
-                y = 2;
+                y = 4;
               };
             };
           };
-        }
-        {
-          matches = [{is-focused = false;}];
-          shadow.off = _: {};
-          opacity = 0.95;
         }
       ];
     };

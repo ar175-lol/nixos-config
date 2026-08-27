@@ -1,7 +1,5 @@
 {inputs, ...}: {
-  flake-file.inputs.noctalia = {
-    url = "github:noctalia-dev/noctalia/cachix";
-  };
+  flake-file.inputs.noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
   users.ar175.nixos.pc = {pkgs, ...}: {
     nix.settings = {
@@ -9,10 +7,6 @@
       trusted-public-keys = ["noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="];
     };
     environment.systemPackages = [pkgs.wl-clipboard];
-
-    system.activationScripts.noctalia-reset = ''
-      rm -f /home/ar175/.local/state/noctalia/settings.toml
-    '';
   };
 
   perSystem = {pkgs, ...}: {
@@ -27,7 +21,7 @@
         key = "configToml";
         relPath = "noctalia-config/config.toml";
         output = "out";
-        content = builtins.readFile ./_noctalia-settings.nix;
+        content = builtins.readFile ./noctalia.toml;
       };
 
       env.NOCTALIA_CONFIG_HOME = "${placeholder "out"}/noctalia-config/";
