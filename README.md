@@ -22,7 +22,7 @@ This configuration uses the following software stack:
 | Hostname | Description |
 | :-------------- | :--------------- |
 | `victus` | Main host |
-| `iso` | In case of __nuclear war__ big boom (iso) |
+| `iso` | In case of ~nuclear war~ big boom (iso) |
 
 ## Usage
 ![WIP](https://media.makeameme.org/created/wip-wip-everywhere-5c2671.jpg)
