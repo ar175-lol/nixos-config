@@ -16,7 +16,7 @@ This configuration uses the following software stack:
 
 > [!NOTE]
 > This configuration may contain some anti-patterns (see [dendritic anti-patterns]()).
-> But __I don't care__ I am happy to **merge** your fixes.
+> But ~I don't care~ I am happy to **merge** your fixes.
 
 ## Hosts
 | Hostname | Description |
