@@ -1,48 +1,101 @@
+<!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable MD013 -->
-<!-- accidentally installed lint for markdown lol -->
 
-# NixOS Configuration
+# Not overengineered NixOS configuration
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?logo=nixos&logoColor=white)
+[![License: MIT](https://shields.io/badge/License-MIT-blue.svg)][mit-url]
 
-A NixOS configuration, that follows [dendritic](https://github.com/mightyiam/dendritic)
+A simple, straightforward NixOS configuration that follows a
+[dendritic pattern][dendritic-url].
+
+This configuration uses the following software stack:
+
+| Component                                                    | Description                                     | Configured Via                                     |
+| :----------------------------------------------------------- | :---------------------------------------------- | :------------------------------------------------- |
+| [niri][niri-url]                                             | Wayland compositor                              | [nix-wrapper-modules][wrapper-url]                 |
+| [noctalia][noctalia-url]                                     | Desktop shell (notifications, status bar, etc.) | [nix-wrapper-modules][wrapper-url]                 |
+| [foot][foot-url] + [zsh][zsh-url] + [starship][starship-url] | Terminal environment                            | NixOS options + [nix-wrapper-modules][wrapper-url] |
+| [neovim][neovim-url]                                         | Main text editor                                | [nvf][nvf-url]                                     |
+| [Zen Browser][zen-url]                                       | Primary web browser                             | [zen-browser-flake][zen-flake-url]                 |
+
+_And many other things that I probably forgot..._
+
+> [!NOTE]
+> This configuration may contain some anti-patterns (see
+> [dendritic anti-patterns][anti-patterns-url]). But ~~I don't care~~ I am happy
+> to **merge** your fixes.
 
 ## Hosts
 
-| Host     | Target                         | Description                                                                                    |
-| -------- | ------------------------------ | ---------------------------------------------------------------------------------------------- |
-| `victus` | `.#nixosConfigurations.victus` | Daily driver laptop: Intel iGPU + NVIDIA dGPU (PRIME offload), user `ar175`                    |
-| `iso`    | `.#nixosConfigurations.iso`    | Rescue/installer ISO: greetd auto-login into niri + noctalia, fish, calamares + recovery tools |
+| Hostname | Description                        |
+| :------- | :--------------------------------- |
+| `victus` | Main host                          |
+| `iso`    | In case of a ~~nuclear war~~ (iso) |
 
-## Install
+## Usage
 
-Boot any NixOS ISO, then:
+### niri binds
 
-```bash
-git clone https://github.com/ar175-lol/nixos-config.git && cd nixos-config
-sudo nix --experimental-features "nix-command flakes" \
-    run github:nix-community/disko -- --mode disko disko/victus.nix
-sudo nix --experimental-features "nix-command flakes" \
-    run github:nix-community/disko -- --mode mount disko/victus.nix
-sudo nixos-install --root /mnt --flake github:ar175-lol/nixos-config#victus
-reboot
-```
+Configured in `modules/ar175/niri/binds.nix`
 
-## Daily driving
+<details>
+  <summary>Focus & window movement</summary>
 
-Rebuilds go through [`nh`](https://github.com/nix-community/nh):
+| Combination          | Action            |
+| :------------------- | :---------------- |
+| `Mod` + `H`          | Focus left        |
+| `Mod` + `L`          | Focus right       |
+| `Mod` + `J`          | Focus down        |
+| `Mod` + `K`          | Focus up          |
+| `Mod` + `Ctrl` + `H` | Move column left  |
+| `Mod` + `Ctrl` + `J` | Move window down  |
+| `Mod` + `Ctrl` + `K` | Move window up    |
+| `Mod` + `Ctrl` + `L` | Move column right |
 
-```bash
-nh os switch              # apply current working tree
-sync                      # alias: stage changes, regenerate flake.nix, switch
-update                    # same, but updates flake.lock first
-clean                     # nh clean all
-```
+</details>
 
-More in [docs/](docs/): [architecture](docs/architecture.md),
-[usage](docs/usage.md), [contributing](docs/contributing.md).
+<details>
+  <summary>Window resize</summary>
 
-## Screenshots
+| Combination         | Action                        |
+| :------------------ | :---------------------------- |
+| `Mod` + `Alt` + `H` | Decrease column width (-10%)  |
+| `Mod` + `Alt` + `J` | Decrease window height (-10%) |
+| `Mod` + `Alt` + `K` | Increase window height (+10%) |
+| `Mod` + `Alt` + `L` | Increase column width (+10%)  |
+| `Mod` + `Comma`     | Consume window into column    |
+| `Mod` + `Period`    | Expel window from column      |
 
-<img width="1920" height="1080" alt="Image" src="https://github.com/user-attachments/assets/0b783426-9afa-4c27-8105-4f41e31e4447" />
+</details>
+
+<details>
+  <summary>Opening apps</summary>
+
+| Combination      | Action                         |
+| :--------------- | :----------------------------- |
+| `Mod` + `Return` | Launch main terminal (`foot`)  |
+| `Mod` + `D`      | Toggle app launcher panel      |
+| `Mod` + `V`      | Toggle clipboard history panel |
+
+</details>
+
+## Credits
+
+Thank you:
+
+- [mightyiam][mightyiam-url] for creating the dendritic pattern.
+
+[mit-url]: https://opensource.org/license/mit/
+[dendritic-url]: https://github.com/mightyiam/dendritic
+[anti-patterns-url]: https://github.com/mightyiam/dendritic#anti-patterns
+[mightyiam-url]: https://github.com/mightyiam
+[niri-url]: https://github.com/YaLTeR/niri
+[noctalia-url]: https://github.com/noctalia-dev/noctalia
+[wrapper-url]: https://github.com/BirdeeHub/nix-wrapper-modules
+[foot-url]: https://codeberg.org/dnkl/foot
+[zsh-url]: https://www.zsh.org/
+[starship-url]: https://starship.rs/
+[neovim-url]: https://github.com/neovim/neovim
+[nvf-url]: https://github.com/NotAShelf/nvf
+[zen-url]: https://zen-browser.app/
+[zen-flake-url]: https://github.com/0xc000022070/zen-browser-flake
