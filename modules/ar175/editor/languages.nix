@@ -82,6 +82,8 @@
 
         go.enable = true;
 
+        markdown.enable = true;
+
         python.enable = true;
         python.lsp.servers = ["ruff"];
 

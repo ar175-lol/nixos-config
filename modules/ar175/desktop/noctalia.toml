@@ -13,7 +13,7 @@ radius_bottom_left = 0
 radius_top_left = 0
 radius_top_right = 22
 scale = 1.5000000149011612
-start = [ "launcher_nixos", "workspaces", "sysmon" ]
+start = [ "launcher_nixos", "workspaces", "group:g1" ]
 thickness = 40
 
     [[bar.default.capsule_group]]
@@ -43,6 +43,16 @@ thickness = 40
     fill = "surface_variant"
     id = "g4"
     members = [ "date_icon", "date" ]
+    opacity = 1.0
+    padding = 6.0
+
+    [[bar.default.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
+    fill = "surface_variant"
+    id = "g1"
+    members = [ "cpu", "ram", "temp" ]
     opacity = 1.0
     padding = 6.0
 
@@ -175,7 +185,7 @@ work-duration = 19
 enabled = []
 
 [shell]
-font_family = "JetBrainsMono NF SemiBold"
+font_family = "JetBrainsMono NF"
 password_style = "random"
 
     [shell.animation]
@@ -205,10 +215,10 @@ password_style = "random"
 builtin = "Catppuccin"
 community_palette = "Catppuccin Mocha Mauve-Lavender"
 mode = "dark"
-wallpaper_scheme = "m3-tonal-spot"
+wallpaper_scheme = "soft"
 
     [theme.templates]
-    enable_builtin_templates = false
+    builtin_ids = [ "niri" ]
     enable_community_templates = false
 
 [wallpaper]
@@ -216,18 +226,18 @@ directory = "/home/ar175/nixos-config/modules/ar175/assets"
 transition_on_startup = true
 
     [wallpaper.default]
-    path = "/home/ar175/nixos-config/modules/ar175/assets/wall4.png"
+    path = "/home/ar175/nixos-config/modules/ar175/assets/tree.png"
 
     [wallpaper.last]
-    path = "/home/ar175/nixos-config/modules/ar175/assets/wall4.png"
+    path = "/home/ar175/nixos-config/modules/ar175/assets/tree.png"
 
     [wallpaper.monitors.eDP-1]
-    path = "/home/ar175/nixos-config/modules/ar175/assets/wall4.png"
+    path = "/home/ar175/nixos-config/modules/ar175/assets/tree.png"
 
     [[wallpaper.favorite]]
     builtin_palette = "Catppuccin"
     palette_source = "builtin"
-    path = "/home/ar175/nixos-config/modules/ar175/assets/wall4.png"
+    path = "/home/ar175/nixos-config/modules/ar175/assets/tree.png"
     theme_mode = "dark"
 
 [widget.active_window]
@@ -262,6 +272,11 @@ capsule = true
 glyph = "user"
 scale = 0.80000000000000004
 
+[widget.cpu]
+scale = 0.80000000000000004
+show_value = false
+visualization = "graph"
+
 [widget.date]
 capsule = true
 format = "{:%d %m}"
@@ -280,18 +295,29 @@ font_weight = 700
 scale = 0.75
 
 [widget.launcher_nixos]
-custom_image = "/home/ar175/Downloads/NixOS.png"
+custom_image = "/home/ar175/nixos-config/modules/ar175/assets/NixOS.png"
 custom_image_colorize = true
 type = "custom_button"
+
+    [widget.launcher_nixos.actions]
+    left = "panel-open launcher"
 
 [widget.network]
 scale = 0.90000000000000013
 show_label = false
 
+[widget.ram]
+scale = 0.80000000000000004
+show_value = false
+
 [widget.session]
 scale = 0.90000000000000013
 
 [widget.sysmon]
+show_value = false
+
+[widget.temp]
+scale = 0.85000000000000009
 show_value = false
 
 [widget.volume]
