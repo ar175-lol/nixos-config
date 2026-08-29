@@ -2,7 +2,7 @@ config_version = 13
 
 [bar.default]
 center = [ "group:g3", "group:g4" ]
-end = [ "audio_visualizer", "keyboard_layout", "group:g2" ]
+end = [ "tray", "audio_visualizer", "keyboard_layout", "group:g2" ]
 font_family = "JetBrainsMono NF"
 font_weight = 700
 margin_edge = 0
@@ -67,6 +67,9 @@ type = "nightlight"
 
 [[control_center.shortcuts]]
 type = "notification"
+
+[[control_center.shortcuts]]
+type = "power_profile"
 
 [dock]
 reserve_space = false

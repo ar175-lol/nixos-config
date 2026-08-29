@@ -7,7 +7,7 @@
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal-new-kernel-no-zfs.nix"
 
     config.nixos.modules.base
-    config.users.nixos.nixos.base
+    config.users.nixos.nixos.pc
 
     {
       nixpkgs.hostPlatform = "x86_64-linux";
