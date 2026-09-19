@@ -89,6 +89,11 @@
 
         rust.enable = true;
 
+        arduino = {
+          enable = true;
+          lsp.enable = true;
+        };
+
         bash.enable = true;
         json.enable = true;
         yaml.enable = true;

@@ -24,11 +24,9 @@ _: {
       coredump.enable = false;
       settings.Manager = {DefaultTimeoutStopSec = "10s";};
     };
+    #The option definition `services.journald.extraConfig' in `/nix/store/3zkj16lvs21dnz4vqdp5xxsyzjmpk5r2-source/modules/debloat.nix, via option nixos.modules.base' no longer has …
+    #Use services.journald.settings.Journal instead.
     services = {
-      journald.extraConfig = ''
-        SystemMaxUse=200M
-        SystemMaxFileSize=50M
-      '';
       speechd.enable = false;
       timesyncd.enable = false;
     };

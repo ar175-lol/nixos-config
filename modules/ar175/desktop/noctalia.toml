@@ -56,6 +56,12 @@ thickness = 40
     opacity = 1.0
     padding = 6.0
 
+[battery.device."/org/freedesktop/UPower/devices/headset_dev_5C_5E_0A_4A_B1_99"]
+warning_threshold = 15
+
+[brightness]
+minimum_brightness = 0.0099999997764825821
+
 [[control_center.shortcuts]]
 type = "wifi"
 
@@ -166,6 +172,7 @@ temperature_night = 5000
 
 [notification]
 history_retention_hours = 2
+layer = "overlay"
 
 [osd]
 position = "top_right"
@@ -218,6 +225,7 @@ password_style = "random"
 builtin = "Catppuccin"
 community_palette = "Catppuccin Mocha Mauve-Lavender"
 mode = "dark"
+source = "builtin"
 wallpaper_scheme = "soft"
 
     [theme.templates]
@@ -247,7 +255,7 @@ transition_on_startup = true
 display = "icon_only"
 
 [widget.audio_visualizer]
-bands = 12
+bands = 18
 width = 48
 
 [widget.battery]
