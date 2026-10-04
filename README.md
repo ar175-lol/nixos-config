@@ -82,7 +82,6 @@ Configured in `modules/ar175/niri/binds.nix`
 ## Credits
 
 Thank you:
-
 - [mightyiam][mightyiam-url] for creating the dendritic pattern.
 
 [mit-url]: https://opensource.org/license/mit/

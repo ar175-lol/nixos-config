@@ -13,11 +13,11 @@
               type = lib.types.singleLineStr;
               default = name;
             };
-            name = lib.mkOption {
+            name = lib.mkOption { # I don't think I should have this option...
               type = lib.types.nullOr lib.types.singleLineStr;
               default = null;
             };
-            email = lib.mkOption {
+            email = lib.mkOption { # Same
               type = lib.types.nullOr lib.types.singleLineStr;
               default = null;
             };

@@ -1,8 +1,12 @@
 _: {
-  nixos.modules.base = {
+  nixos.modules.base = {lib, ...}: {
     networking = {
       nftables.enable = true;
-      firewall.enable = true;
+      firewall =
+        {
+          enable = true;
+        }
+        // lib.genAttrs ["allowedTCPPorts" "allowedUDPPorts"] (_: [53317]);
     };
   };
 }

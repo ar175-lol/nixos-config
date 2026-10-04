@@ -66,6 +66,10 @@ _: {
 
                 "ublock-annoyances"
               ];
+
+              netWhitelist = [
+                "/aternos\\.(?:org|me)/"
+              ];
             };
           };
         };

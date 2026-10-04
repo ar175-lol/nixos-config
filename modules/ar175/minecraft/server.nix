@@ -5,8 +5,12 @@ _: {
     ...
   }: let
     skript = pkgs.fetchurl {
-      url = "https://github.com/SkriptLang/Skript/releases/download/2.16.1/Skript-2.16.1.jar";
-      hash = "sha256-g1ejSLJ82KLPdJmY5K0UvR3KMWACa9MELW0Xz7TJinA=";
+      url = "https://github.com/SkriptLang/Skript/releases/download/2.16.2/Skript-2.16.2.jar";
+      hash = "sha256-FM90PuLHzdAUvGOZPJCSll7ew73s/5OuR2Jv3vXSOxA=";
+    };
+    skbee = pkgs.fetchurl {
+      url = "https://cdn.modrinth.com/data/a0tlbHZO/versions/bTBlzhGZ/SkBee-3.25.4.jar?mr_download_reason=standalone";
+      hash = "sha256-RDdDMOhZeMVsxSAiuvOZi3tqqoeu+TU9+GYzbKZ+m4o=";
     };
   in {
     services.minecraft-server = {
@@ -25,9 +29,12 @@ _: {
       };
     };
 
+    users.users.ar175.extraGroups = ["minecraft"];
+
     systemd.services.minecraft-server.preStart = lib.mkAfter ''
       mkdir -p plugins
       cp -f ${skript} plugins/Skript.jar
+      cp -f ${skbee} plugins/SkBee.jar
     '';
 
     # No autostart: the server only runs when started manually with

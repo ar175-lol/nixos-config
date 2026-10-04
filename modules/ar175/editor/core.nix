@@ -5,7 +5,9 @@
   };
 
   users.ar175.nixos.pc = {pkgs, ...}: {
-    environment.systemPackages = [self.packages.${pkgs.stdenv.hostPlatform.system}.myNvf];
+    environment.systemPackages = [
+      self.packages.${pkgs.stdenv.hostPlatform.system}.myNvf
+    ];
   };
 
   perSystem = {pkgs, ...}: {
