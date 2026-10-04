@@ -22,15 +22,16 @@
           };
         });
       in
-      base.overrideAttrs (_: {
-        # re-pin the dependency closure hash for 3.3.1 (must go through
-        # overrideAttrs; `//` would not reach the already-built .drv env)
-        node-modules = (pkgs.callPackage "${pkgs.path}/pkgs/by-name/eq/equibop/node-modules.nix" {
-          equibop = base;
-        }).overrideAttrs (_: {
-          outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
+        base.overrideAttrs (_: {
+          # re-pin the dependency closure hash for 3.3.1 (must go through
+          # overrideAttrs; `//` would not reach the already-built .drv env)
+          node-modules =
+            (pkgs.callPackage "${pkgs.path}/pkgs/by-name/eq/equibop/node-modules.nix" {
+              equibop = base;
+            }).overrideAttrs (_: {
+              outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
+            });
         });
-      });
       discord.enable = false;
       config = {
         plugins = {
