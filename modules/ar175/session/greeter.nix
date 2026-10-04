@@ -9,7 +9,7 @@
 
     console.useXkbConfig = false;
 
-    programs.noctalia-greeter = {
+    services.displayManager.noctalia-greeter = {
       enable = true;
 
       settings = {

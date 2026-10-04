@@ -1,5 +1,3 @@
-{self, ...}: {
-  users.nixos.nixos.pc = {pkgs, ...}: {
-    environment.systemPackages = [self.packages.${pkgs.stdenv.hostPlatform.system}.myNvf];
-  };
+_: {
+  # How to migrate to Zed with this? Maybe I should keep neovim with just nixd... Anyway, it's future me problems!
 }
