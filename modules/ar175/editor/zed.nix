@@ -1,5 +1,5 @@
 _: {
-  users.ar175.home.gui = { pkgs, ... }: {
+  users.ar175.home.gui = {pkgs, ...}: {
     home.packages = [
       # LSPs
       pkgs.nixd
@@ -32,7 +32,7 @@ _: {
         lsp = {
           nixd = {
             initialization_options = {
-              formatting.command = [ "alejandra" ];
+              formatting.command = ["alejandra"];
 
               options = {
                 nixos = {
@@ -57,7 +57,7 @@ _: {
 
         languages = {
           "Nix" = {
-            language_servers = [ "nixd" ];
+            language_servers = ["nixd"];
             format_on_save = "on";
           };
         };

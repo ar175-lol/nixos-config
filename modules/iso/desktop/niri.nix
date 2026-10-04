@@ -1,5 +1,9 @@
-{self,...}: {
-  users.nixos.nixos.pc = {pkgs, config, ...}: {
+{self, ...}: {
+  users.nixos.nixos.pc = {
+    pkgs,
+    config,
+    ...
+  }: {
     programs.niri = {
       enable = true;
       useNautilus = false;
