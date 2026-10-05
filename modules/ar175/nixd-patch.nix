@@ -2,7 +2,7 @@ _: {
   nixos.modules.base = {
     nixpkgs.overlays = [
       (
-        final: prev: {
+        _final: prev: {
           nixdPatched = prev.nixd.overrideAttrs (old: {
             patches =
               (old.patches or [])
