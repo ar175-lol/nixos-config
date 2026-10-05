@@ -1,5 +1,5 @@
 diff --git a/include/nixd/Controller/Controller.h b/include/nixd/Controller/Controller.h
-index f49fac5..a52b01e 100644
+index f49fac5..cb803bb 100644
 --- a/include/nixd/Controller/Controller.h
 +++ b/include/nixd/Controller/Controller.h
 @@ -12,6 +12,7 @@
@@ -28,12 +28,17 @@ index f49fac5..a52b01e 100644
    llvm::unique_function<void(const lspserver::ConfigurationParams &,
                               lspserver::Callback<llvm::json::Value>)>
        WorkspaceConfiguration;
-@@ -65,6 +77,13 @@ private:
+@@ -65,6 +77,18 @@ private:
    /// \brief Get configuration from LSP client. Update the config.
    void fetchConfig();
  
 +  /// \brief Whether \p C carries no user-provided settings.
 +  [[nodiscard]] static bool isEmptyConfig(const Configuration &C);
++
++  /// \brief Whether the raw settings object \p V contains any key nixd
++  /// understands. Unlike isEmptyConfig() this also notices a config that only
++  /// customises "formatting", which parses to a value equal to the defaults.
++  [[nodiscard]] static bool providesAnySetting(const llvm::json::Value &V);
 +
 +  /// \brief Apply the configuration received via "initializationOptions", if
 +  /// any. Used when "workspace/configuration" is unsupported or empty.
@@ -43,10 +48,10 @@ index f49fac5..a52b01e 100644
        PublishDiagnostic;
    llvm::unique_function<void(const lspserver::WorkDoneProgressCreateParams &,
 diff --git a/lib/Controller/Configuration.cpp b/lib/Controller/Configuration.cpp
-index 3bb28e8..9b18c58 100644
+index 3bb28e8..495d1aa 100644
 --- a/lib/Controller/Configuration.cpp
 +++ b/lib/Controller/Configuration.cpp
-@@ -88,10 +88,17 @@ void Controller::updateConfig(Configuration NewConfig) {
+@@ -88,10 +88,29 @@ void Controller::updateConfig(Configuration NewConfig) {
    }
  }
  
@@ -54,6 +59,18 @@ index 3bb28e8..9b18c58 100644
 +  // "formatting" has a non-empty default, so it cannot indicate emptiness.
 +  return C.options.empty() && C.nixpkgs.expr.empty() &&
 +         C.diagnostic.suppress.empty();
++}
++
++bool Controller::providesAnySetting(const llvm::json::Value &V) {
++  const auto *Obj = V.getAsObject();
++  if (!Obj)
++    return false;
++  // Look at the keys the client actually sent rather than at the parsed values:
++  // "formatting" carries a default, so a config that only customises the
++  // formatter parses to something indistinguishable from an empty one, and
++  // would otherwise be mistaken for "the client configured nothing".
++  return Obj->get("formatting") || Obj->get("options") ||
++         Obj->get("nixpkgs") || Obj->get("diagnostic");
 +}
 +
  void Controller::fetchConfig() {
@@ -64,7 +81,7 @@ index 3bb28e8..9b18c58 100644
        return;
      }
  
-@@ -113,6 +120,12 @@ void Controller::fetchConfig() {
+@@ -113,6 +132,12 @@ void Controller::fetchConfig() {
          return;
        }
  
@@ -77,7 +94,7 @@ index 3bb28e8..9b18c58 100644
        // OK, update the config
        updateConfig(std::move(NewConfig));
      };
-@@ -123,6 +136,19 @@ void Controller::fetchConfig() {
+@@ -123,6 +148,19 @@ void Controller::fetchConfig() {
                           std::move(Action));
  }
  
@@ -98,7 +115,7 @@ index 3bb28e8..9b18c58 100644
      const lspserver::ConfigurationParams &Params,
      lspserver::Callback<llvm::json::Value> Reply) {
 diff --git a/lib/Controller/LifeTime.cpp b/lib/Controller/LifeTime.cpp
-index 0aac76d..163a5d5 100644
+index 0aac76d..6df0153 100644
 --- a/lib/Controller/LifeTime.cpp
 +++ b/lib/Controller/LifeTime.cpp
 @@ -188,13 +188,37 @@ void Controller::
@@ -130,7 +147,7 @@ index 0aac76d..163a5d5 100644
 +        std::lock_guard _(ConfigLock);
 +        InitOptionsConfig = InitConfig;
 +      }
-+      if (!isEmptyConfig(InitConfig))
++      if (providesAnySetting(*Params.rawInitializationOptions))
 +        updateConfig(std::move(InitConfig));
 +    } else {
 +      lspserver::elog("initializationOptions: parse error {0}", Root.getError());
