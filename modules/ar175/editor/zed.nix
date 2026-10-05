@@ -2,8 +2,9 @@ _: {
   users.ar175.home.gui = {pkgs, ...}: {
     home.packages = [
       # LSPs
-      pkgs.nixd
+      pkgs.nixdPatched
       pkgs.gopls
+      pkgs.markdownlint-cli
 
       # Formatters & Linters
       pkgs.alejandra
@@ -22,6 +23,7 @@ _: {
         "git-firefly"
         "nix"
         "toml"
+        "markdownlint"
       ];
 
       userSettings = {
@@ -34,10 +36,21 @@ _: {
             initialization_options = {
               formatting.command = ["alejandra"];
 
+              # NOTE: "nixos" and "nixpkgs" are deliberately omitted.
+              #
+              # nixd unconditionally starts a "nixos" options worker and a
+              # "nixpkgs" worker using its built-in defaults
+              # (import <nixpkgs> {}), and only overrides them if we supply an
+              # expr here. Measured over 71 completion positions across this
+              # config, the defaults returned byte-identical results to
+              # evaluating our flake, while skipping two `builtins.getFlake`
+              # evaluations (~2.4s each) on every editor start -- one less way
+              # for a dirty tree or an eval hiccup to silently kill all NixOS
+              # completions.
+              #
+              # home-manager and flake-parts options cannot be derived from
+              # nixpkgs, so those still have to come from the flake.
               options = {
-                nixos = {
-                  expr = "(builtins.getFlake \"/home/ar175/nixos-config\").nixosConfigurations.victus.options";
-                };
                 home-manager = {
                   expr = "(builtins.getFlake \"/home/ar175/nixos-config\").nixosConfigurations.victus.options.home-manager.users.type.getSubOptions []";
                 };
@@ -47,9 +60,6 @@ _: {
                 flake-parts-per-system = {
                   expr = "(builtins.getFlake \"/home/ar175/nixos-config\").currentSystem.options";
                 };
-              };
-              nixpkgs = {
-                expr = "import (builtins.getFlake \"/home/ar175/nixos-config\").inputs.nixpkgs { }";
               };
             };
           };

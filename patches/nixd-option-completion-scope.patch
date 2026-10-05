@@ -1,0 +1,140 @@
+diff --git a/lib/Controller/Completion.cpp b/lib/Controller/Completion.cpp
+index ffd3e5f..9ca9066 100644
+--- a/lib/Controller/Completion.cpp
++++ b/lib/Controller/Completion.cpp
+@@ -219,15 +219,25 @@ public:
+       : OptionClient(OptionClient), ModuleOrigin(std::move(ModuleOrigin)),
+         ClientSupportSnippet(ClientSupportSnippet) {}
+ 
+-  void completeOptions(const lspserver::Range EditRange,
+-                       std::vector<std::string> Scope, std::string Prefix,
+-                       std::vector<CompletionItem> &Items) {
++  /// \brief Ask the worker for the option fields under \p Scope.
++  ///
++  /// \return Number of completion items appended to \p Items. Zero means this
++  /// provider could not resolve \p Scope at all -- either the worker reported
++  /// an error (e.g. "attrname foo not found in attrset") or the scope holds no
++  /// fields matching \p Prefix. Callers use this to tell "this scope is wrong"
++  /// apart from "this scope is right but happens to be empty".
++  size_t completeOptions(const lspserver::Range EditRange,
++                        std::vector<std::string> Scope, std::string Prefix,
++                        std::vector<CompletionItem> &Items) {
+     std::binary_semaphore Ready(0);
+     OptionCompleteResponse Names;
++    bool Resolved = true;
+     auto OnReply = [&Ready,
+-                    &Names](llvm::Expected<OptionCompleteResponse> Resp) {
++                    &Names,
++                    &Resolved](llvm::Expected<OptionCompleteResponse> Resp) {
+       if (!Resp) {
+         lspserver::elog("option worker reported: {0}", Resp.takeError());
++        Resolved = false;
+         Ready.release();
+         return;
+       }
+@@ -238,6 +248,9 @@ public:
+     AttrPathCompleteParams Params{std::move(Scope), std::move(Prefix)};
+     OptionClient.optionComplete(Params, std::move(OnReply));
+     Ready.acquire();
++    if (!Resolved)
++      return 0;
++    const size_t Before = Items.size();
+     // Now we have "Names", use these to fill "Items".
+     //
+     // When Params.Prefix is empty, the cursor is inside an empty hole and
+@@ -334,14 +347,19 @@ public:
+         addItem(Items, std::move(Item));
+       }
+     }
++    return Items.size() - Before;
+   }
+ };
+ 
+-void completeAttrName(const lspserver::Range EditRange,
++/// \brief Query every configured option provider for \p Scope + \p Prefix.
++/// \return Total number of completion items appended to \p List. Zero means no
++/// provider was able to resolve the scope.
++size_t completeAttrName(const lspserver::Range EditRange,
+                       const std::vector<std::string> &Scope,
+                       const std::string &Prefix,
+                       Controller::OptionMapTy &Options, bool CompletionSnippets,
+                       std::vector<CompletionItem> &List) {
++  const size_t Before = List.size();
+   for (const auto &[Name, Provider] : Options) {
+     AttrSetClient *Client = Options.at(Name)->client();
+     if (!Client) [[unlikely]] {
+@@ -351,6 +369,7 @@ void completeAttrName(const lspserver::Range EditRange,
+     OptionCompletionProvider OCP(*Client, Name, CompletionSnippets);
+     OCP.completeOptions(EditRange, Scope, Prefix, List);
+   }
++  return List.size() - Before;
+ }
+ 
+ void completeAttrPath(const lspserver::Range EditRange, const Node &N,
+@@ -360,14 +379,59 @@ void completeAttrPath(const lspserver::Range EditRange, const Node &N,
+   std::vector<std::string> Scope;
+   using PathResult = FindAttrPathResult;
+   auto R = findAttrPathForOptions(N, PM, Scope);
+-  if (R == PathResult::OK) {
+-    // Construct request.
+-    std::string Prefix = Scope.back();
+-    Scope.pop_back();
+-    {
+-      std::lock_guard _(OptionsLock);
+-      completeAttrName(EditRange, Scope, Prefix, Options, Snippets, Items);
++  if (R != PathResult::OK || Scope.empty())
++    return;
++
++  // The last element is the (possibly empty) prefix being completed.
++  std::string Prefix = Scope.back();
++  Scope.pop_back();
++
++  std::lock_guard _(OptionsLock);
++
++  // Bound how far we are willing to walk back up the path, so that a deep
++  // attribute path cannot turn into a long chain of blocking round-trips.
++  constexpr size_t MaxDroppedPrefixes = 8;
++
++  // "findAttrPath" reconstructs an option path by walking the enclosing
++  // attribute sets. That is right for NixOS/Home-Manager modules, but breaks
++  // down whenever configuration is assigned to a *nested* attribute path with no
++  // intervening function -- the dendritic layout used by this project:
++  //
++  //     users.ar175.nixos.pc = {
++  //       time.timeZone = "Asia/Almaty";
++  //     };
++  //
++  // "users.ar175.nixos.pc" is the module's own plumbing rather than part of the
++  // option path, so the reconstructed scope becomes
++  // ["users","ar175","nixos","pc","time"] and every provider fails with
++  // "attrname users not found in attrset", yielding no completions at all.
++  // Adding a `{...}:` function header happens to hide the problem because the
++  // walk stops at the function body, which is why it appears to come and go.
++  //
++  // There is no sound way to tell statically which leading components are module
++  // plumbing, so try successively shorter suffixes and keep the first scope that
++  // actually resolves. The unmodified path is tried first, so well-formed
++  // modules keep their exact current behaviour and cost exactly one round-trip.
++  for (size_t Dropped = 0;
++       Dropped <= Scope.size() && Dropped <= MaxDroppedPrefixes; ++Dropped) {
++    std::vector<std::string> Candidate(Scope.begin() + Dropped,
++                                       Scope.end());
++
++    // A leading "options" is meaningful for flake-parts, which really does
++    // declare its options as "options.<name>", but NixOS/Home-Manager option
++    // paths are spelled without it. Try both spellings.
++    if (Dropped == 0 && !Candidate.empty() &&
++        Candidate.front() == "options") {
++      std::vector<std::string> Stripped(Candidate.begin() + 1,
++                                        Candidate.end());
++      if (completeAttrName(EditRange, Stripped, Prefix, Options, Snippets,
++                           Items) > 0)
++        return;
+     }
++
++    if (completeAttrName(EditRange, Candidate, Prefix, Options, Snippets,
++                         Items) > 0)
++      return;
+   }
+ }
+ 

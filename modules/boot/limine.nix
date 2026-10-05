@@ -7,7 +7,7 @@ _: {
         maxGenerations = 5;
       };
 
-      timeout = 0;
+      timeout = 2;
     };
   };
 }
