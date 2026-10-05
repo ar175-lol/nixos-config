@@ -6,13 +6,16 @@
       })
     ];
 
-    nix.package = pkgs.lixPackageSets.latest.lix;
-
-    nix.settings.extra-deprecated-features = [
-      "broken-string-indentation"
-      "rec-set-dynamic-attrs"
-      "broken-string-escape"
-      "or-as-identifier"
-    ];
+    nix = {
+      package = pkgs.lixPackageSets.latest.lix;
+      settings = {
+        extra-deprecated-features = [
+          "broken-string-indentation"
+          "rec-set-dynamic-attrs"
+          "broken-string-escape"
+          "or-as-identifier"
+        ];
+      };
+    };
   };
 }

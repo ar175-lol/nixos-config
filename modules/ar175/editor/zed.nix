@@ -135,7 +135,7 @@ _: {
           context = "ProjectPanel";
           bindings = {
             "A" = "project_panel::NewFile";
-            "D" = "project_panel::NewDirectory";
+            "D" = "project_panel::Delete";
           };
         }
       ];

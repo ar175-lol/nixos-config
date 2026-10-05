@@ -21,7 +21,7 @@ _: {
         init.defaultBranch = "main";
         pull.rebase = true;
         push.autoSetupRemote = true;
-        core.editor = "nvim";
+        core.editor = "zeditor -e -w";
       };
     };
     home.packages = [pkgs.gh];

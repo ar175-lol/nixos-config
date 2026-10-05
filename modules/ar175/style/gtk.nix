@@ -15,11 +15,6 @@
       gtk.icon.enable = true;
     };
 
-    # dconf.settings."org/gnome/desktop/interface" = {
-    #   color-scheme = "prefer-dark";
-    #   font-name = "JetBrainsMono Nerd Font 11";
-    # };
-
     gtk = {
       enable = true;
       theme = {

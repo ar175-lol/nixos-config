@@ -1,0 +1,174 @@
+diff --git a/include/nixd/Controller/Controller.h b/include/nixd/Controller/Controller.h
+index f49fac5..a52b01e 100644
+--- a/include/nixd/Controller/Controller.h
++++ b/include/nixd/Controller/Controller.h
+@@ -12,6 +12,7 @@
+ 
+ #include <boost/asio/thread_pool.hpp>
+ 
++#include <optional>
+ #include <set>
+ 
+ namespace nixd {
+@@ -50,6 +51,17 @@ private:
+   std::mutex ConfigLock;
+   Configuration Config; // GUARDED_BY(ConfigLock)
+ 
++  /// \brief Configuration parsed from the "initialize" request's
++  /// "initializationOptions" field, if the client sent any.
++  ///
++  /// Most LSP clients pass server settings this way, but nixd historically only
++  /// consulted "workspace/configuration". Clients that advertise
++  /// workspace.configuration but answer it with an empty object (or do not
++  /// implement it at all) therefore ended up with no configuration whatsoever,
++  /// silently falling back to the built-in defaults. We remember what the client
++  /// sent at initialization time so it can be used as a fallback.
++  std::optional<Configuration> InitOptionsConfig; // GUARDED_BY(ConfigLock)
++
+   llvm::unique_function<void(const lspserver::ConfigurationParams &,
+                              lspserver::Callback<llvm::json::Value>)>
+       WorkspaceConfiguration;
+@@ -65,6 +77,13 @@ private:
+   /// \brief Get configuration from LSP client. Update the config.
+   void fetchConfig();
+ 
++  /// \brief Whether \p C carries no user-provided settings.
++  [[nodiscard]] static bool isEmptyConfig(const Configuration &C);
++
++  /// \brief Apply the configuration received via "initializationOptions", if
++  /// any. Used when "workspace/configuration" is unsupported or empty.
++  void fallbackToInitOptions(std::string_view Reason);
++
+   llvm::unique_function<void(const lspserver::PublishDiagnosticsParams &)>
+       PublishDiagnostic;
+   llvm::unique_function<void(const lspserver::WorkDoneProgressCreateParams &,
+diff --git a/lib/Controller/Configuration.cpp b/lib/Controller/Configuration.cpp
+index 3bb28e8..9b18c58 100644
+--- a/lib/Controller/Configuration.cpp
++++ b/lib/Controller/Configuration.cpp
+@@ -88,10 +88,17 @@ void Controller::updateConfig(Configuration NewConfig) {
+   }
+ }
+ 
++bool Controller::isEmptyConfig(const Configuration &C) {
++  // "formatting" has a non-empty default, so it cannot indicate emptiness.
++  return C.options.empty() && C.nixpkgs.expr.empty() &&
++         C.diagnostic.suppress.empty();
++}
++
+ void Controller::fetchConfig() {
+   auto Action = [this](llvm::Expected<llvm::json::Value> Resp) mutable {
+     if (!Resp) {
+       elog("workspace/configuration: {0}", Resp.takeError());
++      fallbackToInitOptions("workspace/configuration failed");
+       return;
+     }
+ 
+@@ -113,6 +120,12 @@ void Controller::fetchConfig() {
+         return;
+       }
+ 
++      // A client that supports "workspace/configuration" but answers with an
++      // empty object would otherwise silently override whatever it sent us in
++      // "initializationOptions". Prefer the initialization options in that case.
++      if (isEmptyConfig(NewConfig))
++        fallbackToInitOptions("workspace/configuration returned an empty config");
++
+       // OK, update the config
+       updateConfig(std::move(NewConfig));
+     };
+@@ -123,6 +136,19 @@ void Controller::fetchConfig() {
+                          std::move(Action));
+ }
+ 
++void Controller::fallbackToInitOptions(std::string_view Reason) {
++  std::optional<Configuration> Fallback;
++  {
++    std::lock_guard G(ConfigLock);
++    if (InitOptionsConfig && !isEmptyConfig(*InitOptionsConfig))
++      Fallback = *InitOptionsConfig;
++  }
++  if (!Fallback)
++    return;
++  lspserver::elog("{0}, falling back to initializationOptions", Reason);
++  updateConfig(std::move(*Fallback));
++}
++
+ void Controller::workspaceConfiguration(
+     const lspserver::ConfigurationParams &Params,
+     lspserver::Callback<llvm::json::Value> Reply) {
+diff --git a/lib/Controller/LifeTime.cpp b/lib/Controller/LifeTime.cpp
+index 0aac76d..163a5d5 100644
+--- a/lib/Controller/LifeTime.cpp
++++ b/lib/Controller/LifeTime.cpp
+@@ -188,13 +188,37 @@ void Controller::
+       evalExprWithProgress(*Client, getDefaultNixOSOptionsExpr(),
+                            "nixos options");
+   }
+-  try {
++try {
+     Config = parseCLIConfig();
+   } catch (LLVMErrorException &Err) {
+     lspserver::elog("parse CLI config error: {0}, {1}", Err.what(),
+                     Err.takeError());
+     std::exit(-1);
+   }
++
++  // Clients may also pass their settings as "initializationOptions" on the
++  // initialize request. That is the mechanism the LSP spec describes as primary
++  // and the one editors such as Zed actually populate, but nixd historically
++  // only ever consulted "workspace/configuration". Some clients advertise that
++  // capability without ever answering the request, which would leave the
++  // callback in fetchConfig() below pending forever, so apply these settings
++  // eagerly instead of waiting on it. A real "workspace/configuration" reply
++  // still takes precedence and simply overwrites this.
++  if (Params.rawInitializationOptions) {
++    Configuration InitConfig;
++    llvm::json::Path::Root Root;
++    if (fromJSON(*Params.rawInitializationOptions, InitConfig, Root)) {
++      {
++        std::lock_guard _(ConfigLock);
++        InitOptionsConfig = InitConfig;
++      }
++      if (!isEmptyConfig(InitConfig))
++        updateConfig(std::move(InitConfig));
++    } else {
++      lspserver::elog("initializationOptions: parse error {0}", Root.getError());
++    }
++  }
++
+   fetchConfig();
+ }
+ 
+diff --git a/lspserver/include/lspserver/Protocol.h b/lspserver/include/lspserver/Protocol.h
+index c84a4ed..d9a0269 100644
+--- a/lspserver/include/lspserver/Protocol.h
++++ b/lspserver/include/lspserver/Protocol.h
+@@ -688,6 +688,10 @@ struct InitializeParams {
+ 
+   /// User-provided initialization options.
+   InitializationOptions initializationOptions;
++
++  /// The same data as initializationOptions, but not parsed, so that servers
++  /// with their own settings schema can read them.
++  std::optional<llvm::json::Value> rawInitializationOptions;
+ };
+ bool fromJSON(const llvm::json::Value &, InitializeParams &, llvm::json::Path);
+ 
+diff --git a/lspserver/src/Protocol.cpp b/lspserver/src/Protocol.cpp
+index 6ba5110..bf96b87 100644
+--- a/lspserver/src/Protocol.cpp
++++ b/lspserver/src/Protocol.cpp
+@@ -614,6 +614,12 @@ bool fromJSON(const llvm::json::Value &Params, InitializeParams &R,
+     R.rawCapabilities = *RawCaps;
+   O.map("trace", R.trace);
+   O.map("initializationOptions", R.initializationOptions);
++  // Also keep the raw value around. The parsed "InitializationOptions" above is
++  // a clangd-inherited structure that knows nothing about nixd's own settings,
++  // so this is the only way for nixd to read its configuration from the
++  // "initializationOptions" field of the initialize request.
++  if (auto *RawInit = Params.getAsObject()->get("initializationOptions"))
++    R.rawInitializationOptions = *RawInit;
+   return true;
+ }
+ 
