@@ -23,14 +23,21 @@
         });
       in
         base.overrideAttrs (_: {
-          # re-pin the dependency closure hash for 3.3.1 (must go through
-          # overrideAttrs; `//` would not reach the already-built .drv env)
-          node-modules =
-            (pkgs.callPackage "${pkgs.path}/pkgs/by-name/eq/equibop/node-modules.nix" {
-              equibop = base;
-            }).overrideAttrs (_: {
-              outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
-            });
+          # re-pin the dependency closure hash for 3.3.1.
+          #
+          # Referenced through "pkgs.equibop.node-modules" rather than
+          # 'callPackage "${pkgs.path}/..."'. Interpolating pkgs.path into a
+          # string makes the nixpkgs *source* a build input, which is fragile:
+          # it resolves to a different store path depending on how nixpkgs was
+          # fetched, and "nix flake check" in CI (Determinate Nix) fails with
+          #   path '/nix/store/...-nixpkgs-source' is not valid
+          # because that source path is not a valid store path in the eval
+          # context. node-modules is already an attribute of the equibop
+          # package, so there is no reason to import it by path.
+          node-modules = pkgs.equibop.node-modules.overrideAttrs (_: {
+            equibop = base;
+            outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
+          });
         });
       discord.enable = false;
       config = {
