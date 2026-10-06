@@ -4,7 +4,16 @@
     inputs,
     pkgs,
     ...
-  }: {
+  }: let
+    catppuccinGtkTheme = pkgs.catppuccin-gtk.override {
+      accents = [
+        "mauve"
+      ];
+      size = "standard";
+      variant = "mocha";
+    };
+    themeName = "catppuccin-mocha-mauve-standard";
+  in {
     imports = [inputs.catppuccin.homeModules.catppuccin];
 
     catppuccin = {
@@ -18,13 +27,15 @@
     gtk = {
       enable = true;
       theme = {
-        name = "Catppuccin-Mocha-Standard-Mauve-Dark";
-        package = pkgs.catppuccin-gtk.override {
-          accents = ["mauve"];
-          size = "standard";
-          variant = "mocha";
-        };
+        name = themeName;
+        package = catppuccinGtkTheme;
       };
+
+      gtk4.theme = {
+        name = themeName;
+        package = catppuccinGtkTheme;
+      };
+
       font = {
         package = null;
         name = "JetBrainsMono Nerd Font 11";
