@@ -1,7 +1,7 @@
 <!-- markdownlint-disable MD033 -->
 <!-- markdownlint-disable MD013 -->
 
-# Not overengineered NixOS configuration
+# ~~Not~~ overengineered NixOS configuration
 
 [![License: MIT](https://shields.io/badge/License-MIT-blue.svg)][mit-url]
 
@@ -15,10 +15,8 @@ This configuration uses the following software stack:
 | [niri][niri-url]                                             | Wayland compositor                              | [nix-wrapper-modules][wrapper-url]                 |
 | [noctalia][noctalia-url]                                     | Desktop shell (notifications, status bar, etc.) | [nix-wrapper-modules][wrapper-url]                 |
 | [foot][foot-url] + [zsh][zsh-url] + [starship][starship-url] | Terminal environment                            | NixOS options + [nix-wrapper-modules][wrapper-url] |
-| [neovim][neovim-url]                                         | Main text editor                                | [nvf][nvf-url]                                     |
 | [Zen Browser][zen-url]                                       | Primary web browser                             | [zen-browser-flake][zen-flake-url]                 |
-
-_And many other things that I probably forgot..._
+| [Zed][zed-url]                                               | Primary text editor                             | [home-manager][home-manager-url]                   |
 
 > [!NOTE]
 > This configuration may contain some anti-patterns (see
@@ -30,7 +28,7 @@ _And many other things that I probably forgot..._
 | Hostname | Description                        |
 | :------- | :--------------------------------- |
 | `victus` | Main host                          |
-| `iso`    | In case of a ~~nuclear war~~ (iso) |
+| `iso`    | ``In case of a nuclear war~~ iso   |
 
 ## Usage
 
@@ -82,6 +80,7 @@ Configured in `modules/ar175/niri/binds.nix`
 ## Credits
 
 Thank you:
+
 - [mightyiam][mightyiam-url] for creating the dendritic pattern.
 
 [mit-url]: https://opensource.org/license/mit/
@@ -93,8 +92,8 @@ Thank you:
 [wrapper-url]: https://github.com/BirdeeHub/nix-wrapper-modules
 [foot-url]: https://codeberg.org/dnkl/foot
 [zsh-url]: https://www.zsh.org/
-[starship-url]: https://starship.rs/
-[neovim-url]: https://github.com/neovim/neovim
-[nvf-url]: https://github.com/NotAShelf/nvf
+[starship-url]: https://starship.rs/ 
+[zed-url]: https://zed.dev/
+[home-manager-url]: https://github.com/nix-community/home-manager
 [zen-url]: https://zen-browser.app/
 [zen-flake-url]: https://github.com/0xc000022070/zen-browser-flake

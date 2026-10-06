@@ -1,19 +1,10 @@
 _: {
+  # this must stay in "nixos.pc", not "home.gui"
   users.ar175.nixos.pc = {
     programs.starship = {
       enable = true;
       settings = {
         format = "[░▒▓](fg:#a6adc8)$os[](bg:#89b4fa fg:#a6adc8)$directory[](fg:#89b4fa bg:#45475a)$git_branch[](fg:#45475a bg:#1e1e2e)$time[](fg:#1e1e2e)\n[╰─](fg:#45475a)$character";
-
-        os = {
-          style = "bg:#a6adc8 fg:#1e1e2e";
-          format = "[$symbol]($style)";
-          disabled = false;
-          symbols = {
-            Android = "";
-            NixOS = "";
-          };
-        };
 
         directory = {
           style = "fg:#cdd6f4 bg:#89b4fa";
