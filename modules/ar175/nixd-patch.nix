@@ -12,13 +12,16 @@ _: {
   # "attrname users not found in attrset" -- zero completions. Adding a "{...}:"
   # header masks it, which is why the bug seems to come and go.
   #
-  # The second patch additionally makes nixd honour the "initializationOptions"
-  # field of the initialize request. nixd used to read its configuration only
-  # from "workspace/configuration"; Zed advertises that capability but never
-  # answers the request, so every setting under "lsp.nixd" was silently dropped
-  # and nixd ran on its built-in defaults (no home-manager options at all).
+  # Only one patch is needed. nixd reads its configuration exclusively from the
+  # LSP "workspace/configuration" request, which Zed serves from
+  # "lsp.nixd.settings" (see the comment in editor/zed.nix). No patch is
+  # required to make that work.
   #
-  # See ../../patches/README.md for full details and measurements.
+  # The remaining bug has no configuration workaround: nixd rebuilds the option
+  # path for the cursor by walking the enclosing attribute sets, which misfires
+  # on this dendritic layout.
+  #
+  # See ../../patches/README.md for details and measurements.
   # Upstream issues, none of which cover these cases:
   #   https://github.com/nix-community/nixd/issues/835 (also #713, #643, #738, #852)
   nixos.modules.base = {
@@ -28,10 +31,7 @@ _: {
           nixdPatched = prev.nixd.overrideAttrs (old: {
             patches =
               (old.patches or [])
-              ++ [
-                ../../patches/nixd-option-completion-scope.patch
-                ../../patches/nixd-initialization-options.patch
-              ];
+              ++ [../../patches/nixd-option-completion-scope.patch];
             # Deliberately NOT bumping "version".
             #
             # NOTE: this must stay a *separate* attribute instead of overriding

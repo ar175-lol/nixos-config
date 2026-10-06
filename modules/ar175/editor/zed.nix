@@ -33,7 +33,19 @@ _: {
 
         lsp = {
           nixd = {
-            initialization_options = {
+            # NOTE: this must be "settings", not "initialization_options".
+            #
+            # Zed exposes the two LSP config channels under two different keys:
+            #   initialization_options -> the "initialize" request's
+            #                              initializationOptions field
+            #   settings               -> the reply to a "workspace/configuration"
+            #                              request
+            # nixd only ever reads "workspace/configuration", so only "settings"
+            # reaches it. Using "initialization_options" silently discards
+            # everything here and nixd falls back to its built-in defaults
+            # (import <nixpkgs> {} plus stock NixOS options) with no warning --
+            # no home-manager options, no custom formatter.
+            settings = {
               formatting.command = ["alejandra"];
 
               # NOTE: "nixos" and "nixpkgs" are deliberately omitted.
