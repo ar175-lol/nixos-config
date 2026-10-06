@@ -28,5 +28,3 @@ leading `options` stripped, since flake-parts keeps its own options under
 `options.` while NixOS/Home-Manager do not.
 
 Measured over 71 completion positions in this config: 17 fixed, 0 regressions.
-
-Upstream: https://github.com/nix-community/nixd/issues/835 (also #713, #643)
