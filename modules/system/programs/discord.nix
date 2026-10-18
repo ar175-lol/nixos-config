@@ -1,0 +1,95 @@
+{
+  lib,
+  pkgs,
+  inputs,
+  config,
+  ...
+}: let
+  cfg = config.modules.system.programs.discord;
+
+  home = {
+    imports = [inputs.nixcord.homeModules.default];
+
+    programs.nixcord = {
+      enable = true;
+      equibop.enable = true;
+
+      equibop.package = let
+        base = pkgs.equibop.overrideAttrs (_: {
+          version = "3.3.1";
+          src = pkgs.fetchFromGitHub {
+            owner = "Equicord";
+            repo = "Equibop";
+            tag = "v3.3.1";
+            hash = "sha256-cwRwVdrd91JsOw/WVhPdIJYDwWWhpjlHVhowFlfvoCo=";
+          };
+        });
+      in
+        base.overrideAttrs (_: {
+          # Re-pin the dependency closure hash for 3.3.1. This must go through
+          # callPackage so that node-modules is rebuilt *as* 3.3.1 (its version
+          # and name come from the "equibop" argument); overriding the attribute
+          # on pkgs.equibop.node-modules instead leaves the derivation named
+          # for 3.2.2 while carrying 3.3.1 contents, and the fixed-output hash
+          # check then fails.
+          #
+          # The nixpkgs source is taken from the flake input rather than
+          # `pkgs.path`: interpolating pkgs.path makes the nixpkgs source a
+          # build input whose store path is not valid in every eval context, and
+          # `nix flake check` in CI (Determinate Nix) failed with
+          #   path '/nix/store/...-nixpkgs-source' is not valid
+          node-modules =
+            (
+              inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage
+              "${inputs.nixpkgs}/pkgs/by-name/eq/equibop/node-modules.nix"
+              {
+                equibop = base;
+              }
+            )
+              .overrideAttrs (_: {
+              outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
+            });
+        });
+
+      discord.enable = false;
+
+      config.plugins = {
+        consoleJanitor = {
+          enable = true;
+          disableLoggers = true;
+          disableSpotifyLogger = true;
+        };
+        messageLoggerEnhanced = {
+          enable = true;
+          cacheMessagesFromServers = true;
+          hideMessageFromMessageLoggers = true;
+          ignoreBots = true;
+          ignoreSelf = true;
+          saveImages = true;
+          showWhereMessageIsFrom = true;
+        };
+        autoDndWhilePlaying = {
+          enable = true;
+          statusToSet = "dnd";
+        };
+        newGuildSettings = {
+          enable = true;
+          events = true;
+          everyone = true;
+        };
+        customRpc.enable = true;
+        alwaysTrust.enable = true;
+        clearUrls.enable = true;
+        iRememberYou.enable = true;
+        messageNotifier.enable = true;
+        neverPausePreviews.enable = true;
+        fakeNitro.enable = true;
+      };
+    };
+  };
+in {
+  #
+  config = lib.mkIf cfg.enable {
+    home-manager.users = builtins.listToAttrs (map (name: lib.nameValuePair name home) config.myUsers.homes);
+  };
+}

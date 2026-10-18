@@ -1,5 +1,11 @@
-_: {
-  nixos.modules.base = {
+{
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.modules.device.hasBluetooth;
+in {
+  config = lib.mkIf cfg {
     hardware.bluetooth = {
       enable = true;
       powerOnBoot = true;
