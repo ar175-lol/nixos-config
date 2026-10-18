@@ -1,5 +1,11 @@
-_: {
-  users.ar175.nixos.pc = {
+{
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.modules.system.powerSave;
+in {
+  config = lib.mkIf cfg.enable {
     boot.kernelModules = ["msr"];
 
     services = {

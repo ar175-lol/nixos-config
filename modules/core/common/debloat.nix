@@ -1,0 +1,52 @@
+{lib, ...}: {
+  systemd = {
+    services = {
+      ModemManager = {
+        enable = false;
+        wantedBy = lib.mkForce [];
+        unitConfig.masked = "yes";
+      };
+      nscd = {
+        enable = false;
+        wantedBy = lib.mkForce [];
+      };
+    };
+
+    timers."systemd-tmpfiles-clean".enable = false;
+
+    sockets = {
+      "systemd-creds" = {enable = false;};
+      "uuidd" = {enable = false;};
+    };
+
+    coredump.enable = false;
+    settings.Manager.DefaultTimeoutStopSec = "10s";
+  };
+
+  services = {
+    speechd.enable = false;
+    timesyncd.enable = false;
+  };
+
+  documentation = {
+    enable = true;
+    dev.enable = false;
+    doc.enable = false;
+    man.enable = true;
+  };
+
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "hard";
+      item = "core";
+      value = "0";
+    }
+    {
+      domain = "*";
+      type = "soft";
+      item = "core";
+      value = "0";
+    }
+  ];
+}

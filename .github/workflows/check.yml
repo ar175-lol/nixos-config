@@ -27,4 +27,4 @@ jobs:
         run: nix flake check --show-trace --fallback --no-build
 
       - name: dry build
-        run: nix build .#nixosConfigurations.victus.config.system.build.toplevel --dry-run
+        run: nix build .#nixosConfigurations.apollo.config.system.build.toplevel --dry-run
