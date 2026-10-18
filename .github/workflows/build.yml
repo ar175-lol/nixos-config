@@ -11,7 +11,7 @@ jobs:
       matrix:
         target:
           - name: victus
-            attr: .#nixosConfigurations.victus.config.system.build.toplevel
+            attr: .#nixosConfigurations.apollo.config.system.build.toplevel
           - name: iso
             attr: .#nixosConfigurations.iso.config.system.build.toplevel
     steps:
