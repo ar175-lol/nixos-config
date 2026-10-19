@@ -46,7 +46,10 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
-      prism-launcher.url = "github:Diegiwg/PrismLauncher-Cracked";
+      prism-launcher = {
+        url = "github:ar175-lol/PrismLauncher-Cracked";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
 
       wrapper-modules = {
         url = "github:BirdeeHub/nix-wrapper-modules";
