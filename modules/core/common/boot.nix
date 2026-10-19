@@ -2,6 +2,7 @@
   boot = {
     loader.efi.canTouchEfiVariables = true;
 
+    # I hate core dumps
     kernel.sysctl."kernel.core_pattern" = "/dev/null";
 
     tmp.cleanOnBoot = true;

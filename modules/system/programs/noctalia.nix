@@ -7,6 +7,11 @@
   ...
 }: let
   cfg = config.modules.system.programs.noctalia;
+
+  dataDir = ../../../data;
+
+  # For VM: noctalia should have my config, my wallpapers, or I am gonna cry
+  noctaliaToml = lib.replaceStrings ["@DATA@"] ["${dataDir}"] (builtins.readFile ./noctalia.toml);
 in {
   config = lib.mkIf cfg.enable {
     nixpkgs.overlays = [
@@ -21,9 +26,9 @@ in {
 
             constructFiles.config-toml = {
               key = "configToml";
-              relPath = "noctalia-config/config.toml";
+              relPath = "noctalia-config/noctalia/config.toml";
               output = "out";
-              content = builtins.readFile ./noctalia.toml;
+              content = noctaliaToml;
             };
 
             env.NOCTALIA_CONFIG_HOME = "${placeholder "out"}/noctalia-config/";

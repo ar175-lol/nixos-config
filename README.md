@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-NixOS for the Victus laptop and a Calamares installer image.
+NixOS for all my stuff!
 
 ## Layout
 
@@ -18,7 +18,7 @@ modules/
   options/              the option surface: device, profiles, programs, system
   core/
     common/             always on for every host
-    roles/              graphical, workstation, laptop, iso -- imported per host
+    roles/              graphical, workstation, laptop -- imported per host
     profiles/           workstation, gaming -- software bundles
   system/               boot loader, doas, one module per opt-in program
   hardware/             audio, bluetooth, gpu, power, adb, ...
@@ -76,7 +76,7 @@ scope inside it.
 | Host | What it is |
 |---|---|
 | `apollo` | the workstation: niri on Noctalia, nvidia, gaming |
-| `iso` | Calamares installer with a niri desktop on top |
+| `iso` | Calamares installer, plays the `graphical` role |
 
 ## How it fits together
 
@@ -125,9 +125,8 @@ new *kind* of machine) is new plumbing.
 - Home-manager modules read NixOS options via `osConfig`, so a feature and its
   switch are never decided in two places.
 - A feature that configures a home-manager program declares its switch in the
-  NixOS module and injects into every account listed in `myUsers.homes`, which
-  the host sets from its own `users`. Nothing names a user, so adding a second
-  account needs no changes here.
+  NixOS module and injects into every account via `home-manager.sharedModules`.
+  Nothing names a user, so adding a second account needs no changes here.
 
 ## Partitioning
 
@@ -163,8 +162,7 @@ Thank you:
   current layout is a response to.
 - [NotAShelf][notashelf-url] for [nyx][nyx-url], whose structure (a `hosts/`
   directory per machine, a typed machine option, home-manager wired from the
-  host's own user list) shaped this rebuild. Ideas only — the code is MIT and
-  unrelated to nyx's GPL-3.0.
+  host's own user list) shaped this rebuild.
 
 [mit-url]: https://opensource.org/license/mit/
 [dendritic-url]: https://github.com/mightyiam/dendritic

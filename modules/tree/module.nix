@@ -1,6 +1,3 @@
-#
-#
-#
 {
   inputs,
   lib,
@@ -11,12 +8,6 @@
 
   rolesPath = modulePath + /core/roles;
 
-  # Trees imported into every host, whatever its roles:
-  #   options       - the option surface (device capabilities, profiles, programs)
-  #   core/common   - the always-on baseline
-  #   core/profiles - option-gated software bundles
-  #   hardware      - opt-in hardware support behind modules.* flags
-  #   system        - the boot loader and one module per opt-in program
   commonTrees = [
     (modulePath + /options)
     (modulePath + /core/common)
@@ -47,21 +38,13 @@
 
       modules = lib.flatten [
         (map (tree: inputs.import-tree tree) commonTrees)
-
-        # Roles are imported per host: a machine only gets the trees for the
-        # roles it plays. A role directory may hold several modules; all of
-        # them are imported.
         (map (role: inputs.import-tree (rolesPath + "/${role}")) host.roles)
-
         host.extraModules
-
         host.features
 
         {
           networking.hostName = host.hostName;
           system.stateVersion = host.stateVersion;
-
-          myUsers.homes = builtins.attrNames host.users;
         }
 
         (builtins.attrValues (
@@ -139,7 +122,7 @@ in {
               )
             );
             default = {};
-            description = "Accounts to create. Each gets a matching home-manager generation, and features attach to all of them via myUsers.homes.";
+            description = "Accounts to create. Each gets a matching home-manager generation.";
           };
 
           features = lib.mkOption {

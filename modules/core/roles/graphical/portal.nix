@@ -1,8 +1,6 @@
-#
 {
   lib,
   pkgs,
-  config,
   ...
 }: let
   chooserWrapper = pkgs.writeShellScript "termfilechooser-yazi" ''
@@ -41,8 +39,6 @@
     fi
   '';
 in {
-  # A graphical machine gets the desktop portals it needs to function; the
-  # file chooser is routed through the terminal stack.
   xdg.portal = {
     extraPortals = [
       pkgs.xdg-desktop-portal-gnome
@@ -60,16 +56,12 @@ in {
     mode = "0555";
   };
 
-  home-manager.users = builtins.listToAttrs (
-    map (
-      name:
-        lib.nameValuePair name {
-          xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''
-            [filechooser]
-            cmd=/etc/xdg/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
-          '';
-        }
-    )
-    config.myUsers.homes
-  );
+  home-manager.sharedModules = [
+    {
+      xdg.configFile."xdg-desktop-portal-termfilechooser/config".text = ''
+        [filechooser]
+        cmd=/etc/xdg/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
+      '';
+    }
+  ];
 }

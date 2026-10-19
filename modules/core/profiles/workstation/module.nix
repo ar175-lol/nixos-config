@@ -5,8 +5,6 @@
 }: let
   cfg = config.modules.profiles.workstation;
 in {
-  # The everyday software suite. Every flip is mkDefault, so a host can turn
-  # any of it back off without fighting the profile.
   config = lib.mkIf cfg.enable {
     modules.system.programs = {
       browser.enable = lib.mkDefault true;

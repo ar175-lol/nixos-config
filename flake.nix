@@ -34,7 +34,7 @@
       url = "github:NotAShelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    prism-launcher.url = "github:ar175-lol/prism-launcher-flake";
+    prism-launcher.url = "github:Diegiwg/PrismLauncher-Cracked";
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";

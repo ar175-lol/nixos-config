@@ -11,44 +11,37 @@
     {
       prefer-no-csd = true;
 
-      animations = {
-        workspace-switch.spring = _: {
-          props = {
-            damping-ratio = 1.0;
-            stiffness = 700;
-            epsilon = 0.0001;
-          };
-        };
-        window-movement.spring = _: {
-          props = {
-            damping-ratio = 1.0;
-            stiffness = 500;
-            epsilon = 0.0001;
-          };
-        };
-        window-resize.spring = _: {
-          props = {
-            damping-ratio = 0.8;
-            stiffness = 400;
-            epsilon = 0.0001;
-          };
-        };
-        overview-open-close.spring = _: {
-          props = {
-            damping-ratio = 1.0;
-            stiffness = 500;
-            epsilon = 0.0001;
-          };
-        };
-        window-open = {
-          duration-ms = 220;
-          curve = "ease-out-cubic";
-        };
-        window-close = {
-          duration-ms = 180;
-          curve = "ease-out-cubic";
-        };
-      };
+      extraConfig = ''
+        animations {
+          workspace-switch {
+            spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
+          }
+          window-movement {
+            duration-ms 350
+            curve "cubic-bezier" 0.2 0.0 0.0 1.0
+          }
+          window-resize {
+            duration-ms 300
+            curve "cubic-bezier" 0.2 0.0 0.0 1.0
+          }
+          overview-open-close {
+            duration-ms 350
+            curve "cubic-bezier" 0.2 0.0 0.0 1.0
+          }
+          window-open {
+            duration-ms 180
+            curve "cubic-bezier" 0.05 0.7 0.1 1.0
+          }
+          window-close {
+            duration-ms 180
+            curve "cubic-bezier" 0.3 0.0 0.8 0.15
+          }
+          horizontal-view-movement {
+            duration-ms 350
+            curve "cubic-bezier" 0.2 0.0 0.0 1.0
+          }
+        }
+      '';
 
       input = {
         keyboard = {

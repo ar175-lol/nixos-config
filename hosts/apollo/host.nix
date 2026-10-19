@@ -36,11 +36,10 @@ _: {
         };
 
         system = {
+          programs.ncalayer.enable = true;
           loader.enable = true;
           fonts.enable = true;
           automount.enable = true;
-
-          programs.minecraft.offlineUsername = "ar175";
         };
 
         profiles = {

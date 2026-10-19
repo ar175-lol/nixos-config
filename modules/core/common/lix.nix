@@ -8,6 +8,7 @@
   nix = {
     package = pkgs.lixPackageSets.lix_2_96.lix;
 
+    # Disable annoying warnings
     settings.extra-deprecated-features = [
       "broken-string-indentation"
       "rec-set-dynamic-attrs"

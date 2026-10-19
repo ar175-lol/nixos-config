@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   inputs,
   config,
@@ -51,7 +50,5 @@
     };
   };
 in {
-  # Look and feel is part of the session: no option, a graphical host simply
-  # looks like this.
-  config.home-manager.users = builtins.listToAttrs (map (name: lib.nameValuePair name home) config.myUsers.homes);
+  config.home-manager.sharedModules = [home];
 }

@@ -17,6 +17,6 @@
   };
 in {
   config = lib.mkIf cfg.enable {
-    home-manager.users = builtins.listToAttrs (map (name: lib.nameValuePair name home) config.myUsers.homes);
+    home-manager.sharedModules = [home];
   };
 }

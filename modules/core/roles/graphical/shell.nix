@@ -1,9 +1,4 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: let
+{pkgs, ...}: let
   home = {
     programs.zsh = {
       enable = true;
@@ -30,7 +25,7 @@
       };
 
       shellAliases = {
-        sync = "cp ~/.local/state/noctalia/settings.toml ~/nixos-config/modules/system/programs/noctalia.toml && nix run .#write-flake && nix fmt . && git add . && nh os switch";
+        sync = "cp ~/.local/state/noctalia/settings.toml ~/nixos-config/modules/system/programs/noctalia.toml && nix run .#write-flake && nix fmt . && git add . && nh os switch"; # Oh no, hardcoding!!! TODO: fix these hardcodes
         update = "git add . && nix flake update && git add . && sync";
       };
 
@@ -71,12 +66,9 @@
     };
   };
 in {
-  # The interactive shell follows from being graphical, not from a per-host
-  # option: there is no world where this machine is graphical but not
-  # somebody's daily driver.
   config = {
     programs.zsh.enable = true;
 
-    home-manager.users = builtins.listToAttrs (map (name: lib.nameValuePair name home) config.myUsers.homes);
+    home-manager.sharedModules = [home];
   };
 }

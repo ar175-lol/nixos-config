@@ -26,18 +26,6 @@
         });
       in
         base.overrideAttrs (_: {
-          # Re-pin the dependency closure hash for 3.3.1. This must go through
-          # callPackage so that node-modules is rebuilt *as* 3.3.1 (its version
-          # and name come from the "equibop" argument); overriding the attribute
-          # on pkgs.equibop.node-modules instead leaves the derivation named
-          # for 3.2.2 while carrying 3.3.1 contents, and the fixed-output hash
-          # check then fails.
-          #
-          # The nixpkgs source is taken from the flake input rather than
-          # `pkgs.path`: interpolating pkgs.path makes the nixpkgs source a
-          # build input whose store path is not valid in every eval context, and
-          # `nix flake check` in CI (Determinate Nix) failed with
-          #   path '/nix/store/...-nixpkgs-source' is not valid
           node-modules =
             (
               inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage
@@ -88,8 +76,7 @@
     };
   };
 in {
-  #
   config = lib.mkIf cfg.enable {
-    home-manager.users = builtins.listToAttrs (map (name: lib.nameValuePair name home) config.myUsers.homes);
+    home-manager.sharedModules = [home];
   };
 }

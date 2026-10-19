@@ -1,35 +1,23 @@
-{
-  lib,
-  config,
-  ...
-}: let
-  homeDir = name: config.users.users.${name}.home or "/home/${name}";
-in {
-  # XDG directories and mime associations are part of the session, not a
-  # choice.
-  config.home-manager.users = builtins.listToAttrs (
-    map (
-      name:
-        lib.nameValuePair name {
-          xdg = {
-            userDirs = {
-              enable = true;
-              createDirectories = true;
+_: {
+  config.home-manager.sharedModules = [
+    ({config, ...}: {
+      xdg = {
+        userDirs = {
+          enable = true;
+          createDirectories = true;
 
-              download = "${homeDir name}/Downloads";
-              desktop = "${homeDir name}/Desktop";
-              documents = "${homeDir name}/Documents";
-              music = "${homeDir name}/Music";
-              videos = "${homeDir name}/Videos";
-              pictures = "${homeDir name}/Pictures";
+          download = "${config.home.homeDirectory}/Downloads";
+          desktop = "${config.home.homeDirectory}/Desktop";
+          documents = "${config.home.homeDirectory}/Documents";
+          music = "${config.home.homeDirectory}/Music";
+          videos = "${config.home.homeDirectory}/Videos";
+          pictures = "${config.home.homeDirectory}/Pictures";
 
-              templates = null;
-              publicShare = null;
-            };
-            mimeApps.enable = true;
-          };
-        }
-    )
-    config.myUsers.homes
-  );
+          templates = null;
+          publicShare = null;
+        };
+        mimeApps.enable = true;
+      };
+    })
+  ];
 }

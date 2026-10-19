@@ -1,7 +1,3 @@
-#
-# Live installer environment. Owns the ISO-specific overrides: networking
-# that works anywhere, a forced kernel, installer tooling and a fish shell
-# for the `nixos` user.
 {
   lib,
   pkgs,

@@ -64,7 +64,7 @@
               ];
 
               netWhitelist = [
-                "/aternos\\.(?:org|me)/"
+                "/aternos\\.(?:org|me)/" # Annoying "You are using an adblocker!"...
               ];
             };
           };
@@ -142,6 +142,6 @@
   };
 in {
   config = lib.mkIf cfg.enable {
-    home-manager.users = builtins.listToAttrs (map (name: lib.nameValuePair name home) config.myUsers.homes);
+    home-manager.sharedModules = [home];
   };
 }

@@ -1,15 +1,5 @@
-{
-  inputs,
-  lib,
-  ...
-}: {
+{inputs, ...}: {
   imports = [inputs.home-manager.nixosModules.home-manager];
-
-  options.myUsers.homes = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = [];
-    description = "Accounts that should receive a home-manager generation.";
-  };
 
   config.home-manager = {
     useGlobalPkgs = true;
