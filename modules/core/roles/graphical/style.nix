@@ -1,7 +1,6 @@
 {
   pkgs,
   inputs,
-  config,
   ...
 }: let
   catppuccinGtkTheme = pkgs.catppuccin-gtk.override {
