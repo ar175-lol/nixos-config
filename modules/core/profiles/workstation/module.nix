@@ -15,6 +15,7 @@ in {
       opencode.enable = lib.mkDefault true;
       discord.enable = lib.mkDefault true;
       telegram.enable = lib.mkDefault true;
+      localsend.enable = lib.mkDefault true;
       libreoffice.enable = lib.mkDefault true;
       obs.enable = lib.mkDefault true;
       kdenlive.enable = lib.mkDefault true;

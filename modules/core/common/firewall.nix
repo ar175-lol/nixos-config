@@ -1,10 +1,6 @@
-{lib, ...}: {
+{...}: {
   networking = {
     nftables.enable = true;
-    firewall =
-      {
-        enable = true;
-      }
-      // lib.genAttrs ["allowedTCPPorts" "allowedUDPPorts"] (_: [53317]);
+    firewall.enable = true;
   };
 }

@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.modules.system.programs.virtualisation;
@@ -9,6 +10,11 @@ in {
     virtualisation.libvirtd = {
       enable = true;
       onBoot = "ignore";
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = true;
+      };
       onShutdown = "suspend";
     };
 

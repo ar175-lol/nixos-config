@@ -13,6 +13,7 @@
 
     features = {
       modules.system.programs.greeter.enable = false;
+      modules.system.programs.neovim.enable = true;
     };
 
     extraModules = [

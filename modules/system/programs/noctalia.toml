@@ -133,11 +133,11 @@ widget_order = [ "lockscreen-login-box@winit", "lockscreen-login-box@eDP-1", "lo
     [lockscreen_widgets.widget."lockscreen-login-box@winit"]
     box_height = 196.0
     box_width = 810.0
-    cx = 937.00323486328125
+    cx = 467.0
     cy = 890.0
     output = "winit"
     placement_height = 1072.0
-    placement_width = 1872.0
+    placement_width = 933.0
     rotation = 0.0
     type = "login_box"
 

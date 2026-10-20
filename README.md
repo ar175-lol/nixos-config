@@ -22,16 +22,18 @@ modules/
     profiles/           workstation, gaming -- software bundles
   system/               boot loader, doas, one module per opt-in program
   hardware/             audio, bluetooth, gpu, power, adb, ...
-data/                  files the modules reference but that are not modules
+data/                  images referenced by modules
 ```
+
+Files under `modules/` whose names start with `_` hold shared configuration
+or data and are skipped by import-tree.
 
 ## Machines
 
 Machines are entries in the `hosts` option, one directory each under `hosts/`,
 listed in `hosts/default.nix`. Each contributes a `host.nix`; the directory can
 hold more (a kernel, a filesystem layout, per-concern modules) without changing
-anything else. Adding a machine is a new directory plus one line.
-
+anything else. Adding a machine is a new directory plus one line. For example, here is my `apollo` host:
 ```nix
 hosts.apollo = {
   enable = true;

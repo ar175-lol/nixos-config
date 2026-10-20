@@ -19,6 +19,7 @@ in {
 
     discord.enable = mkEnableOption "Discord";
     telegram.enable = mkEnableOption "Telegram";
+    localsend.enable = mkEnableOption "LocalSend";
 
     obs.enable = mkEnableOption "OBS Studio";
     kdenlive.enable = mkEnableOption "Kdenlive";
