@@ -2,8 +2,8 @@
   perSystem = {system, ...}: let
     pkgs = inputs.nixpkgs.legacyPackages.${system};
 
-    neovim =
-      (inputs.nvf.lib.neovimConfiguration {
+    inherit
+      ((inputs.nvf.lib.neovimConfiguration {
         inherit pkgs;
 
         modules = [
@@ -15,7 +15,9 @@
             config.vim = import ../system/programs/_neovim.nix {inherit lib pkgs;};
           })
         ];
-      }).neovim;
+      }))
+      neovim
+      ;
   in {
     packages.myNeovim = neovim;
 
