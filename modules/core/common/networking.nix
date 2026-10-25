@@ -14,7 +14,7 @@
           ManagementFrameProtection = "1";
           ControlPortOverNL80211 = true;
           DisableANQP = true;
-          Country = "KZ"; # Without adding this, you will not get 5GHz or more
+          Country = "KZ"; # Without adding this, you will not get 5GHz WiFI
         };
         Rank = {
           BandModifier2_4GHz = 0.5;

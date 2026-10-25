@@ -14,9 +14,9 @@ in {
           flake = "${config.home.homeDirectory}/nixos-config";
         };
 
-        home.packages = with pkgs; [
-          nix-output-monitor
-          nvd
+        home.packages = [
+          pkgs.nix-output-monitor
+          pkgs.nvd
         ];
       })
     ];

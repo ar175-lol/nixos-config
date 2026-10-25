@@ -12,13 +12,18 @@
 
   home = {
     imports = [inputs.catppuccin.homeModules.catppuccin];
-
     catppuccin = {
       enable = true;
       autoEnable = true;
       flavor = "mocha";
       accent = "mauve";
       gtk.icon.enable = true;
+      kvantum.enable = false;
+    };
+
+    qt = {
+      enable = true;
+      platformTheme.name = "gtk3";
     };
 
     gtk = {

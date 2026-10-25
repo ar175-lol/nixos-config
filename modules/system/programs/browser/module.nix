@@ -15,9 +15,20 @@
       enable = true;
       setAsDefaultBrowser = true;
 
-      policies = import ./_browser-policies.nix;
+      policies = import ./_policies.nix;
 
       profiles.default = {
+        presets.catppuccin = {
+          enable = true;
+          flavor = "Mocha";
+          accent = "Mauve";
+        };
+
+        search = {
+          force = true;
+          default = "google";
+        };
+
         settings = {
           "zen.view.compact.enable-at-startup" = true;
           "zen.window-sync.enabled" = true;
@@ -41,6 +52,7 @@
           packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
             ublock-origin
             sponsorblock
+            stylus
           ];
 
           settings = {

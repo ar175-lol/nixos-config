@@ -20,13 +20,16 @@ modules/
     common/             always on for every host
     roles/              graphical, workstation, laptop -- imported per host
     profiles/           workstation, gaming -- software bundles
-  system/               boot loader, doas, one module per opt-in program
+  system/               boot loader, doas, opt-in programs (dirs when they need data)
   hardware/             audio, bluetooth, gpu, power, adb, ...
-data/                  images referenced by modules
 ```
 
+Assets used by a program live beside it, e.g.
+`system/programs/noctalia/assets/`.
+
 Files under `modules/` whose names start with `_` hold shared configuration
-or data and are skipped by import-tree.
+or data and are skipped by import-tree. Flake-level package modules such as
+`system/programs/neovim/_package.nix` are imported explicitly by `outputs.nix`.
 
 ## Machines
 

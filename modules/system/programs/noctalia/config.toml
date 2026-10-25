@@ -77,6 +77,17 @@ type = "notification"
 [[control_center.shortcuts]]
 type = "power_profile"
 
+[desktop_widgets]
+schema_version = 2
+widget_order = []
+
+    [desktop_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [desktop_widgets.widget]
+
 [dock]
 reserve_space = false
 show_dots = true
@@ -172,8 +183,7 @@ widget_order = [ "lockscreen-login-box@winit", "lockscreen-login-box@eDP-1", "lo
 [nightlight]
 enabled = true
 force = true
-temperature_day = 5000
-temperature_night = 5000
+temperature_day = 4400
 
 [notification]
 history_retention_hours = 2
@@ -200,6 +210,7 @@ work-duration = 19
 enabled = []
 
 [shell]
+avatar_path = "/home/ar175/.face.jpg"
 font_family = "JetBrainsMono NF"
 password_style = "random"
 polkit_agent = true
@@ -208,19 +219,33 @@ polkit_agent = true
     speed = 0.5000000074505806
 
     [shell.launcher]
-    pinned = [ "zen-twilight" ]
-    show_app_origin_indicator = false
+    categories = false
+    layout = "simple"
+    pinned = []
+    width = 600
 
         [shell.launcher.providers.calculator]
-        global = true
-        prefix = ">calc"
+        global = false
+        prefix = "calc"
 
         [shell.launcher.providers.emoji]
-        prefix = ">emoji"
+        global = false
+        prefix = "emoji"
+
+        [shell.launcher.providers.panels]
+        prefix = "pan"
+
+        [shell.launcher.providers.session]
+        prefix = "session"
+
+        [shell.launcher.providers.wallpaper]
+        prefix = "wall"
+
+        [shell.launcher.providers.windows]
+        prefix = "win"
 
     [shell.panel]
-    border_color = "primary"
-    control_center_placement = "floating"
+    border_color = "on_primary"
     floating_offset = 7
     open_near_click_control_center = true
     session_placement = "floating"
@@ -234,31 +259,30 @@ polkit_agent = true
 
 [theme]
 builtin = "Catppuccin"
-community_palette = "ADW"
+community_palette = "Catppuccin Mocha Pink"
 mode = "dark"
-source = "builtin"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
     enable_community_templates = false
 
 [wallpaper]
-directory = "/home/ar175/nixos-config/data"
+directory = "@ASSETS@"
 transition_on_startup = true
 
     [wallpaper.default]
-    path = "/home/ar175/nixos-config/data/tree.png"
+    path = "@ASSETS@/tree.png"
 
     [wallpaper.last]
-    path = "/home/ar175/nixos-config/data/tree.png"
+    path = "@ASSETS@/tree.png"
 
     [wallpaper.monitors.eDP-1]
-    path = "/home/ar175/nixos-config/data/tree.png"
+    path = "@ASSETS@/tree.png"
 
     [[wallpaper.favorite]]
     builtin_palette = "Catppuccin"
     palette_source = "builtin"
-    path = "/home/ar175/nixos-config/data/tree.png"
+    path = "@ASSETS@/tree.png"
     theme_mode = "dark"
 
 [widget.active_window]
@@ -316,7 +340,7 @@ font_weight = 700
 scale = 0.75
 
 [widget.launcher_nixos]
-custom_image = "/home/ar175/nixos-config/data/NixOS.png"
+custom_image = "@ASSETS@/NixOS.png"
 custom_image_colorize = true
 type = "custom_button"
 

@@ -11,9 +11,9 @@ in {
       pkgs.libreoffice-stable
       pkgs.simple-scan
     ];
-    fonts.packages = with pkgs; [
-      corefonts
-      dejavu_fonts
+    fonts.packages = [
+      pkgs.corefonts
+      pkgs.dejavu_fonts
     ];
   };
 }

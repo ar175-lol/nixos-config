@@ -12,8 +12,11 @@
     roles = ["graphical"];
 
     features = {
-      modules.system.programs.greeter.enable = false;
-      modules.system.programs.neovim.enable = true;
+      modules.system.programs = {
+        greeter.enable = false;
+        neovim.enable = true;
+        git.enable = true;
+      };
     };
 
     extraModules = [

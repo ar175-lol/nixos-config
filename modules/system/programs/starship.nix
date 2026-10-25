@@ -9,10 +9,10 @@ in {
     programs.starship = {
       enable = true;
       settings = {
-        format = "[░▒▓](fg:#a6adc8)$os[](bg:#89b4fa fg:#a6adc8)$directory[](fg:#89b4fa bg:#45475a)$git_branch[](fg:#45475a bg:#1e1e2e)$time[](fg:#1e1e2e)\n[╰─](fg:#45475a)$character";
+        format = "[░▒▓](fg:#a6adc8)$os[](bg:#cba6f7 fg:#a6adc8)$directory[](fg:#cba6f7 bg:#45475a)$git_branch[](fg:#45475a bg:#1e1e2e)$time[](fg:#1e1e2e)\n[╰─](fg:#45475a)$character";
 
         directory = {
-          style = "fg:#cdd6f4 bg:#89b4fa";
+          style = "fg:#1e1e2e bg:#cba6f7";
           format = "[ $path ]($style)";
           truncation_length = 3;
           truncation_symbol = "../";
@@ -27,7 +27,7 @@ in {
         git_branch = {
           symbol = "";
           style = "bg:#45475a";
-          format = "[[ $symbol $branch ](fg:#89b4fa bg:#45475a)]($style)";
+          format = "[[ $symbol $branch ](fg:#cba6f7 bg:#45475a)]($style)";
         };
 
         time = {
@@ -39,7 +39,7 @@ in {
 
         character = {
           format = "$symbol ";
-          success_symbol = "[❯](bold #89b4fa)";
+          success_symbol = "[❯](bold #cba6f7)";
           error_symbol = "[❯](bold #f38ba8)";
         };
       };

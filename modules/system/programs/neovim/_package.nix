@@ -3,7 +3,7 @@
     pkgs = inputs.nixpkgs.legacyPackages.${system};
 
     inherit
-      ((inputs.nvf.lib.neovimConfiguration {
+      (inputs.nvf.lib.neovimConfiguration {
         inherit pkgs;
 
         modules = [
@@ -12,10 +12,10 @@
             pkgs,
             ...
           }: {
-            config.vim = import ../system/programs/_neovim.nix {inherit lib pkgs;};
+            config.vim = import ./_settings.nix {inherit lib pkgs;};
           })
         ];
-      }))
+      })
       neovim
       ;
   in {

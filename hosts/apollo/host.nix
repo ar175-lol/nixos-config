@@ -29,14 +29,25 @@ _: {
           hasSound = true;
           hasBluetooth = true;
 
+          cpu.type = "intel";
+
           gpu = {
             intel.enable = true;
-            nvidia.enable = true;
+            nvidia = {
+              enable = true;
+              prime = {
+                enable = true;
+                intelBusId = "PCI:0:2:0";
+                nvidiaBusId = "PCI:1:0:0";
+              };
+            };
           };
         };
 
         system = {
-          programs.ncalayer.enable = true;
+          programs = {
+            ncalayer.enable = true;
+          };
           loader.enable = true;
           fonts.enable = true;
           automount.enable = true;
@@ -44,7 +55,7 @@ _: {
 
         profiles = {
           workstation.enable = true;
-          gaming.enable = true;
+          gaming.enable = false;
         };
       };
     };

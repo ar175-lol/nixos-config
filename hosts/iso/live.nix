@@ -57,11 +57,11 @@
     '';
 in {
   config = {
-    isoImage.squashfsCompression = "zstd";
-
     networking = {
       networkmanager.enable = lib.mkForce false;
       dhcpcd.enable = true;
+      dhcpcd.denyInterfaces = ["wlan*"];
+
       wireless.enable = lib.mkForce false;
     };
 

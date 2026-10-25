@@ -12,9 +12,9 @@
   viAlias = true;
   vimAlias = true;
 
-  extraPackages = with pkgs; [
-    ripgrep
-    fd
+  extraPackages = [
+    pkgs.ripgrep
+    pkgs.fd
   ];
 
   opts = {
@@ -133,151 +133,137 @@
 
   keymaps = [
     {
+      key = "<ESC>";
+      mode = "n";
+      lua = false;
+      action = "<cmd>noh<cr>";
+      desc = "Clear search highlights";
+    }
+    {
       key = "<leader>e";
       mode = "n";
       lua = true;
       action = "function() Snacks.explorer.open() end";
-      desc = "Explorer [Snacks]";
+      desc = "Explorer";
     }
     {
       key = "<leader>ff";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.files({ hidden = true, ignored = true }) end";
-      desc = "Find files [Snacks]";
+      desc = "Find files";
     }
     {
       key = "<leader>fg";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.grep() end";
-      desc = "Live grep [Snacks]";
+      desc = "Live grep";
     }
     {
       key = "<leader>fb";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.buffers() end";
-      desc = "Buffers [Snacks]";
+      desc = "Buffers";
     }
     {
       key = "<leader>fh";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.help() end";
-      desc = "Help tags [Snacks]";
+      desc = "Help tags";
     }
     {
       key = "<leader>ft";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.files() end";
-      desc = "Open [Snacks]";
+      desc = "Open";
     }
     {
       key = "<leader>fr";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.resume() end";
-      desc = "Resume (previous search) [Snacks]";
+      desc = "Resume (previous search)";
     }
     {
       key = "<leader>fvf";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.git_files() end";
-      desc = "Git files [Snacks]";
+      desc = "Git files";
     }
     {
       key = "<leader>fvcw";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.git_log() end";
-      desc = "Git commits [Snacks]";
+      desc = "Git commits";
     }
     {
       key = "<leader>fvcb";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.git_log_file() end";
-      desc = "Git buffer commits [Snacks]";
+      desc = "Git buffer commits";
     }
     {
       key = "<leader>fvb";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.git_branches() end";
-      desc = "Git branches [Snacks]";
+      desc = "Git branches";
     }
     {
       key = "<leader>fvs";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.git_status() end";
-      desc = "Git status [Snacks]";
+      desc = "Git status";
     }
     {
       key = "<leader>fvx";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.git_stash() end";
-      desc = "Git stash [Snacks]";
-    }
-    {
-      key = "<leader>flsb";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.lsp_symbols() end";
-      desc = "LSP Document Symbols [Snacks]";
-    }
-    {
-      key = "<leader>flsw";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.lsp_workspace_symbols() end";
-      desc = "LSP Workspace Symbols [Snacks]";
+      desc = "Git stash";
     }
     {
       key = "<leader>flr";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.lsp_references() end";
-      desc = "LSP References [Snacks]";
-    }
-    {
-      key = "<leader>fli";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.lsp_implementations() end";
-      desc = "LSP Implementations [Snacks]";
+      desc = "LSP References";
     }
     {
       key = "<leader>flD";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.lsp_definitions() end";
-      desc = "LSP Definitions [Snacks]";
+      desc = "LSP Definitions";
     }
     {
       key = "<leader>flt";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.lsp_type_definitions() end";
-      desc = "LSP Type Definitions [Snacks]";
+      desc = "LSP Type Definitions ";
     }
     {
       key = "<leader>fld";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.diagnostics({ cwd = true }) end";
-      desc = "Diagnostics [Snacks]";
+      desc = "Diagnostics";
     }
     {
       key = "<leader>fs";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.treesitter() end";
-      desc = "Treesitter [Snacks]";
+      desc = "Treesitter";
     }
   ];
 

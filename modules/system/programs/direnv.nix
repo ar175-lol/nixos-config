@@ -13,7 +13,7 @@
       nix-direnv.enable = true;
     };
 
-    home.packages = with pkgs; [devenv];
+    home.packages = [pkgs.devenv];
   };
 in {
   config = lib.mkIf cfg.enable {

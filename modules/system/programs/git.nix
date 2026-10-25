@@ -27,7 +27,7 @@
         init.defaultBranch = "main";
         pull.rebase = true;
         push.autoSetupRemote = true;
-        core.editor = "zeditor -e -w";
+        core.editor = "nvim";
       };
     };
 

@@ -6,7 +6,7 @@
   ...
 }: let
   cfg = config.modules.system.programs.neovim;
-  settings = import ./_neovim.nix {inherit lib pkgs;};
+  settings = import ./_settings.nix {inherit lib pkgs;};
 in {
   imports = [inputs.nvf.nixosModules.default];
 

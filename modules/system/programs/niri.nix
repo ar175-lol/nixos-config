@@ -14,31 +14,33 @@
       extraConfig = ''
         animations {
           workspace-switch {
-            spring damping-ratio=1.0 stiffness=700 epsilon=0.0001
-          }
-          window-movement {
-            duration-ms 350
-            curve "cubic-bezier" 0.2 0.0 0.0 1.0
-          }
-          window-resize {
-            duration-ms 300
-            curve "cubic-bezier" 0.2 0.0 0.0 1.0
-          }
-          overview-open-close {
-            duration-ms 350
-            curve "cubic-bezier" 0.2 0.0 0.0 1.0
-          }
-          window-open {
-            duration-ms 180
-            curve "cubic-bezier" 0.05 0.7 0.1 1.0
-          }
-          window-close {
-            duration-ms 180
-            curve "cubic-bezier" 0.3 0.0 0.8 0.15
+            spring damping-ratio=0.88 stiffness=500 epsilon=0.0001
           }
           horizontal-view-movement {
+            spring damping-ratio=0.85 stiffness=650 epsilon=0.0001
+          }
+          window-open {
+            duration-ms 700
+            curve "cubic-bezier" 0.05 0.9 0.1 1.05
+          }
+
+          window-close {
+            duration-ms 700
+            curve "cubic-bezier" 0.05 0.9 0.1 1.05
+          }
+
+          window-movement {
+            duration-ms 700
+            curve "cubic-bezier" 0.05 0.9 0.1 1.05
+          }
+          window-resize {
+            duration-ms 700
+            curve "cubic-bezier" 0.05 0.9 0.1 1.05
+          }
+
+          overview-open-close {
             duration-ms 350
-            curve "cubic-bezier" 0.2 0.0 0.0 1.0
+            curve "cubic-bezier" 0.25 1.0 0.5 1.0
           }
         }
       '';
@@ -186,6 +188,20 @@ in {
 
       package = inputs.wrapper-modules.wrappers.niri.wrap {
         inherit pkgs settings;
+
+        # niri 26.04's niri-session uses the deprecated argument-less,
+        # and I don't want to sit and wait for 26.1x
+        buildCommand.patch-niri-session = {
+          after = ["symlinkScript"];
+          data = ''
+            rm -f $out/bin/niri-session
+            substitute ${pkgs.niri}/bin/niri-session $out/bin/niri-session \
+              --replace-fail \
+                'systemctl --user import-environment' \
+                'dbus-update-activation-environment --systemd --all'
+            chmod +x $out/bin/niri-session
+          '';
+        };
       };
     };
   };

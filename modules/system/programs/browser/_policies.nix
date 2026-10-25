@@ -127,5 +127,5 @@ in {
   DontCheckDefaultBrowser = true;
   HardwareAcceleration = true;
   IPProtectionAvailable = false;
-  PrintingEnabled = false;
+  PrintingEnabled = true;
 }
