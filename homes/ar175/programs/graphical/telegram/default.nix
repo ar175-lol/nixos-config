@@ -1,11 +1,4 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: let
-  cfg = config.modules.system.programs.telegram;
-
+{pkgs, ...}: let
   telegram = pkgs.telegram-desktop;
 
   telegramPortal = pkgs.symlinkJoin {
@@ -23,13 +16,7 @@
         --replace-fail '@telegram@' '${telegram}'
     '';
   };
-
-  home = {
-    home.packages = [telegramPortal];
-    xdg.mimeApps.defaultApplicationPackages = [telegramPortal];
-  };
 in {
-  config = lib.mkIf cfg.enable {
-    home-manager.sharedModules = [home];
-  };
+  home.packages = [telegramPortal];
+  xdg.mimeApps.defaultApplicationPackages = [telegramPortal];
 }

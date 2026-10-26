@@ -28,7 +28,7 @@ flake.nix                              generated; outputs = import ./outputs.nix
     ├── imports modules/.../noctalia/_package.nix
     ├── import-tree ./modules/repository   flake-file input declarations
     └── import-tree ./modules/tree
-        ├── modules/tree/hosts.nix         imports ../../hosts
+        ├── modules/tree/hosts.nix         imports flakeRoot + /hosts
         │   └── hosts/default.nix          imports hosts/*/host.nix
         └── modules/tree/module.nix        declares the `hosts` option and builds hosts
 ```
@@ -38,7 +38,7 @@ flake-parts option named `hosts` (not a NixOS option) and turns every enabled
 entry into `flake.nixosConfigurations.<name>`:
 
 ```nix
-modulePath = ../../modules;
+modulePath = flakeRoot + /modules;
 rolesPath = modulePath + /core/roles;
 
 commonTrees = [
@@ -101,10 +101,15 @@ hosts/
   iso/host.nix            host declaration for the installer
   iso/live.nix            ISO-only config (Calamares, network overrides); via extraModules
 
+homes/
+  <user>/home.nix         Home Manager entry point for one account
+  <user>/programs/        that account's program configuration
+  <user>/themes/          that account's visual configuration
+
 modules/
   tree/
     module.nix            flake-parts `hosts` option and mkHost
-    hosts.nix             bridge that imports ../../hosts
+    hosts.nix             bridge that imports flakeRoot + /hosts
   repository/
     inputs.nix            flake-file input declarations
   options/
@@ -131,8 +136,7 @@ containing a `_`-prefixed file or directory. Non-Nix files (TOML, PNG, etc.) are
 ignored. This is why:
 
 - `_settings.nix`, `_policies.nix`, and `_package.nix` are not auto-imported.
-- `neovim/_settings.nix` and `browser/_policies.nix` are imported explicitly by
-  the module that needs them.
+- `neovim/_settings.nix` is imported explicitly by the module that needs it.
 - `neovim/_package.nix` and `noctalia/_package.nix` are explicitly imported by
   `outputs.nix` because they are flake-level modules, not NixOS modules.
 - `noctalia/config.toml` and `noctalia/assets/` are safely beside the module.
@@ -150,14 +154,14 @@ for the main file of a directory. Any `.nix` file in a tree is imported.
 | `hostName` | Becomes `networking.hostName`. |
 | `stateVersion` | Becomes `system.stateVersion`. Do not change casually. |
 | `roles` | List of directory names under `modules/core/roles/`. Every `.nix` in each named directory is imported for this host. |
-| `users` | Attrset keyed by account name. Each entry creates both a system account and a home-manager generation. |
+| `users` | Attrset keyed by account name. Each entry creates both a system account and a Home Manager generation. Its `homeModules` choose the per-user configuration. |
 | `features` | A `deferredModule` inserted into the system. Use it for enable flags and direct NixOS config for this host. |
 | `extraModules` | A list of modules imported only by this host. Used for `fs.nix` and installer modules. |
 
 Example (the real `apollo` host, shortened):
 
 ```nix
-_: {
+{flakeRoot, ...}: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -168,6 +172,7 @@ _: {
       shell = "zsh";
       hashedPassword = "…";
       extraGroups = ["wheel" "video" "audio" "input" "adbusers"];
+      homeModules = [(flakeRoot + /homes/ar175/home.nix)];
     };
 
     roles = ["graphical" "workstation" "laptop"];
@@ -192,7 +197,7 @@ _: {
         };
 
         system = {
-          programs.ncalayer.enable = true;
+          programs.plasma.enable = true;
           loader.enable = true;
           fonts.enable = true;
           automount.enable = true;
@@ -230,6 +235,7 @@ userModule = name: spec: {pkgs, ...}: {
   };
 
   home-manager.users.${name} = {
+    imports = spec.homeModules;
     home.username = spec.username;
     home.homeDirectory = spec.homeDirectory;
   };
@@ -237,12 +243,13 @@ userModule = name: spec: {pkgs, ...}: {
 ```
 
 Defaults: `username = name`, `homeDirectory = "/home/${name}"`, `description = ""`,
-`shell = "bash"`, `extraGroups = []`, `hashedPassword = null`. `shell` is a package
+`shell = "bash"`, `extraGroups = []`, `hashedPassword = null`, and `homeModules = []`. `shell` is a package
 attribute name, so `"zsh"` becomes `pkgs.zsh`.
 
-Home-manager settings for the account come from shared modules, not from a per-user
-directory. Adding a user needs no home-manager file. Some modules still hardcode
-`users.users.ar175`; see “Hardcoded assumptions” below.
+Each account selects its own Home Manager entry point through `homeModules`, normally
+`[(flakeRoot + /homes/<name>/home.nix)]`. Keep Home Manager configuration under
+`homes/<name>/`; NixOS modules must not inject it through `home-manager.sharedModules`.
+Some modules still hardcode `users.users.ar175`; see “Hardcoded assumptions” below.
 
 ### The three axes
 
@@ -250,13 +257,13 @@ directory. Adding a user needs no home-manager file. Some modules still hardcode
    Implementations are in `modules/hardware/`.
 2. `roles` — what the machine *is*. A role directory is imported wholesale for the
    host. Role code is unconditional; a graphical machine simply gets a session.
-3. `modules.profiles.*` and `modules.system.programs.*` — software. Profiles are
+3. `modules.profiles.*` and `modules.system.programs.*` — NixOS software. Profiles are
    always imported but gated by their enable option, and they turn programs on with
    `lib.mkDefault`. A host can therefore disable one program while keeping the
    profile.
 
 Profile and role modules use `lib.mkDefault`, so a host's normal-priority assignment
-wins. For example, a host can set `modules.system.programs.browser.enable = false`
+wins. For example, a host can set `modules.system.programs.opencode.enable = false`
 while keeping the `workstation` profile enabled, without `mkForce`.
 
 `modules/hardware/` is organizational, not strictly device-gated: `adb.nix` and
@@ -267,8 +274,8 @@ while keeping the `workstation` profile enabled, without `mkForce`.
 
 | Host | Roles | Profiles | Notable choices |
 |---|---|---|---|
-| `apollo` | `graphical`, `workstation`, `laptop` | `workstation` on, `gaming` off | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Limine, fonts, automount, ncalayer, btrfs subvolumes in `fs.nix` |
-| `iso` | `graphical` | none | Noctalia greeter off, Neovim and git on, installation-CD module + `live.nix` (Calamares, dhcpcd, xanmod, polkit) |
+| `apollo` | `graphical`, `workstation`, `laptop` | `workstation` on, `gaming` off | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Limine, fonts, automount, Plasma, btrfs subvolumes in `fs.nix` |
+| `iso` | `graphical` | none | Noctalia greeter off, Neovim on, installation-CD module + `live.nix` (Calamares, dhcpcd, xanmod, polkit) |
 
 Both use `stateVersion = "26.05"`.
 
@@ -283,22 +290,20 @@ their own options; they read `config.modules.*`.
 - `modules.system`: `loader.enable`, `doas.enable`, `fonts.enable`, `zram.enable`,
   `powerSave.enable`, `automount.enable`.
 - `modules.profiles`: `workstation.enable`, `gaming.enable`.
-- `modules.system.programs`: `niri`, `greeter`, `noctalia`, `tmux`, `starship`,
-  `browser`, `neovim`, `git`, `direnv`, `nh`, `opencode`, `discord`, `telegram`,
-  `localsend`, `obs`, `kdenlive`, `libreoffice`, `gaming`, `minecraft`,
-  `virtualisation`, `adb`, `printing`, `ncalayer` — all with `.enable`.
+- `modules.system.programs`: `niri`, `greeter`, `noctalia`, `tmux`, `neovim`,
+  `opencode`, `localsend`, `kdenlive`, `libreoffice`, `gaming`,
+  `virtualisation`, `adb`, and `printing` — all with `.enable`.
 
 Role defaults:
 
-- `graphical`: niri, greeter, noctalia, tmux, starship on by default.
+- `graphical`: niri, greeter, noctalia, and tmux on by default.
 - `workstation`: virtualisation, adb, printing, doas on by default.
 - `laptop`: powerSave and zram on by default.
 
 Profile contents:
 
-- `workstation`: browser, neovim, git, direnv, nh, opencode, discord, telegram,
-  localsend, libreoffice, obs, kdenlive.
-- `gaming`: gaming and minecraft.
+- `workstation`: neovim, opencode, localsend, libreoffice, and kdenlive.
+- `gaming`: gaming.
 
 ### Module inventory
 
@@ -311,7 +316,7 @@ Always imported from `core/common`:
 - `firewall.nix` — nftables and the firewall.
 - `fonts.nix` — JetBrainsMono Nerd Font; default font packages when
   `modules.system.fonts.enable` is true.
-- `home-manager.nix` — home-manager integration and shared `home.stateVersion`.
+- `home-manager.nix` — home-manager integration and common arguments.
 - `lix.nix` — Lix 2.96 as the Nix implementation.
 - `locale.nix` — `Asia/Almaty`, `en_US.UTF-8`, British measurement/numeric/paper/time.
 - `networking.nix` — iwd, no NetworkManager, dhcpcd off by default.
@@ -321,18 +326,15 @@ Always imported from `core/common`:
 
 Roles:
 
-- `graphical/module.nix` — defaults niri, greeter, noctalia, tmux, starship on.
+- `graphical/module.nix` — defaults niri, greeter, noctalia, and tmux on.
 - `graphical/portal.nix` — xdg portals and the yazi-based terminal file chooser.
-- `graphical/shell.nix` — zsh, starship init, yazi, `noctalia-sync`.
-- `graphical/style.nix` — Catppuccin Mocha/mauve, GTK/Qt themes, cursor.
-- `graphical/xdg.nix` — XDG user directories and MIME apps.
 - `workstation/module.nix` — doas, virtualisation, adb, printing defaults.
 - `laptop/module.nix` — powerSave and zram defaults.
 
 Profiles:
 
 - `workstation/module.nix` — everyday desktop programs, enabled with `mkDefault`.
-- `gaming/module.nix` — gaming and minecraft, enabled with `mkDefault`.
+- `gaming/module.nix` — gaming, enabled with `mkDefault`.
 
 Hardware (all gated by the matching `modules.*` option):
 
@@ -344,8 +346,8 @@ System:
 - `doas.nix` — disables sudo, enables passwordless doas for wheel.
 - `loader.nix` — Limine when `modules.system.loader.enable` is true.
 - `programs/<name>.nix` — one file per selectable program.
-- `programs/browser/`, `programs/neovim/`, and `programs/noctalia/` are directories
-  because they carry policies, settings, assets, or flake-level package outputs.
+- `programs/neovim/` and `programs/noctalia/` are directories because they carry
+  settings, assets, or flake-level package outputs.
 
 ## Module implementation conventions
 
@@ -378,35 +380,14 @@ Rules that follow from the module system:
 - **Every common module is always imported.** The `lib.mkIf cfg.enable` is what
   makes it a toggle.
 
-### Home-manager features
+### Home-manager configuration
 
-A feature that configures a home-manager program declares its switch in the NixOS
-module and injects a home-manager module into every account:
-
-```nix
-{
-  lib,
-  config,
-  ...
-}: let
-  cfg = config.modules.system.programs.direnv;
-
-  home = {
-    programs.direnv.enable = true;
-    programs.direnv.nix-direnv.enable = true;
-  };
-in {
-  config = lib.mkIf cfg.enable {
-    home-manager.sharedModules = [home];
-  };
-}
-```
-
-`home` may be a function taking `{config, osConfig, pkgs, ...}` when it needs
-arguments. `osConfig` is the NixOS side, so a feature and its switch are not
-decided in two places. `core/common/home-manager.nix` sets
-`home.stateVersion = osConfig.system.stateVersion` for every user, plus
-`useGlobalPkgs`, `useUserPackages`, and `extraSpecialArgs = {inherit inputs;}`.
+Place user-specific Home Manager configuration in `homes/<user>/`, imported from
+that account's `homeModules` list. A home module can use `{config, osConfig, pkgs,
+inputs, ...}` normally, but should configure the selected user directly rather than
+gate itself behind a NixOS program option. `userModule` sets each account's
+`home.stateVersion`; `core/common/home-manager.nix` provides global packages and
+`extraSpecialArgs = {inherit inputs;}`.
 
 ### Overlays and flake packages
 
@@ -445,8 +426,7 @@ if you create another one.
 2. Create `modules/system/programs/foo.nix` with the `cfg`/`mkIf` pattern above.
    It is auto-imported by the `system` tree; do not add an import anywhere.
 3. Enable it in a profile (with `mkDefault`) or in a host's `features`.
-4. If it configures home-manager, use `home-manager.sharedModules` under `mkIf`.
-5. If it needs assets or shared data, create
+4. If it needs assets or shared data, create
    `modules/system/programs/foo/` with `module.nix` and `_data.nix`/assets.
    Non-Nix assets beside the module are fine.
 
@@ -566,6 +546,10 @@ Notes:
   not in `modules/options/`.
 - **`import-tree` imports `.nix` files only.** TOML/PNG assets are ignored; this is
   why they can sit next to `module.nix`.
+- **Home Manager is per-user.** Put it under `homes/<name>/` and connect it with
+  `users.<name>.homeModules`; do not add a shared `modules/home` tree.
+- **Do not use parent-relative imports.** `./` is fine within one directory; for
+  another repository location use `flakeRoot + /path/from/root`.
 - **Do not commit plaintext secrets.** `hosts/apollo/host.nix` contains a hashed
   password; do not add tokens or passwords in plaintext. `git.nix` contains the
   user's identity and signing key path.
@@ -582,17 +566,17 @@ you add another user or move the repository, update them deliberately:
 
 - `modules/hardware/virtualisation.nix` — adds `ar175` to `libvirtd`.
 - `modules/system/programs/printing.nix` — adds `ar175` to `scanner` and `lp`.
-- `modules/system/programs/browser/_policies.nix` — `DownloadDirectory` is
-  `/home/ar175/Downloads`.
+- `homes/ar175/programs/graphical/browser/policies.nix` — `DownloadDirectory`
+  follows the selected home directory.
 - `modules/system/programs/noctalia/config.toml` — avatar path is
   `/home/ar175/.face.jpg`.
 - `modules/system/programs/neovim/_settings.nix` — nixd uses
   `/home/ar175/nixos-config` and the `apollo` host for option evaluation.
-- `modules/system/programs/nh.nix` — flake path is
+- `homes/ar175/programs/terminal/tools/nh/default.nix` — flake path is
   `${config.home.homeDirectory}/nixos-config`.
-- `modules/core/roles/graphical/shell.nix` — `noctalia-sync` assumes
+- `homes/ar175/programs/terminal/shell/noctalia.nix` — `noctalia-sync` assumes
   `$HOME/nixos-config` and runs `nh os switch`.
-- `modules/system/programs/git.nix` — user name, email, and SSH signing key.
+- `homes/ar175/git.nix` — user name, email, and SSH signing key.
 - `hosts/apollo/host.nix` — account name, groups, and hashed password.
 
 ## Noctalia configuration
@@ -603,7 +587,7 @@ the path to `modules/system/programs/noctalia/assets/`, writes the result to
 `$out/noctalia-config/noctalia/config.toml`, and sets `NOCTALIA_CONFIG_HOME`.
 
 The `noctalia-sync` shell command (installed by
-`modules/core/roles/graphical/shell.nix`) works in the opposite direction: it reads
+`homes/ar175/programs/terminal/shell/noctalia.nix`) works in the opposite direction: it reads
 `~/.local/state/noctalia/settings.toml`, rewrites asset paths to `@ASSETS@`, writes
 the repo's `config.toml`, stages it, and runs `nh os switch`. Editing
 `config.toml` by hand is fine, but the next `noctalia-sync` run can overwrite it.

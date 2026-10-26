@@ -78,6 +78,7 @@ type = "notification"
 type = "power_profile"
 
 [desktop_widgets]
+enabled = false
 schema_version = 2
 widget_order = []
 

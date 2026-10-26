@@ -24,7 +24,7 @@
   };
 
   services = {
-    speechd.enable = false;
+    speechd.enable = lib.mkForce false;
     timesyncd.enable = false;
   };
 

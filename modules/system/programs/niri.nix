@@ -17,7 +17,7 @@
             spring damping-ratio=0.88 stiffness=500 epsilon=0.0001
           }
           horizontal-view-movement {
-            spring damping-ratio=0.85 stiffness=650 epsilon=0.0001
+            spring damping-ratio=0.85 stiffness=350 epsilon=0.0001
           }
           window-open {
             duration-ms 700
@@ -88,21 +88,21 @@
           urgent-color = "#f38ba8";
         };
         insert-hint.color = "#cba6f780";
-        gaps = 4;
-        struts = {
-          left = -1;
-          right = -1;
-          top = -1;
-          bottom = -1;
-        };
+        gaps = 12;
+        # struts = {
+        #   left = -1;
+        #   right = -1;
+        #   top = -1;
+        #   bottom = -1;
+        # };
       };
 
       screenshot-path = null;
       gestures.hot-corners = {off = _: {};};
 
       cursor = {
-        xcursor-theme = "Bibata-Modern-Classic";
-        xcursor-size = 24;
+        xcursor-theme = "oreo_spark_purple_bordered_cursors";
+        xcursor-size = 30;
         hide-when-typing = true;
       };
 
@@ -182,6 +182,7 @@
     };
 in {
   config = lib.mkIf cfg.enable {
+    services.displayManager.defaultSession = lib.mkForce "niri";
     programs.niri = {
       enable = true;
       useNautilus = false;

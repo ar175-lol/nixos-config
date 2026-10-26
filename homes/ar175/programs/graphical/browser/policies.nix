@@ -1,4 +1,4 @@
-let
+{homeDirectory}: let
   mkLockedAttrs = builtins.mapAttrs (_: value: {
     Value = value;
     Status = "locked";
@@ -120,7 +120,7 @@ in {
   BackgroundAppUpdate = false;
   DisableAccounts = true;
   DisableSetDesktopBackground = true;
-  DownloadDirectory = "/home/ar175/Downloads";
+  DownloadDirectory = "${homeDirectory}/Downloads";
   DisableAppUpdate = true;
   DisableFeedbackCommands = true;
   DisableFirefoxStudies = true;

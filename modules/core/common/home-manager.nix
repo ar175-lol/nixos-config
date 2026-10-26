@@ -7,11 +7,5 @@
     backupFileExtension = "backup";
 
     extraSpecialArgs = {inherit inputs;};
-
-    sharedModules = [
-      ({osConfig, ...}: {
-        home.stateVersion = osConfig.system.stateVersion;
-      })
-    ];
   };
 }

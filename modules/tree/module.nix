@@ -1,10 +1,11 @@
 {
   inputs,
+  flakeRoot,
   lib,
   config,
   ...
 }: let
-  modulePath = ../../modules;
+  modulePath = flakeRoot + /modules;
 
   rolesPath = modulePath + /core/roles;
 
@@ -25,9 +26,11 @@
       shell = pkgs.${spec.shell};
     };
 
-    home-manager.users.${name} = {
+    home-manager.users.${name} = {osConfig, ...}: {
+      imports = spec.homeModules;
       home.username = spec.username;
       home.homeDirectory = spec.homeDirectory;
+      home.stateVersion = osConfig.system.stateVersion;
     };
   };
 
@@ -116,6 +119,12 @@ in {
                     hashedPassword = lib.mkOption {
                       type = lib.types.nullOr lib.types.str;
                       default = null;
+                    };
+
+                    homeModules = lib.mkOption {
+                      type = lib.types.listOf lib.types.deferredModule;
+                      default = [];
+                      description = "Home Manager modules for this account.";
                     };
                   };
                 }

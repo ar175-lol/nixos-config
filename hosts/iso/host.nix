@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  flakeRoot,
+  ...
+}: {
   hosts.iso = {
     enable = true;
     hostName = "nixos";
@@ -7,6 +11,8 @@
     users.nixos = {
       description = "installer";
       shell = "fish";
+
+      homeModules = [(flakeRoot + /homes/nixos/home.nix)];
     };
 
     roles = ["graphical"];
@@ -15,7 +21,6 @@
       modules.system.programs = {
         greeter.enable = false;
         neovim.enable = true;
-        git.enable = true;
       };
     };
 
