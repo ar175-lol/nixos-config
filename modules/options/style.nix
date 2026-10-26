@@ -1,5 +1,3 @@
-{lib, ...}: let
-  inherit (lib) mkEnableOption;
-in {
+{lib, ...}: {
   options.modules.style = {};
 }
