@@ -17,7 +17,8 @@ in {
     kdenlive.enable = mkEnableOption "Kdenlive";
     libreoffice.enable = mkEnableOption "LibreOffice";
 
-    gaming.enable = mkEnableOption "Steam, Bottles and qBittorrent";
+    flatpak.enable = mkEnableOption "Flatpak";
+    steam.enable = mkEnableOption "Steam";
 
     virtualisation.enable = mkEnableOption "hardware virtualisation (kvm)";
     adb.enable = mkEnableOption "Android debugging bridge";

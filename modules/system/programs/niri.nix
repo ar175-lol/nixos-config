@@ -73,14 +73,10 @@
           urgent-color = "#f38ba8";
         };
         border = {
-          width = 1;
-          active-color = "#cba6f7";
-          inactive-color = "#1e1e2e";
-          urgent-color = "#f38ba8";
+          off = _: {};
         };
         shadow = {
-          on = _: {};
-          color = "#11111b70";
+          off = _: {};
         };
         tab-indicator = {
           active-color = "#cba6f7";

@@ -12,18 +12,23 @@ in {
       displayManager.sddm.enable = false;
     };
 
+    programs = {
+      kde-pim.enable = false;
+    };
+
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       kate
       okular
       elisa
+      discover
       gwenview
       ark
       spectacle
       khelpcenter
-
-      konsole
+      plasma-systemmonitor
+      skanlite
+      kwalletmanager
       baloo-widgets
-
       kmahjongg
       kmines
       kpat
@@ -32,6 +37,22 @@ in {
       aurorae
       ffmpegthumbs
       krdp
+    ];
+
+    nixpkgs.overlays = [
+      (final: prev: let
+        mkEmptyPkg = name: prev.runCommand "empty-${name}" {} "mkdir -p $out";
+      in {
+        kdePackages =
+          prev.kdePackages
+          // {
+            skanpage = mkEmptyPkg "skanpage";
+            discover = mkEmptyPkg "discover";
+            plasma-systemmonitor = mkEmptyPkg "plasma-systemmonitor";
+            drkonqi = mkEmptyPkg "drkonqi";
+            kwalletmanager = mkEmptyPkg "kwalletmanager";
+          };
+      })
     ];
   };
 }

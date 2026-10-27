@@ -1,8 +1,4 @@
-{
-  pkgs,
-  inputs,
-  ...
-}: let
+{pkgs, ...}: let
   catppuccinGtkTheme = pkgs.catppuccin-gtk.override {
     accents = ["mauve"];
     size = "standard";
@@ -10,17 +6,6 @@
   };
   themeName = "catppuccin-mocha-mauve-standard";
 in {
-  imports = [inputs.catppuccin.homeModules.catppuccin];
-
-  catppuccin = {
-    enable = true;
-    autoEnable = true;
-    flavor = "mocha";
-    accent = "mauve";
-    gtk.icon.enable = true;
-    kvantum.enable = false;
-  };
-
   gtk = {
     enable = true;
     theme = {
@@ -41,7 +26,7 @@ in {
 
   home.pointerCursor = {
     enable = true;
-    name = "oreo_spark_pink_bordered_cursors";
+    name = "oreo_spark_purple_bordered_cursors";
     package = pkgs.oreo-cursors-plus;
     size = 30;
     gtk.enable = true;

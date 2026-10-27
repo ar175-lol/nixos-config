@@ -64,15 +64,14 @@
 
         system = {
           programs.plasma.enable = true;
+          programs.steam.enable = true;
+          programs.flatpak.enable = true;
           loader.enable = true;
           fonts.enable = true;
           automount.enable = true;
         };
 
-        profiles = {
-          workstation.enable = true;
-          gaming.enable = false;
-        };
+        profiles.workstation.enable = true;
       };
     };
 

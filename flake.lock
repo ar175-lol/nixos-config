@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789580447,
-        "narHash": "sha256-Fw66TiqR6v8Z7WTVgdqvWbhuqXzM8jAHlURye8prwQY=",
+        "lastModified": 1793089171,
+        "narHash": "sha256-aAXRYVkILP2l60hAUKBPGCXjlqQ0hsgODj26489fVs4=",
         "owner": "ar175-lol",
         "repo": "ncalayer-nix",
-        "rev": "37c290c82bcf881bc7344a71f3444d7c93a1ddc4",
+        "rev": "511f2f2b6b4faa81d3f2f927b7d0c767b6f2f3be",
         "type": "github"
       },
       "original": {
