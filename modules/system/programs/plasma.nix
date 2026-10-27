@@ -40,7 +40,7 @@ in {
     ];
 
     nixpkgs.overlays = [
-      (final: prev: let
+      (_final: prev: let
         mkEmptyPkg = name: prev.runCommand "empty-${name}" {} "mkdir -p $out";
       in {
         kdePackages =

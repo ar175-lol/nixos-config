@@ -1,3 +1,3 @@
-{lib, ...}: {
+_: {
   options.modules.style = {};
 }
