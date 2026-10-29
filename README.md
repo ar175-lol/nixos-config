@@ -90,7 +90,7 @@ scope inside function modules used there.
 
 | Host | What it is |
 |---|---|
-| `apollo` | the workstation: Plasma and Niri sessions, Noctalia Greeter, NVIDIA; gaming profile off |
+| `apollo` | the workstation: Plasma and Niri sessions, SDDM, NVIDIA; gaming profile off |
 | `iso` | Calamares installer, plays the `graphical` role |
 
 The gaming profile controls the system gaming bundle (Steam, Bottles, and
