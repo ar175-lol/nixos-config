@@ -35,13 +35,14 @@ Rules that follow from the module system:
 
 ## Home Manager
 
-Place user-specific Home Manager configuration in `homes/<user>/`, imported from
-that account's `homeModules` list. A home module can use
-`{config, osConfig, pkgs, inputs, ...}` normally, but should configure the selected
-user directly rather than gate itself behind a NixOS program option. `userModule`
-sets each account's `home.stateVersion` from the host's `system.stateVersion`;
-`core/common/home-manager.nix` provides global packages and
-`extraSpecialArgs = {inherit inputs;}`.
+Place user-specific Home Manager configuration in `homes/<user>/`. The account's
+`homeModules` defaults to `homes/<user>/home.nix` when that file exists, so most
+hosts do not mention it at all. A home module can use
+`{config, osConfig, pkgs, inputs, self, ...}` normally, but should configure the
+selected user directly rather than gate itself behind a NixOS program option.
+`userModule` sets each account's `home.stateVersion` from the host's
+`system.stateVersion`; `core/common/home-manager.nix` provides global packages and
+`extraSpecialArgs = {inherit inputs self;}`.
 
 Do not add a shared `modules/home` tree or inject user config through
 `home-manager.sharedModules`.

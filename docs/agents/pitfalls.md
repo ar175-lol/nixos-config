@@ -32,10 +32,13 @@
   not in `modules/options/`.
 - **`import-tree` imports `.nix` files only.** TOML/PNG assets are ignored; this is
   why they can sit next to `module.nix`.
-- **Home Manager is per-user.** Put it under `homes/<name>/` and connect it with
-  `users.<name>.homeModules`; do not add a shared `modules/home` tree.
-- **Do not use parent-relative imports.** `./` is fine within one directory; for
-  another repository location use `flakeRoot + /path/from/root`.
+- **Home Manager is per-user.** Put it under `homes/<name>/`; `users.<name>.homeModules`
+  defaults to `homes/<name>/home.nix` when present. Do not add a shared
+  `modules/home` tree.
+- **Imports go downward and one level.** `./foo.nix` is fine; `../../foo/bar.nix`
+  is not. Cross-tree wiring belongs in `outputs.nix` or `hosts/default.nix`.
+  Use `self.outPath + "/path/from/root"` for the few root-relative references;
+  `self` is available in flake-parts and is forwarded to NixOS and Home Manager.
 - **Do not commit plaintext secrets.** `hosts/apollo/host.nix` contains hashed
   passwords; do not add tokens or passwords in plaintext. `homes/ar175/git.nix`
   contains the user's identity and signing key path.

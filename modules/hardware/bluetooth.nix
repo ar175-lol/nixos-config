@@ -14,6 +14,8 @@ in {
           Experimental = true;
           FastConnectable = true;
           KernelExperimental = true;
+
+          MultiProfile = "multiple";
         };
         Policy.AutoEnable = true;
       };

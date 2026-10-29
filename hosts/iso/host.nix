@@ -1,8 +1,4 @@
-{
-  inputs,
-  flakeRoot,
-  ...
-}: {
+{inputs, ...}: {
   hosts.iso = {
     enable = true;
     hostName = "nixos";
@@ -11,8 +7,6 @@
     users.nixos = {
       description = "installer";
       shell = "fish";
-
-      homeModules = [(flakeRoot + /homes/nixos/home.nix)];
     };
 
     roles = ["graphical"];

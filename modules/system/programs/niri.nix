@@ -143,7 +143,7 @@
           "Mod+Grave".toggle-overview = _: {};
           "Mod+Comma".consume-window-into-column = _: {};
           "Mod+Period".expel-window-from-column = _: {};
-          "Mod+Return".spawn = lib.getExe pkgs.myTerminal;
+          "Mod+Return".spawn = ["${lib.getExe pkgs.myTerminal}" "-1"];
 
           "Mod+Alt+H".set-column-width = "-10%";
           "Mod+Alt+J".set-window-height = "-10%";

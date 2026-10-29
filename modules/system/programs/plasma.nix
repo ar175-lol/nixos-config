@@ -9,7 +9,7 @@ in {
   config = lib.mkIf cfg.enable {
     services = {
       desktopManager.plasma6.enable = true;
-      displayManager.sddm.enable = false;
+      displayManager.plasma-login-manager.enable = false;
     };
 
     programs = {

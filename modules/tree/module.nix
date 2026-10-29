@@ -1,20 +1,21 @@
 {
   inputs,
-  flakeRoot,
+  self,
   lib,
   config,
   ...
 }: let
-  modulePath = flakeRoot + /modules;
+  root = self.outPath;
+  modulePath = root + "/modules";
 
-  rolesPath = modulePath + /core/roles;
+  rolesPath = modulePath + "/core/roles";
 
   commonTrees = [
-    (modulePath + /options)
-    (modulePath + /core/common)
-    (modulePath + /core/profiles)
-    (modulePath + /hardware)
-    (modulePath + /system)
+    (modulePath + "/options")
+    (modulePath + "/core/common")
+    (modulePath + "/core/profiles")
+    (modulePath + "/hardware")
+    (modulePath + "/system")
   ];
 
   userModule = name: spec: {pkgs, ...}: {
@@ -25,6 +26,14 @@
       home = spec.homeDirectory;
       shell = pkgs.${spec.shell};
     };
+
+    services.accounts-daemon.enable = true;
+
+    environment.etc."AccountsService/users/${name}".text = lib.optionalString (spec.defaultSession != null) ''
+      [User]
+      Session=${spec.defaultSession}
+      XSession=${spec.defaultSession}
+    '';
 
     home-manager.users.${name} = {osConfig, ...}: {
       imports = spec.homeModules;
@@ -37,7 +46,7 @@
   mkHost = host:
     inputs.nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
+      specialArgs = {inherit inputs self;};
 
       modules = lib.flatten [
         (map (tree: inputs.import-tree tree) commonTrees)
@@ -56,8 +65,6 @@
       ];
     };
 in {
-  imports = [./hosts.nix];
-
   options.hosts = lib.mkOption {
     type = lib.types.attrsOf (
       lib.types.submodule {
@@ -111,6 +118,11 @@ in {
                       default = "bash";
                     };
 
+                    defaultSession = lib.mkOption {
+                      type = lib.types.nullOr lib.types.str;
+                      default = null;
+                    };
+
                     extraGroups = lib.mkOption {
                       type = lib.types.listOf lib.types.str;
                       default = [];
@@ -123,8 +135,11 @@ in {
 
                     homeModules = lib.mkOption {
                       type = lib.types.listOf lib.types.deferredModule;
-                      default = [];
-                      description = "Home Manager modules for this account.";
+                      default = let
+                        home = root + "/homes/${name}/home.nix";
+                      in
+                        lib.optional (builtins.pathExists home) home;
+                      description = "Home Manager modules for this account. Defaults to homes/<name>/home.nix when present.";
                     };
                   };
                 }

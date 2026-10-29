@@ -416,8 +416,29 @@
         "noctalia-greeter": "noctalia-greeter",
         "nvf": "nvf",
         "prism-launcher": "prism-launcher",
+        "sddm-astronaut-theme": "sddm-astronaut-theme",
         "wrapper-modules": "wrapper-modules",
         "zen-browser": "zen-browser"
+      }
+    },
+    "sddm-astronaut-theme": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793273940,
+        "narHash": "sha256-thf//jk26XFWsEvenixcF0mt0fls7XdxxpwW3FLe98s=",
+        "owner": "ar175-lol",
+        "repo": "sddm-astronaut-theme",
+        "rev": "187f26e286e6b2a5c95283293ad363069617c0e7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ar175-lol",
+        "repo": "sddm-astronaut-theme",
+        "type": "github"
       }
     },
     "treefmt-nix": {

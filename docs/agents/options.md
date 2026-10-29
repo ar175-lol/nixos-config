@@ -41,7 +41,7 @@ Always imported from `core/common`:
   selected sockets/timers, and most docs.
 - `dns.nix` — dnscrypt-proxy on `127.0.0.1`; resolved/resolvconf off.
 - `firewall.nix` — nftables and the firewall.
-- `fonts.nix` — JetBrainsMono Nerd Font; default font packages when
+- `fonts.nix` — Monocraft; default font packages when
   `modules.system.fonts.enable` is true.
 - `home-manager.nix` — home-manager integration and common arguments.
 - `lix.nix` — Lix 2.96 as the Nix implementation.

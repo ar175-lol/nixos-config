@@ -7,10 +7,10 @@ flake.nix                              generated; outputs = import ./outputs.nix
 └── outputs.nix                        flake-parts.mkFlake
     ├── imports modules/.../neovim/_package.nix
     ├── imports modules/.../noctalia/_package.nix
+    ├── imports ./hosts                    root-level wiring for every host
+    │   └── hosts/default.nix              imports hosts/*/host.nix
     ├── import-tree ./modules/repository   flake-file input declarations
     └── import-tree ./modules/tree
-        ├── modules/tree/hosts.nix         imports flakeRoot + /hosts
-        │   └── hosts/default.nix          imports hosts/*/host.nix
         └── modules/tree/module.nix        declares the `hosts` option and builds hosts
 ```
 
@@ -19,21 +19,22 @@ flake-parts option named `hosts` (not a NixOS option) and turns every enabled
 entry into `flake.nixosConfigurations.<name>`:
 
 ```nix
-modulePath = flakeRoot + /modules;
-rolesPath = modulePath + /core/roles;
+root = self.outPath;
+modulePath = root + "/modules";
+rolesPath = modulePath + "/core/roles";
 
 commonTrees = [
-  (modulePath + /options)
-  (modulePath + /core/common)
-  (modulePath + /core/profiles)
-  (modulePath + /hardware)
-  (modulePath + /system)
+  (modulePath + "/options")
+  (modulePath + "/core/common")
+  (modulePath + "/core/profiles")
+  (modulePath + "/hardware")
+  (modulePath + "/system")
 ];
 
 mkHost = host:
   inputs.nixpkgs.lib.nixosSystem {
     system = "x86_64-linux";
-    specialArgs = {inherit inputs;};
+    specialArgs = {inherit inputs self;};
 
     modules = lib.flatten [
       (map (tree: inputs.import-tree tree) commonTrees)
@@ -61,7 +62,8 @@ Consequences:
 - Only the role directories named in `host.roles` are imported for that host.
 - `host.extraModules` and `host.features` are per-host.
 - `hostName` and `stateVersion` are set inline; everything else comes from modules.
-- `specialArgs = {inherit inputs;}` makes `inputs` available in every NixOS module.
+- `specialArgs = {inherit inputs self;}` makes `inputs` and the flake itself
+  available in every NixOS module.
 - `lib.filterAttrs (_: host: host.enable)` means `hosts.<name>.enable = false`
   produces no `nixosConfiguration` at all.
 
@@ -90,7 +92,6 @@ homes/
 modules/
   tree/
     module.nix            flake-parts `hosts` option and mkHost
-    hosts.nix             bridge that imports flakeRoot + /hosts
   repository/
     inputs.nix            flake-file input declarations
   options/
@@ -125,6 +126,20 @@ ignored. This is why:
 `module.nix` has no special meaning to Nix or import-tree. It is a naming convention
 for the main file of a directory. Any `.nix` file in a tree is imported.
 
+## Import topology
+
+Keep imports downward and local. Cross-tree wiring is centralized:
+
+- `outputs.nix` imports `./hosts` and the `modules` trees.
+- `hosts/default.nix` imports each `hosts/<name>/host.nix`.
+- A host file imports only files in its own directory (`./fs.nix`, `./live.nix`).
+  It does not reach into `modules/` or `homes/`.
+- Files inside a module tree are auto-imported by import-tree; they do not import
+  siblings with relative paths.
+- Root-relative references use `self.outPath + "/..."`. flake-parts provides
+  `self`; `mkHost` forwards it to NixOS, and `core/common/home-manager.nix`
+  forwards it to Home Manager. There is no custom `flakeRoot` argument.
+
 ## Host model
 
 `hosts.<name>` is a flake-parts submodule with these fields:
@@ -135,14 +150,14 @@ for the main file of a directory. Any `.nix` file in a tree is imported.
 | `hostName` | Becomes `networking.hostName`. |
 | `stateVersion` | Becomes `system.stateVersion`. Do not change casually. |
 | `roles` | List of directory names under `modules/core/roles/`. Every `.nix` in each named directory is imported for this host. |
-| `users` | Attrset keyed by account name. Each entry creates both a system account and a Home Manager generation. Its `homeModules` choose the per-user configuration. |
+| `users` | Attrset keyed by account name. Each entry creates both a system account and a Home Manager generation. `homeModules` defaults to `homes/<name>/home.nix` when that file exists. |
 | `features` | A `deferredModule` inserted into the system. Use it for enable flags and direct NixOS config for this host. |
 | `extraModules` | A list of modules imported only by this host. Used for `fs.nix` and installer modules. |
 
 Example (the real `apollo` host, shortened):
 
 ```nix
-{flakeRoot, ...}: {
+_: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -154,14 +169,12 @@ Example (the real `apollo` host, shortened):
         shell = "zsh";
         hashedPassword = "…";
         extraGroups = ["wheel" "video" "audio" "input" "adbusers"];
-        homeModules = [(flakeRoot + /homes/ar175/home.nix)];
       };
       mom = {
         description = "mom";
         shell = "fish";
         hashedPassword = "…";
         extraGroups = ["video" "audio" "input"];
-        homeModules = [(flakeRoot + /homes/mom/home.nix)];
       };
     };
 
@@ -233,12 +246,13 @@ userModule = name: spec: {pkgs, ...}: {
 ```
 
 Defaults: `username = name`, `homeDirectory = "/home/${name}"`, `description = ""`,
-`shell = "bash"`, `extraGroups = []`, `hashedPassword = null`, and `homeModules = []`.
+`shell = "bash"`, `extraGroups = []`, `hashedPassword = null`, and `homeModules`
+defaults to `homes/<name>/home.nix` when that file exists.
 `shell` is a package attribute name, so `"zsh"` becomes `pkgs.zsh`.
 
-Each account selects its own Home Manager entry point through `homeModules`, normally
-`[(flakeRoot + /homes/<name>/home.nix)]`. Keep Home Manager configuration under
-`homes/<name>/`; NixOS modules must not inject it through `home-manager.sharedModules`.
+The Home Manager entry point is found by convention. Set `homeModules` explicitly
+only to override it. Keep Home Manager configuration under `homes/<name>/`; NixOS
+modules must not inject it through `home-manager.sharedModules`.
 Some modules still hardcode `users.users.ar175`; see [Pitfalls](pitfalls.md).
 
 ## The three axes

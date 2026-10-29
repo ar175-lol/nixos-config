@@ -3,7 +3,7 @@ config_version = 15
 [bar.default]
 center = [ "group:g3", "group:g4" ]
 end = [ "tray", "audio_visualizer", "keyboard_layout", "group:g2" ]
-font_family = "JetBrainsMono NF"
+font_family = "Monocraft"
 font_weight = 700
 margin_edge = 0
 margin_ends = 0
@@ -212,7 +212,7 @@ enabled = []
 
 [shell]
 avatar_path = "/home/ar175/.face.jpg"
-font_family = "JetBrainsMono NF"
+font_family = "Monocraft"
 password_style = "random"
 polkit_agent = true
 
@@ -260,7 +260,7 @@ polkit_agent = true
 
 [theme]
 builtin = "Catppuccin"
-community_palette = "Catppuccin Mocha Pink"
+community_palette = "Catppuccin Mocha Mauve-Lavender"
 mode = "dark"
 wallpaper_scheme = "m3-content"
 
@@ -301,7 +301,7 @@ show_label = false
 
 [widget.clock]
 capsule = true
-font_family = "JetBrainsMono NF"
+font_family = "Monocraft"
 font_weight = 700
 format = "{:%H %M}"
 scale = 0.80000000000000004

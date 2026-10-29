@@ -1,5 +1,0 @@
-{flakeRoot, ...}: {
-  imports = [
-    (flakeRoot + /hosts)
-  ];
-}
