@@ -51,6 +51,11 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
+      sddm-astronaut-theme = {
+        url = "github:ar175-lol/sddm-astronaut-theme";
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
       wrapper-modules = {
         url = "github:BirdeeHub/nix-wrapper-modules";
         inputs.nixpkgs.follows = "nixpkgs";

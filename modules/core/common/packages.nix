@@ -2,45 +2,72 @@
   nixpkgs.overlays = [
     (
       final: _: {
-        myTerminal = inputs.wrapper-modules.wrappers.foot.wrap {
+        myTerminal = inputs.wrapper-modules.wrappers.kitty.wrap {
           inherit (final) pkgs;
+
+          font = {
+            # name = "JetBrainsMono Nerd Font";
+            name = "Monocraft";
+            size = 15;
+          };
+
           settings = {
-            main = {
-              font = "JetBrainsMono Nerd Font:size=12.4";
-              pad = "0x0 center color=1e1e2e";
-            };
-            scrollback.lines = 10000;
-            bell = {
-              urgent = "no";
-              notify = "no";
-            };
-            cursor = {
-              style = "beam";
-              blink = "yes";
-            };
-            colors-dark = {
-              background = "1e1e2e";
-              foreground = "cdd6f4";
-              regular0 = "45475a";
-              regular1 = "f38ba8";
-              regular2 = "a6e3a1";
-              regular3 = "f9e2af";
-              regular4 = "89b4fa";
-              regular5 = "f5c2e7";
-              regular6 = "94e2d5";
-              regular7 = "a6adc8";
-              bright0 = "585b70";
-              bright1 = "f37799";
-              bright2 = "89d88b";
-              bright3 = "ebd391";
-              bright4 = "74a8fc";
-              bright5 = "f2aede";
-              bright6 = "6bd7ca";
-              bright7 = "bac2de";
-              selection-foreground = "cdd6f4";
-              selection-background = "585b70";
-              cursor = "1e1e2e f5e0dc";
-            };
+            window_padding_width = 0;
+            window_margin_width = 0;
+            hide_window_decorations = "yes";
+            tab_bar_style = "hidden";
+            adjust_line_height = 6;
+
+            confirm_os_window_close = 0;
+
+            cursor_shape = "block";
+            cursor_blink_interval = 1;
+            scrollback_lines = 10000;
+
+            cursor_trail = 12;
+            # cursor_trail_decay = "0.05 0.15";
+
+            enable_audio_bell = "no";
+            window_alert_on_bell = "no";
+
+            repaint_delay = 10;
+            input_delay = 3;
+            sync_to_monitor = "yes";
+
+            foreground = "#CDD6F4";
+            background = "#1E1E2E";
+            selection_foreground = "#1E1E2E";
+            selection_background = "#F5E0DC";
+
+            cursor = "#F5E0DC";
+            cursor_text_color = "#1E1E2E";
+            url_color = "#F5E0DC";
+
+            color0 = "#45475A";
+            color8 = "#585B70";
+            color1 = "#F38BA8";
+            color9 = "#F38BA8";
+            color2 = "#A6E3A1";
+            color10 = "#A6E3A1";
+            color3 = "#F9E2AF";
+            color11 = "#F9E2AF";
+            color4 = "#89B4FA";
+            color12 = "#89B4FA";
+            color5 = "#F5C2E7";
+            color13 = "#F5C2E7";
+            color6 = "#94E2D5";
+            color14 = "#94E2D5";
+            color7 = "#BAC2DE";
+            color15 = "#A6ADC8";
+          };
+
+          keybindings = {
+            "ctrl+shift+c" = "copy_to_clipboard";
+            "ctrl+shift+v" = "paste_from_clipboard";
+            "ctrl+shift+s" = "paste_from_selection";
+            "ctrl+shift+equal" = "change_font_size all +2.0";
+            "ctrl+shift+minus" = "change_font_size all -2.0";
+            "ctrl+shift+backspace" = "change_font_size all 0";
           };
         };
 

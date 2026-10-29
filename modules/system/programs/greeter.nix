@@ -1,31 +1,26 @@
 {
   lib,
-  pkgs,
   inputs,
   config,
+  pkgs,
   ...
 }: let
   cfg = config.modules.system.programs.greeter;
+  themePackage = inputs.sddm-astronaut-theme.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
+    font = "Monocraft";
+  };
 in {
-  imports = [inputs.noctalia-greeter.nixosModules.default];
-
   config = lib.mkIf cfg.enable {
     console.useXkbConfig = false;
 
-    services.displayManager.noctalia-greeter = {
+    services.displayManager.sddm = {
       enable = true;
-
-      settings = {
-        cursor = {
-          theme = "Bibata-Modern-Classic";
-          size = 24;
-          path = "${pkgs.bibata-cursors}/share/icons";
-        };
-        keyboard = {
-          layout = "us,ru";
-          options = "grp:alt_shift_toggle";
-        };
-      };
+      wayland.enable = true;
+      theme = "${themePackage}/share/sddm/themes/sddm-astronaut-theme";
+      extraPackages = with pkgs.kdePackages; [
+        qtmultimedia
+        qtvirtualkeyboard
+      ];
     };
   };
 }

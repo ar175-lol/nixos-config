@@ -35,8 +35,12 @@ the nearest existing module.
   `mkForce`. Roles are imported wholesale and are not toggles.
 - **import-tree skips `_`-prefixed files and directories.** Import `_package.nix`
   and `_data.nix` explicitly where needed.
-- **Home Manager is per-user.** Keep it in `homes/<name>/` and connect it through
-  `users.<name>.homeModules`; do not add a shared `modules/home` tree.
+- **Home Manager is per-user.** Keep it in `homes/<name>/`; `users.<name>.homeModules`
+  defaults to `homes/<name>/home.nix` when present. Do not add a shared
+  `modules/home` tree.
+- **Imports go downward, one level.** Cross-tree wiring lives in `outputs.nix` or
+  `hosts/default.nix`. Use `self.outPath + "/..."` for root-relative paths; there
+  is no `flakeRoot` special argument.
 - **Do not change `stateVersion`** (`26.05` on both hosts) or commit plaintext
   secrets.
 

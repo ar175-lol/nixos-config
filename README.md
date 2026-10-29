@@ -16,7 +16,6 @@ homes/                 per-user Home Manager configurations
 modules/
   tree/
     module.nix           declares the `hosts` option, builds every machine
-    hosts.nix            imports hosts/
   repository/           flake-file input declarations
   options/              the option surface: device, profiles, programs, system
   core/
@@ -27,9 +26,9 @@ modules/
   hardware/             audio, bluetooth, gpu, power, adb, ...
 ```
 
-Each account selects a Home Manager entry point from `homes/<username>/` through
-its `homeModules` setting in the host definition. User programs and settings are
-kept with that account rather than shared through a NixOS module.
+Each account's Home Manager entry point defaults to `homes/<username>/home.nix`.
+User programs and settings are kept with that account rather than shared through a
+NixOS module.
 
 Assets used by a system program live beside it, e.g.
 `modules/system/programs/noctalia/assets/`.
@@ -45,7 +44,7 @@ listed in `hosts/default.nix`. Each contributes a `host.nix`; the directory can
 hold more (a kernel, a filesystem layout, per-concern modules) without changing
 anything else. Adding a machine is a new directory plus one line. For example, here is my `apollo` host:
 ```nix
-{flakeRoot, ...}: {
+_: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -54,7 +53,6 @@ anything else. Adding a machine is a new directory plus one line. For example, h
     users.ar175 = {
       shell = "zsh";
       extraGroups = ["wheel" "video"];
-      homeModules = [(flakeRoot + /homes/ar175/home.nix)];
     };
 
     roles = ["graphical" "workstation" "laptop"];
@@ -83,9 +81,9 @@ There are three axes, and they answer different questions:
   `homes/<username>/`.
 
 `users` is keyed by account name; each entry creates a system account and a
-Home Manager generation. `homeModules` selects that account's configuration, so
-different users can have different programs and settings. Keep those modules in
-`homes/<username>/`.
+Home Manager generation. Its `homeModules` defaults to `homes/<username>/home.nix`
+when present, so different users can have different programs and settings. Keep
+those modules in `homes/<username>/`.
 
 `features` is inserted into the system as a module, so `lib` and `pkgs` are in
 scope inside function modules used there.
@@ -143,12 +141,12 @@ new *kind* of machine) is new plumbing.
   come from `nixpkgs.overlays`, so they are reachable as `pkgs.*` from any
   module. They used to be built in a flake-parts `perSystem` block, which forced
   every consumer through `self.packages.${system}.myX`.
-- Home Manager configuration is selected explicitly for each account through
-  `homeModules`; it lives under `homes/<username>/` and does not use a shared
-  NixOS program switch.
-- `outputs.nix` passes `flakeRoot` as a special argument. Use
-  `flakeRoot + /path/from/repository/root` for paths that cross directories;
-  avoid parent-relative imports.
+- Home Manager configuration lives under `homes/<username>/` and is selected by
+  convention through `homeModules`; it does not use a shared NixOS program switch.
+- Imports go downward and one level. Root-level wiring (`outputs.nix`,
+  `hosts/default.nix`) is the only place that crosses trees; everything else is
+  auto-imported or found by convention. Use `self.outPath + "/..."` when a
+  root-relative path is genuinely needed.
 
 ## Partitioning
 

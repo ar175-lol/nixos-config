@@ -97,7 +97,7 @@
 
     setupOpts = {
       explorer = {
-        enabled = true;
+        enabled = false;
         replace_netrw = true;
         trash = false;
       };
@@ -109,7 +109,7 @@
         chunk.enabled = true;
       };
 
-      image.enabled = false;
+      image.enabled = true;
       terminal.enabled = false;
       lazygit.enabled = false;
       notifier.enabled = false;
@@ -118,16 +118,34 @@
     };
   };
 
-  luaConfigRC.snacks_indent_colors = ''
-    local function snacks_indent_colors()
-      vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#585b70" })
-      vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#cba6f7" })
-      vim.api.nvim_set_hl(0, "SnacksIndentChunk", { fg = "#cba6f7" })
-    end
+  luaConfigRC = {
+    disable_netrw = ''
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
 
-    snacks_indent_colors()
-    vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, { callback = snacks_indent_colors })
-  '';
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function(data)
+          if vim.fn.isdirectory(data.file) == 1 then
+            vim.cmd.cd(data.file)
+            vim.schedule(function()
+              Snacks.picker.files()
+            end)
+          end
+        end,
+      })
+    '';
+
+    snacks_indent_colors = ''
+      local function snacks_indent_colors()
+        vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#585b70" })
+        vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = "#cba6f7" })
+        vim.api.nvim_set_hl(0, "SnacksIndentChunk", { fg = "#cba6f7" })
+      end
+
+      snacks_indent_colors()
+      vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, { callback = snacks_indent_colors })
+    '';
+  };
 
   visuals.nvim-web-devicons.enable = true;
 
@@ -140,13 +158,6 @@
       desc = "Clear search highlights";
     }
     {
-      key = "<leader>e";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.explorer.open() end";
-      desc = "Explorer";
-    }
-    {
       key = "<leader>ff";
       mode = "n";
       lua = true;
@@ -157,15 +168,8 @@
       key = "<leader>fg";
       mode = "n";
       lua = true;
-      action = "function() Snacks.picker.grep() end";
+      action = "function() Snacks.picker.grep({ hidden = true, ignored = true }) end";
       desc = "Live grep";
-    }
-    {
-      key = "<leader>fb";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.buffers() end";
-      desc = "Buffers";
     }
     {
       key = "<leader>fh";
@@ -187,13 +191,6 @@
       lua = true;
       action = "function() Snacks.picker.resume() end";
       desc = "Resume (previous search)";
-    }
-    {
-      key = "<leader>fvf";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.git_files() end";
-      desc = "Git files";
     }
     {
       key = "<leader>fvcw";
@@ -231,39 +228,11 @@
       desc = "Git stash";
     }
     {
-      key = "<leader>flr";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.lsp_references() end";
-      desc = "LSP References";
-    }
-    {
-      key = "<leader>flD";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.lsp_definitions() end";
-      desc = "LSP Definitions";
-    }
-    {
-      key = "<leader>flt";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.lsp_type_definitions() end";
-      desc = "LSP Type Definitions ";
-    }
-    {
       key = "<leader>fld";
       mode = "n";
       lua = true;
       action = "function() Snacks.picker.diagnostics({ cwd = true }) end";
       desc = "Diagnostics";
-    }
-    {
-      key = "<leader>fs";
-      mode = "n";
-      lua = true;
-      action = "function() Snacks.picker.treesitter() end";
-      desc = "Treesitter";
     }
   ];
 
@@ -283,7 +252,25 @@
 
   formatter.conform-nvim.presets.deno.enable = lib.mkForce false;
   tabline.nvimBufferline.enable = false;
-  binds.whichKey.enable = true;
+  binds.whichKey = {
+    enable = true;
+    setupOpts = {
+      icons = {
+        rules = [
+          {
+            pattern = "grep";
+            icon = " ";
+            color = "green";
+          }
+          {
+            pattern = "files";
+            icon = " ";
+            color = "green";
+          }
+        ];
+      };
+    };
+  };
   ui.noice = {
     enable = true;
 

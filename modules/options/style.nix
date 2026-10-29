@@ -1,3 +1,0 @@
-_: {
-  options.modules.style = {};
-}

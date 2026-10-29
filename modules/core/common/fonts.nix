@@ -12,7 +12,7 @@ in {
         enable = true;
         defaultFonts.monospace = ["JetBrainsMono Nerd Font"];
       };
-      packages = [pkgs.nerd-fonts.jetbrains-mono];
+      packages = [pkgs.nerd-fonts.jetbrains-mono pkgs.monocraft];
     };
 
     fonts.enableDefaultPackages = lib.mkIf cfg.enable true;
