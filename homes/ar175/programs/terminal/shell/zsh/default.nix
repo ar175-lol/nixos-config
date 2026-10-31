@@ -19,6 +19,7 @@ _: {
       docs = "$HOME/Documents";
       dl = "$HOME/Downloads";
       vids = "$HOME/Videos";
+      cfg = "$HOME/nixos-config";
     };
 
     history = {

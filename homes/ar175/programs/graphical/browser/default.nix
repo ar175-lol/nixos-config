@@ -29,7 +29,7 @@ in {
       settings = {
         "zen.view.compact.enable-at-startup" = true;
         "zen.window-sync.enabled" = true;
-        "theme.custom_uifont.custom" = "JetBrainsMono Nerd Font";
+        "theme.custom_uifont.custom" = "Monocraft";
         "theme.custom_uifont.default" = "Custom";
       };
 

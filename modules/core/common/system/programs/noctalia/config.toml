@@ -1,13 +1,15 @@
-config_version = 15
+config_version = 16
+
+[audio]
+spectrum_frame_rate = 30
 
 [bar.default]
 center = [ "group:g3", "group:g4" ]
 end = [ "tray", "audio_visualizer", "keyboard_layout", "group:g2" ]
 font_family = "Monocraft"
-font_weight = 700
+font_weight = 600
 margin_edge = 0
 margin_ends = 0
-position = "left"
 radius = 22
 radius_bottom_left = 0
 radius_top_left = 0
@@ -20,7 +22,7 @@ thickness = 40
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g2"
     members = [ "network", "battery", "volume", "session" ]
     opacity = 1.0
@@ -30,7 +32,7 @@ thickness = 40
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g3"
     members = [ "clock_icon", "clock" ]
     opacity = 1.0
@@ -40,7 +42,7 @@ thickness = 40
     accordion = false
     accordion_direction = "start"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g4"
     members = [ "date_icon", "date" ]
     opacity = 1.0
@@ -50,7 +52,7 @@ thickness = 40
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g1"
     members = [ "cpu", "ram", "temp" ]
     opacity = 1.0
@@ -58,6 +60,9 @@ thickness = 40
 
 [battery.device."/org/freedesktop/UPower/devices/headset_dev_5C_5E_0A_4A_B1_99"]
 warning_threshold = 15
+
+[bluetooth]
+connect_when_enabled = true
 
 [brightness]
 minimum_brightness = 0.0099999997764825821
@@ -126,7 +131,7 @@ widget_order = [ "lockscreen-login-box@winit", "lockscreen-login-box@eDP-1", "lo
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@eDP-1".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -154,7 +159,7 @@ widget_order = [ "lockscreen-login-box@winit", "lockscreen-login-box@eDP-1", "lo
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@winit".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -260,9 +265,9 @@ polkit_agent = true
 
 [theme]
 builtin = "Catppuccin"
-community_palette = "Catppuccin Mocha Mauve-Lavender"
+community_palette = "Sway Classic"
 mode = "dark"
-wallpaper_scheme = "m3-content"
+wallpaper_scheme = "m3-rainbow"
 
     [theme.templates]
     enable_community_templates = false
@@ -272,19 +277,13 @@ directory = "@ASSETS@"
 transition_on_startup = true
 
     [wallpaper.default]
-    path = "@ASSETS@/tree.png"
+    path = "@ASSETS@/pixel-galaxy.png"
 
     [wallpaper.last]
-    path = "@ASSETS@/tree.png"
+    path = "@ASSETS@/pixel-galaxy.png"
 
     [wallpaper.monitors.eDP-1]
-    path = "@ASSETS@/tree.png"
-
-    [[wallpaper.favorite]]
-    builtin_palette = "Catppuccin"
-    palette_source = "builtin"
-    path = "@ASSETS@/tree.png"
-    theme_mode = "dark"
+    path = "@ASSETS@/pixel-galaxy.png"
 
 [widget.active_window]
 display = "icon_only"
@@ -302,9 +301,8 @@ show_label = false
 [widget.clock]
 capsule = true
 font_family = "Monocraft"
-font_weight = 700
+font_weight = 600
 format = "{:%H %M}"
-scale = 0.80000000000000004
 vertical_format = "{:%H %M}"
 
 [widget.clock_icon]
@@ -325,8 +323,8 @@ visualization = "graph"
 
 [widget.date]
 capsule = true
+font_weight = 600
 format = "{:%d %m}"
-scale = 0.80000000000000004
 
 [widget.date_icon]
 glyph = "calendar-month"
@@ -337,7 +335,7 @@ type = "custom_button"
 [widget.keyboard_layout]
 capsule = true
 capsule_radius = "auto"
-font_weight = 700
+font_weight = 600
 scale = 0.75
 
 [widget.launcher_nixos]

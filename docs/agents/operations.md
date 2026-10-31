@@ -12,7 +12,7 @@ Run these from the repository root unless noted.
 | Apply on apollo | `nh os switch` (run from `~/nixos-config`) |
 | Format | `nix fmt` (alejandra) |
 | Full CI formatting parity | `nix run nixpkgs#deadnix -- --edit .` then `nix run nixpkgs#statix -- fix .` then `nix run nixpkgs#alejandra .` |
-| Regenerate `flake.nix` | `nix run .#write-flake` |
+| Update a flake input | `nix flake update <name>` |
 | Build the standalone Neovim | `nix build .#myNeovim` |
 | Build the standalone Noctalia | `nix build .#myNoctalia` |
 

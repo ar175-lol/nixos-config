@@ -15,7 +15,6 @@
     (modulePath + "/core/common")
     (modulePath + "/core/profiles")
     (modulePath + "/hardware")
-    (modulePath + "/system")
   ];
 
   userModule = name: spec: {pkgs, ...}: {

@@ -41,7 +41,7 @@ hosts do not mention it at all. A home module can use
 `{config, osConfig, pkgs, inputs, self, ...}` normally, but should configure the
 selected user directly rather than gate itself behind a NixOS program option.
 `userModule` sets each account's `home.stateVersion` from the host's
-`system.stateVersion`; `core/common/home-manager.nix` provides global packages and
+`system.stateVersion`; `core/common/system/home-manager.nix` provides global packages and
 `extraSpecialArgs = {inherit inputs self;}`.
 
 Do not add a shared `modules/home` tree or inject user config through
@@ -51,10 +51,10 @@ Do not add a shared `modules/home` tree or inject user config through
 
 Two different mechanisms exist:
 
-- Wrapped applications from `modules/core/common/packages.nix` are defined in
+- Wrapped applications from `modules/core/common/system/nix/overlays.nix` are defined in
   `nixpkgs.overlays`, so they are reachable as `pkgs.myTerminal`, `pkgs.myYazi`,
   and `pkgs.myTmux` from any module.
-- `modules/system/programs/noctalia/_package.nix` defines
+- `modules/core/common/system/programs/noctalia/_package.nix` defines
   `flake.overlays.default` for `myNoctalia`. The Noctalia module applies
   `inputs.self.overlays.default` when enabled, which is why `pkgs.myNoctalia`
   resolves in `niri.nix`.
@@ -81,11 +81,11 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
 
 1. Add `foo.enable = lib.mkEnableOption "foo";` to
    `modules/options/programs.nix`.
-2. Create `modules/system/programs/foo.nix` with the `cfg`/`mkIf` pattern above.
-   It is auto-imported by the `system` tree; do not add an import anywhere.
+2. Create `modules/core/common/system/programs/foo.nix` with the `cfg`/`mkIf` pattern above.
+   It is auto-imported by the `core/common` tree; do not add an import anywhere.
 3. Enable it in a profile (with `mkDefault`) or in a host's `features`.
 4. If it needs assets or shared data, create
-   `modules/system/programs/foo/` with `module.nix` and `_data.nix`/assets.
+   `modules/core/common/system/programs/foo/` with `module.nix` and `_data.nix`/assets.
    Non-Nix assets beside the module are fine.
 
 ### Add a profile
@@ -105,14 +105,13 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
 
 ### Add a flake input
 
-1. Edit `modules/repository/inputs.nix`.
-2. Run `nix run .#write-flake` to regenerate `flake.nix`.
-3. Update the lock if needed with `nix flake update <name>` (or `nix flake update`).
-4. Never edit `flake.nix` directly; it will be overwritten.
+1. Add the input to the `inputs` set in `flake.nix`.
+2. Update the lock with `nix flake update <name>` (or `nix flake lock`).
+3. Consume it as `inputs.<name>` in `outputs.nix` or any module.
 
 ### Add a flake-level package or app
 
-1. Create `modules/system/programs/<thing>/_package.nix` (or another `_`-prefixed
+1. Create `modules/core/common/system/programs/<thing>/_package.nix` (or another `_`-prefixed
    file) so import-tree does not import it into every NixOS system.
 2. Add it to the `imports` list in `outputs.nix`.
 3. Use `perSystem` for `packages.<name>` / `apps.<name>`, and/or

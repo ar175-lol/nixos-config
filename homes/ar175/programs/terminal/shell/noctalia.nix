@@ -8,12 +8,12 @@
 
       repo="$HOME/nixos-config"
       settings="$HOME/.local/state/noctalia/settings.toml"
-      config="$repo/modules/system/programs/noctalia/config.toml"
+      config="$repo/modules/core/common/system/programs/noctalia/config.toml"
 
       sed -E \
         -e 's|@DATA@|@ASSETS@|g' \
         -e "s|$HOME/nixos-config/data|@ASSETS@|g" \
-        -e "s|$HOME/nixos-config/modules/system/programs/noctalia/assets|@ASSETS@|g" \
+        -e "s|$HOME/nixos-config/modules/core/common/system/programs/noctalia/assets|@ASSETS@|g" \
         -e 's|/nix/store/[[:alnum:]]+-assets|@ASSETS@|g' \
         "$settings" > "$config"
 

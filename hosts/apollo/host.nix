@@ -97,7 +97,6 @@ _: {
 
           loader.enable = true;
           fonts.enable = true;
-          automount.enable = true;
         };
 
         profiles.workstation.enable = true;

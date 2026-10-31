@@ -1,15 +1,16 @@
-# Heya! This flake.nix is auto-generated.
-# https://flake-file.denful.dev/
+# Hand-maintained flake. Add inputs here and update with `nix flake update`.
 {
   outputs = inputs: import ./outputs.nix inputs;
 
   inputs = {
-    catppuccin.url = "github:catppuccin/nix";
+    catppuccin = {
+      url = "github:catppuccin/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -20,7 +21,10 @@
       url = "github:ar175-lol/ncalayer-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixcord.url = "github:FlameFlag/nixcord";
+    nixcord = {
+      url = "github:4evy/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     noctalia = {
       url = "github:noctalia-dev/noctalia/cachix";

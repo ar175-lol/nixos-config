@@ -9,7 +9,7 @@ their own options; they read `config.modules.*`.
 - `modules.device`: `hasSound`, `hasBluetooth`, `cpu.type` (`"intel"`/`"amd"`/null),
   `gpu.intel.enable`, `gpu.nvidia.enable`, `gpu.nvidia.prime.*`.
 - `modules.system`: `loader.enable`, `doas.enable`, `fonts.enable`, `zram.enable`,
-  `powerSave.enable`, `automount.enable`.
+  `powerSave.enable`.
 - `modules.profiles`: `workstation.enable`.
 - `modules.system.programs`: `plasma`, `niri`, `greeter`, `noctalia`, `tmux`,
   `neovim`, `opencode`, `localsend`, `kdenlive`, `libreoffice`, `flatpak`, `steam`,
@@ -34,22 +34,26 @@ profile.
 
 ## Module inventory
 
-Always imported from `core/common`:
+Always imported from `core/common/system`:
 
-- `boot.nix` — xanmod kernel, Plymouth, quiet boot, tmp cleanup.
-- `debloat.nix` — disables ModemManager, nscd, timesyncd, speechd, core dumps,
-  selected sockets/timers, and most docs.
-- `dns.nix` — dnscrypt-proxy on `127.0.0.1`; resolved/resolvconf off.
-- `firewall.nix` — nftables and the firewall.
-- `fonts.nix` — Monocraft; default font packages when
-  `modules.system.fonts.enable` is true.
 - `home-manager.nix` — home-manager integration and common arguments.
-- `lix.nix` — Lix 2.96 as the Nix implementation.
-- `locale.nix` — `Asia/Almaty`, `en_US.UTF-8`, British measurement/numeric/paper/time.
-- `networking.nix` — iwd, no NetworkManager, dhcpcd off by default.
-- `nix.nix` — flakes, store optimisation, Cachix substituters, no automatic GC,
-  `allowUnfree`.
-- `packages.nix` — `myTerminal`, `myYazi`, `myTmux` wrapper overlays.
+- `nix/module.nix` — flakes, store optimisation, Cachix substituters, no
+  automatic GC, `allowUnfree`.
+- `nix/lix.nix` — Lix 2.96 as the Nix implementation.
+- `nix/overlays.nix` — `myTerminal`, `myYazi`, `myTmux` wrapper overlays.
+- `os/boot.nix` — xanmod kernel, Plymouth, quiet boot, tmp cleanup.
+- `os/debloat.nix` — disables ModemManager, nscd, timesyncd, speechd, core dumps,
+  selected sockets/timers, and most docs.
+- `os/doas.nix` — disables sudo, enables passwordless doas for wheel.
+- `os/fonts.nix` — Monocraft; default font packages when
+  `modules.system.fonts.enable` is true.
+- `os/loader.nix` — Limine when `modules.system.loader.enable` is true.
+- `os/locale.nix` — `Asia/Almaty`, `en_US.UTF-8`, British
+  measurement/numeric/paper/time.
+- `os/networking/module.nix` — iwd, no NetworkManager, dhcpcd off by default.
+- `os/networking/dns.nix` — dnscrypt-proxy on `127.0.0.1`; resolved/resolvconf
+  off.
+- `os/networking/firewall.nix` — nftables and the firewall.
 
 Roles:
 
@@ -64,15 +68,13 @@ Profiles:
 
 Hardware (all gated by the matching `modules.*` option):
 
-- `adb.nix`, `audio.nix`, `automount.nix`, `bluetooth.nix`, `power-save.nix`,
+- `adb.nix`, `audio.nix`, `bluetooth.nix`, `power-save.nix`,
   `virtualisation.nix`, `zram.nix`, `cpu/{amd,intel}.nix`, `gpu/{intel,nvidia}.nix`.
 
-System:
+System programs (`core/common/system/programs/`):
 
-- `doas.nix` — disables sudo, enables passwordless doas for wheel.
-- `loader.nix` — Limine when `modules.system.loader.enable` is true.
-- `programs/<name>.nix` — one file per selectable program: `flatpak`, `greeter`,
+- `<name>.nix` — one file per selectable program: `flatpak`, `greeter`,
   `kdenlive`, `libreoffice`, `localsend`, `niri`, `opencode`, `plasma`, `printing`,
   `steam`, `tmux`, plus `noctalia/` and `neovim/`.
-- `programs/neovim/` and `programs/noctalia/` are directories because they carry
-  settings, assets, or flake-level package outputs.
+- `neovim/` and `noctalia/` are directories because they carry settings, assets,
+  or flake-level package outputs.

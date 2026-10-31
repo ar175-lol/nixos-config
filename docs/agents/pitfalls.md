@@ -2,9 +2,8 @@
 
 ## Hard rules and gotchas
 
-- **Never edit `flake.nix`.** It is generated from
-  `modules/repository/inputs.nix`. Edit that file and run
-  `nix run .#write-flake`.
+- **`flake.nix` is hand-maintained.** Add inputs there and update the lock with
+  `nix flake update <name>`. `outputs.nix` remains the real entry point.
 - **Never gate `imports`.** Use `config = lib.mkIf ...`. `imports` must be a
   concrete list.
 - **Respect the underscore convention.** import-tree skips `_`-prefixed files and
@@ -56,10 +55,10 @@ These are the places that assume the current user (`ar175`) or checkout path. If
 you add another user or move the repository, update them deliberately:
 
 - `modules/hardware/virtualisation.nix` — adds `ar175` to `libvirtd`.
-- `modules/system/programs/printing.nix` — adds `ar175` to `scanner` and `lp`.
-- `modules/system/programs/noctalia/config.toml` — avatar path is
+- `modules/core/common/system/programs/printing.nix` — adds `ar175` to `scanner` and `lp`.
+- `modules/core/common/system/programs/noctalia/config.toml` — avatar path is
   `/home/ar175/.face.jpg`.
-- `modules/system/programs/neovim/_settings.nix` — nixd uses
+- `modules/core/common/system/programs/neovim/_settings.nix` — nixd uses
   `/home/ar175/nixos-config` and the `apollo` host for option evaluation.
 - `homes/ar175/programs/terminal/tools/nh/default.nix` — flake path is
   `${config.home.homeDirectory}/nixos-config`.
