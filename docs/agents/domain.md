@@ -18,9 +18,10 @@ overwrite it. The zsh aliases `sync` and `update` call this workflow.
 
 - Boot: xanmod latest kernel, Plymouth, quiet boot; Limine is enabled on `apollo`
   through `modules/core/common/system/os/loader.nix`.
-- Networking: iwd with IPv6 disabled, NetworkManager off, dhcpcd off by default,
-  dnscrypt-proxy on `127.0.0.1`, systemd-resolved and resolvconf disabled, nftables
-  firewall on.
+- Networking: iwd when `modules.device.hasWifi` (IPv6 disabled), dhcpcd when
+  `modules.device.hasEthernet` (with `wlan*` denied when both are on),
+  NetworkManager off, dnscrypt-proxy on `127.0.0.1`, systemd-resolved and
+  resolvconf disabled, nftables firewall on.
 - Privilege: `modules/core/common/system/os/doas.nix` disables sudo and enables passwordless doas
   for `wheel`; the `workstation` role turns this on.
 - Audio: PipeWire with ALSA, JACK, Pulse, and WirePlumber when
@@ -29,10 +30,12 @@ overwrite it. The zsh aliases `sync` and `update` call this workflow.
   optional PRIME offload; Intel i915 GuC and VA-API packages when Intel GPU is on.
 - Laptop: zram swap and undervolt/thermald/power-profiles-daemon via the `laptop`
   role.
-- ISO: `hosts/iso/live.nix` wraps Calamares with a Wayland/pkexec launcher, forces
-  xanmod, switches to dhcpcd, disables NetworkManager/wireless, enables broad
-  polkit rules, and adds installer/debootstrap tooling. Do not “clean up” this file
-  without testing the ISO build and boot path.
+- ISO: the host sets `hasWifi` and `hasEthernet`, which enables iwd and dhcpcd
+  (with `wlan*` denied in dhcpcd). `hosts/iso/live.nix` wraps Calamares with a
+  Wayland/pkexec launcher, forces xanmod, forces NetworkManager off (the
+  installation-CD profile enables it), enables broad polkit rules, and adds
+  installer/debootstrap tooling. Do not “clean up” this file without testing the
+  ISO build and boot path.
 - `modules/core/common/system/os/debloat.nix` deliberately masks or disables ModemManager,
   nscd, core dumps, timesyncd, speechd, and some systemd sockets/timers. That is
   intentional; do not re-enable them as “fixes” unless the task asks for it.

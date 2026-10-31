@@ -15,6 +15,18 @@ in {
       description = "Whether the host has a Bluetooth radio.";
     };
 
+    hasWifi = mkOption {
+      type = bool;
+      default = false;
+      description = "Whether the host uses Wi-Fi; enables iwd.";
+    };
+
+    hasEthernet = mkOption {
+      type = bool;
+      default = false;
+      description = "Whether the host uses wired Ethernet; enables dhcpcd.";
+    };
+
     cpu = {
       type = mkOption {
         type = nullOr (enum ["intel" "amd"]);

@@ -72,6 +72,7 @@ _: {
         device = {
           hasSound = true;
           hasBluetooth = true;
+          hasWifi = true;
 
           cpu.type = "intel";
 

@@ -12,9 +12,17 @@
     roles = ["graphical"];
 
     features = {
-      modules.system.programs = {
-        greeter.enable = false;
-        neovim.enable = true;
+      modules = {
+        device = {
+          hasWifi = true;
+          hasSound = true;
+          hasEthernet = true;
+        };
+
+        system.programs = {
+          greeter.enable = false;
+          neovim.enable = true;
+        };
       };
     };
 

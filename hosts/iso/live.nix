@@ -59,10 +59,6 @@ in {
   config = {
     networking = {
       networkmanager.enable = lib.mkForce false;
-      dhcpcd.enable = true;
-      dhcpcd.denyInterfaces = ["wlan*"];
-
-      wireless.enable = lib.mkForce false;
     };
 
     boot.kernelPackages = lib.mkForce pkgs.linuxPackages_xanmod_latest;

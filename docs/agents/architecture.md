@@ -186,6 +186,7 @@ _: {
         device = {
           hasSound = true;
           hasBluetooth = true;
+          hasWifi = true;
           cpu.type = "intel";
           gpu = {
             intel.enable = true;
@@ -257,8 +258,9 @@ Some modules still hardcode `users.users.ar175`; see [Pitfalls](pitfalls.md).
 
 ## The three axes
 
-1. `modules.device.*` — hardware capability: sound, Bluetooth, CPU vendor, GPUs.
-   Implementations are in `modules/hardware/`.
+1. `modules.device.*` — hardware capability: sound, Bluetooth, Wi-Fi, Ethernet,
+   CPU vendor, GPUs. Implementations are in `modules/hardware/`; networking stays
+   in `core/common/system/os/networking/`.
 2. `roles` — what the machine *is*. A role directory is imported wholesale for the
    host. Role code is unconditional; a graphical machine simply gets a session.
 3. `modules.profiles.*` and `modules.system.programs.*` — NixOS software. Profiles are
@@ -278,8 +280,8 @@ while keeping the `workstation` profile enabled, without `mkForce`.
 
 | Host | Roles | Profiles | Notable choices |
 |---|---|---|---|
-| `apollo` | `graphical`, `workstation`, `laptop` | `workstation` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Limine, fonts, Plasma, Steam, Flatpak, btrfs subvolumes in `fs.nix` |
-| `iso` | `graphical` | none | Noctalia greeter off, Neovim on, installation-CD module + `live.nix` (Calamares, dhcpcd, xanmod, polkit) |
+| `apollo` | `graphical`, `workstation`, `laptop` | `workstation` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Steam, Flatpak, btrfs subvolumes in `fs.nix` |
+| `iso` | `graphical` | none | Noctalia greeter off, Neovim on, audio, installation-CD module + `live.nix` (Calamares, iwd + dhcpcd, xanmod, polkit) |
 
 Both use `stateVersion = "26.05"`. There is currently no `gaming` profile or
 program option; Steam and Flatpak are enabled directly in `hosts/apollo/host.nix`.

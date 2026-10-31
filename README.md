@@ -60,10 +60,7 @@ _: {
     features = {
       modules.device.hasSound = true;
 
-      modules.profiles = {
-        workstation.enable = true;
-        gaming.enable = false;
-      };
+      modules.profiles.workstation.enable = true;
     };
   };
 }

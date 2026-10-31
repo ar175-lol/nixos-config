@@ -6,8 +6,9 @@ All NixOS feature options live in `modules/options/`. (The flake-parts `hosts`
 option is separate, in `modules/tree/module.nix`.) Implementations never declare
 their own options; they read `config.modules.*`.
 
-- `modules.device`: `hasSound`, `hasBluetooth`, `cpu.type` (`"intel"`/`"amd"`/null),
-  `gpu.intel.enable`, `gpu.nvidia.enable`, `gpu.nvidia.prime.*`.
+- `modules.device`: `hasSound`, `hasBluetooth`, `hasWifi`, `hasEthernet`,
+  `cpu.type` (`"intel"`/`"amd"`/null), `gpu.intel.enable`, `gpu.nvidia.enable`,
+  `gpu.nvidia.prime.*`.
 - `modules.system`: `loader.enable`, `doas.enable`, `fonts.enable`, `zram.enable`,
   `powerSave.enable`.
 - `modules.profiles`: `workstation.enable`.
@@ -50,7 +51,8 @@ Always imported from `core/common/system`:
 - `os/loader.nix` — Limine when `modules.system.loader.enable` is true.
 - `os/locale.nix` — `Asia/Almaty`, `en_US.UTF-8`, British
   measurement/numeric/paper/time.
-- `os/networking/module.nix` — iwd, no NetworkManager, dhcpcd off by default.
+- `os/networking/module.nix` — iwd when `hasWifi`; dhcpcd when `hasEthernet`
+  (denying `wlan*` when both are on); no NetworkManager.
 - `os/networking/dns.nix` — dnscrypt-proxy on `127.0.0.1`; resolved/resolvconf
   off.
 - `os/networking/firewall.nix` — nftables and the firewall.
