@@ -4,6 +4,10 @@
 
 NixOS for all my stuff!
 
+## Screenshots
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/eb609ea9-b4ef-4950-8b9c-18a99e58b95d" />
+
+
 ## Layout
 
 ```
