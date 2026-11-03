@@ -1,7 +1,14 @@
 {
   lib,
   pkgs,
-}: {
+}: let
+  # These strings are Nix expressions evaluated by nixd at runtime, not at
+  # build time, so they resolve against whoever runs the editor. The checkout
+  # is expected at ~/nixos-config (same convention as nh and noctalia-sync).
+  flake = ''(builtins.getFlake (builtins.getEnv "HOME" + "/nixos-config"))'';
+  host = ''(builtins.replaceStrings ["\n"] [""] (builtins.readFile "/etc/hostname"))'';
+  nixosConfig = "(builtins.getAttr ${host} ${flake}.nixosConfigurations)";
+in {
   theme = {
     enable = true;
     name = "catppuccin";
@@ -48,15 +55,13 @@
       settings.nixd = {
         formatting.command = ["alejandra"];
 
-        nixpkgs.expr = ''
-          import (builtins.getFlake "/home/ar175/nixos-config").inputs.nixpkgs { }
-        '';
+        nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
 
         options = {
-          nixos.expr = "(builtins.getFlake \"/home/ar175/nixos-config\").nixosConfigurations.apollo.options";
-          home-manager.expr = "(builtins.getFlake \"/home/ar175/nixos-config\").nixosConfigurations.apollo.options.home-manager.users.type.getSubOptions []";
-          flake-parts.expr = "(builtins.getFlake \"/home/ar175/nixos-config\").debug.options";
-          flake-parts-per-system.expr = "(builtins.getFlake \"/home/ar175/nixos-config\").currentSystem.options";
+          nixos.expr = "${nixosConfig}.options";
+          home-manager.expr = "${nixosConfig}.options.home-manager.users.type.getSubOptions []";
+          flake-parts.expr = "${flake}.debug.options";
+          flake-parts-per-system.expr = "${flake}.currentSystem.options";
         };
       };
     };

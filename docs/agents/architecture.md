@@ -254,7 +254,7 @@ defaults to `homes/<name>/home.nix` when that file exists.
 The Home Manager entry point is found by convention. Set `homeModules` explicitly
 only to override it. Keep Home Manager configuration under `homes/<name>/`; NixOS
 modules must not inject it through `home-manager.sharedModules`.
-Some modules still hardcode `users.users.ar175`; see [Pitfalls](pitfalls.md).
+Feature modules do not reference specific accounts; groups such as `libvirtd` or `scanner` are granted per user in the host's `users.<n>.extraGroups`. Remaining user-specific assumptions are listed in [Pitfalls](pitfalls.md).
 
 ## The three axes
 

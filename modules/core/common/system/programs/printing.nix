@@ -25,7 +25,5 @@ in {
 
       printing.enable = true;
     };
-
-    users.users.ar175.extraGroups = lib.mkAfter ["scanner" "lp"];
   };
 }

@@ -16,6 +16,9 @@ _: {
           "audio"
           "input"
           "adbusers"
+          "libvirtd"
+          "scanner"
+          "lp"
         ];
       };
       mom = {

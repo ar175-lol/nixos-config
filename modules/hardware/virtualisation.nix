@@ -18,8 +18,6 @@ in {
       onShutdown = "suspend";
     };
 
-    users.users.ar175.extraGroups = lib.mkAfter ["libvirtd"];
-
     programs.virt-manager.enable = true;
 
     networking.firewall.trustedInterfaces = ["virbr0"];

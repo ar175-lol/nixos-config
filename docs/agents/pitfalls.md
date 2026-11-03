@@ -54,15 +54,17 @@
 These are the places that assume the current user (`ar175`) or checkout path. If
 you add another user or move the repository, update them deliberately:
 
-- `modules/hardware/virtualisation.nix` — adds `ar175` to `libvirtd`.
-- `modules/core/common/system/programs/printing.nix` — adds `ar175` to `scanner` and `lp`.
 - `modules/core/common/system/programs/noctalia/config.toml` — avatar path is
   `/home/ar175/.face.jpg`.
-- `modules/core/common/system/programs/neovim/_settings.nix` — nixd uses
-  `/home/ar175/nixos-config` and the `apollo` host for option evaluation.
+- `modules/core/common/system/programs/neovim/_settings.nix` — nixd resolves
+  `$HOME/nixos-config` and the machine's `/etc/hostname` at runtime, so the
+  checkout must live at `~/nixos-config` and the hostname must match a host.
 - `homes/ar175/programs/terminal/tools/nh/default.nix` — flake path is
   `${config.home.homeDirectory}/nixos-config`.
 - `homes/ar175/programs/terminal/shell/noctalia.nix` — `noctalia-sync` assumes
   `$HOME/nixos-config` and runs `nh os switch`.
 - `homes/ar175/git.nix` — user name, email, and SSH signing key.
 - `hosts/apollo/host.nix` — account names, groups, and hashed passwords.
+  Feature modules never touch a specific account: a feature that needs group
+  membership (`libvirtd`, `scanner`, `lp`, `adbusers`) expects the host to list
+  the group in `users.<n>.extraGroups`.
