@@ -48,6 +48,7 @@
       specialArgs = {inherit inputs self;};
 
       modules = lib.flatten [
+        inputs.agenix.nixosModules.default
         (map (tree: inputs.import-tree tree) commonTrees)
         (map (role: inputs.import-tree (rolesPath + "/${role}")) host.roles)
         host.extraModules

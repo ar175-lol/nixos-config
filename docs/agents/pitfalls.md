@@ -19,7 +19,7 @@
   for behavior that must be conditional.
 - **NixOS feature options are declared only in `modules/options/`.** The
   flake-parts `hosts` option is the exception, declared in
-  `modules/tree/module.nix`. Implementations read `config.modules.*`.
+  `modules/tree/default.nix`. Implementations read `config.modules.*`.
 - **Plain attrset modules get no arguments.** Use a function for `lib`, `pkgs`,
   `config`, or `inputs`.
 - **Host registration is manual.** A new `hosts/<name>/host.nix` does nothing until
@@ -27,10 +27,10 @@
 - **`features` is a module, not a nested option.** Config under
   `features.modules.*` is the same as config under `modules.*` in any other NixOS
   module. It can also set stock NixOS options directly.
-- **`hosts` is a flake-parts option.** It is declared in `modules/tree/module.nix`,
+- **`hosts` is a flake-parts option.** It is declared in `modules/tree/default.nix`,
   not in `modules/options/`.
 - **`import-tree` imports `.nix` files only.** TOML/PNG assets are ignored; this is
-  why they can sit next to `module.nix`.
+  why they can sit next to `default.nix`.
 - **Home Manager is per-user.** Put it under `homes/<name>/`; `users.<name>.homeModules`
   defaults to `homes/<name>/home.nix` when present. Do not add a shared
   `modules/home` tree.
@@ -38,9 +38,10 @@
   is not. Cross-tree wiring belongs in `outputs.nix` or `hosts/default.nix`.
   Use `self.outPath + "/path/from/root"` for the few root-relative references;
   `self` is available in flake-parts and is forwarded to NixOS and Home Manager.
-- **Do not commit plaintext secrets.** `hosts/apollo/host.nix` contains hashed
-  passwords; do not add tokens or passwords in plaintext. `homes/ar175/git.nix`
-  contains the user's identity and signing key path.
+- **Do not commit plaintext secrets.** Password hashes are agenix-encrypted under
+  `secrets/` and wired through `hosts/apollo/secrets.nix`; see
+  [Secrets](../secrets.md). Do not add tokens or passwords in plaintext.
+  `homes/ar175/git.nix` contains the user's identity and signing key path.
 - **CI auto-commits formatting.** Expect `format.yml` to rewrite Nix files on
   `main`; run the formatters yourself instead of relying on it.
 - **`debug = true` in `outputs.nix` is intentional.** It exposes flake-parts
@@ -69,7 +70,9 @@ you add another user or move the repository, update them deliberately:
 - `homes/ar175/programs/terminal/shell/noctalia.nix` — `noctalia-sync` assumes
   `$HOME/nixos-config` and runs `nh os switch`.
 - `homes/ar175/git.nix` — user name, email, and SSH signing key.
-- `hosts/apollo/host.nix` — account names, groups, and hashed passwords.
+- `hosts/apollo/host.nix` — account names and groups. Password hashes are
+  encrypted in `secrets/`; `hosts/apollo/secrets.nix` points
+  `users.users.<n>.hashedPasswordFile` at the decrypted agenix paths.
   Feature modules never touch a specific account: a feature that needs group
   membership (`libvirtd`, `scanner`, `lp`, `adbusers`) expects the host to list
   the group in `users.<n>.extraGroups`.

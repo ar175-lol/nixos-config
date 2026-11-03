@@ -3,7 +3,7 @@
 ## Option surface
 
 All NixOS feature options live in `modules/options/`. (The flake-parts `hosts`
-option is separate, in `modules/tree/module.nix`.) Implementations never declare
+option is separate, in `modules/tree/default.nix`.) Implementations never declare
 their own options; they read `config.modules.*`.
 
 - `modules.device`: `hasSound`, `hasBluetooth`, `hasWifi`, `hasEthernet`,
@@ -38,7 +38,7 @@ profile.
 Always imported from `core/common/system`:
 
 - `home-manager.nix` — home-manager integration and common arguments.
-- `nix/module.nix` — flakes, store optimisation, Cachix substituters, no
+- `nix/default.nix` — flakes, store optimisation, Cachix substituters, no
   automatic GC, `allowUnfree`.
 - `nix/lix.nix` — Lix 2.96 as the Nix implementation.
 - `nix/overlays.nix` — `myTerminal`, `myYazi`, `myTmux` wrapper overlays.
@@ -51,7 +51,7 @@ Always imported from `core/common/system`:
 - `os/loader.nix` — Limine when `modules.system.loader.enable` is true.
 - `os/locale.nix` — `Asia/Almaty`, `en_US.UTF-8`, British
   measurement/numeric/paper/time.
-- `os/networking/module.nix` — iwd when `hasWifi`; dhcpcd when `hasEthernet`
+- `os/networking/default.nix` — iwd when `hasWifi`; dhcpcd when `hasEthernet`
   (denying `wlan*` when both are on); no NetworkManager.
 - `os/networking/dns.nix` — dnscrypt-proxy on `127.0.0.1`; resolved/resolvconf
   off.
@@ -59,14 +59,14 @@ Always imported from `core/common/system`:
 
 Roles:
 
-- `graphical/module.nix` — fish/zsh plus niri, greeter, noctalia, and tmux defaults.
+- `graphical/default.nix` — fish/zsh plus niri, greeter, noctalia, and tmux defaults.
 - `graphical/portal.nix` — xdg portals and the yazi-based terminal file chooser.
-- `workstation/module.nix` — doas, virtualisation, adb, printing defaults.
-- `laptop/module.nix` — powerSave and zram defaults.
+- `workstation/default.nix` — doas, virtualisation, adb, printing defaults.
+- `laptop/default.nix` — powerSave and zram defaults.
 
 Profiles:
 
-- `workstation/module.nix` — everyday desktop programs, enabled with `mkDefault`.
+- `workstation/default.nix` — everyday desktop programs, enabled with `mkDefault`.
 
 Hardware (all gated by the matching `modules.*` option):
 

@@ -17,9 +17,10 @@ hosts/                 one directory per machine, each with host.nix
 homes/                 per-user Home Manager configurations
   ar175/
   mom/
+secrets/               agenix-encrypted secrets and recipient rules
 modules/
   tree/
-    module.nix           declares the `hosts` option, builds every machine
+    default.nix          declares the `hosts` option, builds every machine
   options/              the option surface: device, profiles, programs, system
   core/
     common/             always on for every host
@@ -155,6 +156,15 @@ The on-disk layout is declared in `hosts/apollo/fs.nix` as plain
 `fileSystems`. disko was never wired up -- its layout file was imported by
 nothing -- and has been removed.
 
+## Secrets
+
+Account password hashes are encrypted with [agenix][agenix-url] and stored under
+`secrets/`; `hosts/apollo/secrets.nix` wires them to
+`users.users.<name>.hashedPasswordFile`. The `.age` files are safe to commit.
+Never commit decrypted secrets, private age/SSH keys, or plaintext hashes.
+See [docs/secrets.md](docs/secrets.md) for editing, rekeying, and host-key
+setup.
+
 ## Verifying a change
 
 Comparing derivation paths is the only trustworthy check that a config change
@@ -198,6 +208,7 @@ Thank you:
 [zsh-url]: https://www.zsh.org/
 [starship-url]: https://starship.rs/
 [zed-url]: https://zed.dev/
+[agenix-url]: https://github.com/ryantm/agenix
 [home-manager-url]: https://github.com/nix-community/home-manager
 [zen-url]: https://zen-browser.app/
 [zen-flake-url]: https://github.com/0xc000022070/zen-browser-flake

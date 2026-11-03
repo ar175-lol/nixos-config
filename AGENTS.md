@@ -23,6 +23,7 @@ the nearest existing module.
 | Hard rules, gotchas, hardcoded assumptions | [docs/agents/pitfalls.md](docs/agents/pitfalls.md) |
 | Commands and CI | [docs/agents/operations.md](docs/agents/operations.md) |
 | Noctalia sync and system behavior | [docs/agents/domain.md](docs/agents/domain.md) |
+| Agenix secrets, recipients, host key | [docs/secrets.md](docs/secrets.md) |
 
 ## Non-negotiables
 

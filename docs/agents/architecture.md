@@ -10,10 +10,10 @@ flake.nix                              hand-maintained; outputs = import ./outpu
     ├── imports ./hosts                    root-level wiring for every host
     │   └── hosts/default.nix              imports hosts/*/host.nix
     └── import-tree ./modules/tree
-        └── modules/tree/module.nix        declares the `hosts` option and builds hosts
+        └── modules/tree/default.nix        declares the `hosts` option and builds hosts
 ```
 
-`modules/tree/module.nix` is the center of the architecture. It declares a
+`modules/tree/default.nix` is the center of the architecture. It declares a
 flake-parts option named `hosts` (not a NixOS option) and turns every enabled
 entry into `flake.nixosConfigurations.<name>`:
 
@@ -80,8 +80,13 @@ hosts/
   default.nix             manually imports each host's host.nix
   apollo/host.nix         host declaration for the workstation
   apollo/fs.nix           btrfs/EFI layout for apollo; pulled in via extraModules
+  apollo/secrets.nix      agenix secrets and hashedPasswordFile for apollo
   iso/host.nix            host declaration for the installer
   iso/live.nix            ISO-only config (Calamares, network overrides); via extraModules
+
+secrets/
+  agenix-rules.nix        public keys allowed to decrypt each secret
+  *.age                   agenix-encrypted secrets (safe to commit)
 
 homes/
   <user>/home.nix         Home Manager entry point for one account
@@ -90,9 +95,9 @@ homes/
 
 modules/
   tree/
-    module.nix            flake-parts `hosts` option and mkHost
+    default.nix           flake-parts `hosts` option and mkHost
   options/
-    module.nix            imports the main option files
+    default.nix           imports the main option files
     device.nix            modules.device.*   hardware capabilities
     profiles.nix          modules.profiles.* software bundles
     programs.nix          modules.system.programs.*
@@ -123,8 +128,9 @@ ignored. This is why:
   `outputs.nix` because they are flake-level modules, not NixOS modules.
 - `noctalia/config.toml` and `noctalia/assets/` are safely beside the module.
 
-`module.nix` has no special meaning to Nix or import-tree. It is a naming convention
-for the main file of a directory. Any `.nix` file in a tree is imported.
+`default.nix` is the convention for the main file of a directory. import-tree
+imports every `.nix` file in a tree regardless of its name, so the filename itself
+has no special meaning to import-tree. Any `.nix` file in a tree is imported.
 
 ## Import topology
 
@@ -168,13 +174,11 @@ _: {
       ar175 = {
         description = "ar175";
         shell = "zsh";
-        hashedPassword = "…";
         extraGroups = ["wheel" "video" "audio" "input" "adbusers"];
       };
       mom = {
         description = "mom";
         shell = "fish";
-        hashedPassword = "…";
         extraGroups = ["video" "audio" "input"];
       };
     };
@@ -225,7 +229,7 @@ It can also set stock NixOS options directly, and it can be written as a functio
 
 ### Users
 
-`userModule` in `modules/tree/module.nix` expands each user as follows:
+`userModule` in `modules/tree/default.nix` expands each user as follows:
 
 ```nix
 userModule = name: spec: {pkgs, ...}: {
@@ -250,6 +254,11 @@ Defaults: `username = name`, `homeDirectory = "/home/${name}"`, `description = "
 `shell = "bash"`, `extraGroups = []`, `hashedPassword = null`, and `homeModules`
 defaults to `homes/<name>/home.nix` when that file exists.
 `shell` is a package attribute name, so `"zsh"` becomes `pkgs.zsh`.
+
+On `apollo`, password hashes are not stored in the host file.
+`hosts/apollo/secrets.nix` declares the agenix secrets and points
+`users.users.<name>.hashedPasswordFile` at their decrypted paths. The
+`hashedPassword` field remains available for hosts that do not use agenix.
 
 The Home Manager entry point is found by convention. Set `homeModules` explicitly
 only to override it. Keep Home Manager configuration under `homes/<name>/`; NixOS

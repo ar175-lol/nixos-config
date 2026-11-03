@@ -85,20 +85,20 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
    It is auto-imported by the `core/common` tree; do not add an import anywhere.
 3. Enable it in a profile (with `mkDefault`) or in a host's `features`.
 4. If it needs assets or shared data, create
-   `modules/core/common/system/programs/foo/` with `module.nix` and `_data.nix`/assets.
+   `modules/core/common/system/programs/foo/` with `default.nix` and `_data.nix`/assets.
    Non-Nix assets beside the module are fine.
 
 ### Add a profile
 
 1. Declare `modules.profiles.<name>.enable` in `modules/options/profiles.nix`.
-2. Create `modules/core/profiles/<name>/module.nix` that gates on the option and
+2. Create `modules/core/profiles/<name>/default.nix` that gates on the option and
    enables programs with `lib.mkDefault`.
 3. Enable the profile in a host's `features.modules.profiles.<name>.enable`.
 
 ### Add a role
 
 1. Create `modules/core/roles/<name>/` with at least one `.nix` file.
-   `module.nix` is the conventional main file.
+   `default.nix` is the conventional main file.
 2. Set role defaults with `lib.mkDefault`; role files are imported unconditionally
    for hosts that list the role.
 3. Add `"<name>"` to a host's `roles` list. There is no other registration.

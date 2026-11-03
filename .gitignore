@@ -7,3 +7,9 @@ core.*
 !core.nix
 .jj/
 src
+
+# agenix: only encrypted .age files belong in git
+secrets/*.decrypted
+secrets/*.plain
+secrets/*.key
+secrets/keys/

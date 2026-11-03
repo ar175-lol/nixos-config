@@ -9,7 +9,6 @@ _: {
         description = "ar175";
         shell = "zsh";
         defaultSession = "niri";
-        hashedPassword = "$6$4ObEABrHkyfFS35K$DkgMD.MLEY7N0FQehWWlJBvrFlmZS9kX3cNQ1L6Gok0VAsMFrRhdX1PoBgV7uC0NFzmzyZAQ2u6PW4jPSZV5M.";
         extraGroups = [
           "wheel"
           "video"
@@ -25,7 +24,6 @@ _: {
         description = "mom";
         shell = "fish";
         defaultSession = "plasma";
-        hashedPassword = "$6$1yVg1hiI8fUALOA3$qx361OrYq6OuJFH/eHs6dIsqAU7FRPJc.VY0HkrDQiMj189Gw4U5RSmQ4P8a9A1CTcI3mEqblYmj17dD1GQdo/";
         extraGroups = [
           "video"
           "audio"
@@ -107,6 +105,9 @@ _: {
       };
     };
 
-    extraModules = [./fs.nix];
+    extraModules = [
+      ./fs.nix
+      ./secrets.nix
+    ];
   };
 }
