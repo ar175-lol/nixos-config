@@ -46,6 +46,11 @@
 - **`debug = true` in `outputs.nix` is intentional.** It exposes flake-parts
   `debug.options`, which the Neovim nixd setup uses for completions. Do not remove
   it casually.
+- **nixd mirrors NixOS options under `hosts.<name>.features`.** That path is a
+  `deferredModule`, so nixd otherwise stops at `features` and cannot complete
+  `modules.*` options in host files. The synthetic `hosts` attrset in
+  `neovim/_settings.nix` is intentional; do not simplify it back to a bare
+  `.options` expression.
 - **`README.md` is design rationale and may lag.** The code and this docs tree are
   authoritative.
 

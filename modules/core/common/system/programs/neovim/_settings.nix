@@ -58,7 +58,22 @@ in {
         nixpkgs.expr = "import ${flake}.inputs.nixpkgs { }";
 
         options = {
-          nixos.expr = "${nixosConfig}.options";
+          # nixd resolves option paths from the lexical attrpath. Host files
+          # assign under `hosts.<name>.features`, which is a deferredModule;
+          # nixd cannot expand it. Mirror the NixOS options there so custom
+          # `modules.*` options still complete in `hosts/<name>/host.nix`.
+          nixos.expr = ''
+            let
+              flake = ${flake};
+              nixosOptions = (builtins.getAttr ${host} flake.nixosConfigurations).options;
+            in
+              nixosOptions
+              // {
+                hosts = builtins.mapAttrs
+                  (name: _: {features = (builtins.getAttr name flake.nixosConfigurations).options;})
+                  flake.nixosConfigurations;
+              }
+          '';
           home-manager.expr = "${nixosConfig}.options.home-manager.users.type.getSubOptions []";
           flake-parts.expr = "${flake}.debug.options";
           flake-parts-per-system.expr = "${flake}.currentSystem.options";
