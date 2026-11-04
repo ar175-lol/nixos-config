@@ -10,10 +10,10 @@ A normal program module looks like this:
   config,
   ...
 }: let
-  cfg = config.modules.system.programs.steam;
+  cfg = config.modules.system.programs.flatpak;
 in {
   config = lib.mkIf cfg.enable {
-    programs.steam.enable = true;
+    services.flatpak.enable = true;
   };
 }
 ```
@@ -95,6 +95,10 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
    enables programs with `lib.mkDefault`.
 3. Enable the profile in a host's `features.modules.profiles.<name>.enable`.
 
+A profile with per-piece sub-options (like `gaming`) declares sub-options in
+step 1 and defaults each piece on with `lib.mkDefault` in step 2; each
+implementation reads its own sub-option so hosts can turn individual pieces off.
+
 ### Add a role
 
 1. Create `modules/core/roles/<name>/` with at least one `.nix` file.
@@ -121,6 +125,6 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
 
 ### Change a host's filesystem or boot setup
 
-Put it in a per-host file (for example `hosts/apollo/fs.nix`) and add it to that
-host's `extraModules`. Do not add another host's disk UUIDs or initrd modules to a
+Put it in a per-host file (for example `hosts/apollo/modules/fs.nix`) and add it
+to that host's `extraModules` directory. Do not add another host's disk UUIDs or initrd modules to a
 common module.

@@ -9,8 +9,8 @@ directory.
 
 | Secret | Encrypted file | Consumer |
 |---|---|---|
-| `ar175` password | `secrets/ar175-password.age` | `hosts/apollo/secrets.nix` -> `users.users.ar175.hashedPasswordFile` |
-| `mom` password | `secrets/mom-password.age` | `hosts/apollo/secrets.nix` -> `users.users.mom.hashedPasswordFile` |
+| `ar175` password | `secrets/ar175-password.age` | `hosts/apollo/modules/secrets.nix` -> `users.users.ar175.hashedPasswordFile` |
+| `mom` password | `secrets/mom-password.age` | `hosts/apollo/modules/secrets.nix` -> `users.users.mom.hashedPasswordFile` |
 
 Each file contains only the salted `$6$...` crypt hash that used to be inline in
 `hosts/apollo/host.nix`. The plaintext password is never stored in the repo.
@@ -51,7 +51,7 @@ for now. When `mom` has a key, add it to `secrets/agenix-rules.nix`, then rekey.
 
 ## Host key
 
-`hosts/apollo/secrets.nix` sets:
+`hosts/apollo/modules/secrets.nix` sets:
 
 ```nix
 age.identityPaths = ["/var/lib/age/agenix_ed25519"];
@@ -76,7 +76,7 @@ decrypted until they are re-encrypted to a new key.
 ## Editing a secret
 
 On `apollo`, the `agenix` CLI is installed through `environment.systemPackages`
-in `hosts/apollo/secrets.nix`. On another machine, replace `agenix` below with
+in `hosts/apollo/modules/secrets.nix`. On another machine, replace `agenix` below with
 `nix run github:ryantm/agenix --`.
 
 Run from `secrets/` so agenix finds `agenix-rules.nix`:

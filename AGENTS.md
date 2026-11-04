@@ -34,7 +34,9 @@ the nearest existing module.
   `config.modules.*` and gate `config`, never `imports`.
 - **`imports` must be a concrete list.** `imports = lib.mkIf ...` is a type error.
 - **Profiles and roles use `lib.mkDefault`.** A host assignment wins; do not use
-  `mkForce`. Roles are imported wholesale and are not toggles.
+  `mkForce`. Roles are imported wholesale and are not toggles. A profile with
+  per-piece sub-options (like `gaming`) defaults each piece on; the host can turn
+  one off without dropping the profile.
 - **import-tree skips `_`-prefixed files and directories.** Import `_package.nix`
   and `_data.nix` explicitly where needed.
 - **Home Manager is per-user.** Keep it in `homes/<name>/`; `users.<name>.homeModules`
@@ -56,7 +58,7 @@ the nearest existing module.
 | Build the ISO | `nix build .#nixosConfigurations.iso.config.system.build.isoImage` |
 | Prove a change is inert | `nix eval .#nixosConfigurations.apollo.config.system.build.toplevel.drvPath` |
 | Apply on apollo | `nh os switch` (from `~/nixos-config`) |
-| Format | `nix fmt`; before handoff also `nix run nixpkgs#deadnix -- --edit .` and `nix run nixpkgs#statix -- fix .` |
+| Format | `nix fmt .`; before handoff also `nix run nixpkgs#deadnix -- --edit .` and `nix run nixpkgs#statix -- fix .` |
 | Update a flake input | `nix flake update <name>` |
 
 There is no test suite. Evaluation, builds, and identical `drvPath` values are the

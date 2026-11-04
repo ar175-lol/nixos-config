@@ -39,7 +39,7 @@
   Use `self.outPath + "/path/from/root"` for the few root-relative references;
   `self` is available in flake-parts and is forwarded to NixOS and Home Manager.
 - **Do not commit plaintext secrets.** Password hashes are agenix-encrypted under
-  `secrets/` and wired through `hosts/apollo/secrets.nix`; see
+  `secrets/` and wired through `hosts/apollo/modules/secrets.nix`; see
   [Secrets](../secrets.md). Do not add tokens or passwords in plaintext.
   `homes/ar175/git.nix` contains the user's identity and signing key path.
 - **CI auto-commits formatting.** Expect `format.yml` to rewrite Nix files on
@@ -71,7 +71,7 @@ you add another user or move the repository, update them deliberately:
   `$HOME/nixos-config` and runs `nh os switch`.
 - `homes/ar175/git.nix` — user name, email, and SSH signing key.
 - `hosts/apollo/host.nix` — account names and groups. Password hashes are
-  encrypted in `secrets/`; `hosts/apollo/secrets.nix` points
+  encrypted in `secrets/`; `hosts/apollo/modules/secrets.nix` points
   `users.users.<n>.hashedPasswordFile` at the decrypted agenix paths.
   Feature modules never touch a specific account: a feature that needs group
   membership (`libvirtd`, `scanner`, `lp`, `adbusers`) expects the host to list

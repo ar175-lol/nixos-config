@@ -79,8 +79,10 @@ flake.lock
 hosts/
   default.nix             manually imports each host's host.nix
   apollo/host.nix         host declaration for the workstation
-  apollo/fs.nix           btrfs/EFI layout for apollo; pulled in via extraModules
-  apollo/secrets.nix      agenix secrets and hashedPasswordFile for apollo
+  apollo/modules/default.nix   imports apollo-specific modules
+  apollo/modules/fs.nix        btrfs/EFI layout for apollo
+  apollo/modules/printers.nix  per-host printer setup
+  apollo/modules/secrets.nix   agenix secrets and hashedPasswordFile for apollo
   iso/host.nix            host declaration for the installer
   iso/live.nix            ISO-only config (Calamares, network overrides); via extraModules
 
@@ -138,8 +140,8 @@ Keep imports downward and local. Cross-tree wiring is centralized:
 
 - `outputs.nix` imports `./hosts` and the `modules` trees.
 - `hosts/default.nix` imports each `hosts/<name>/host.nix`.
-- A host file imports only files in its own directory (`./fs.nix`, `./live.nix`).
-  It does not reach into `modules/` or `homes/`.
+- A host file imports only files or directories in its own directory (`./modules`,
+  `./live.nix`). It does not reach into `modules/` or `homes/`.
 - Files inside a module tree are auto-imported by import-tree; they do not import
   siblings with relative paths.
 - Root-relative references use `self.outPath + "/..."`. flake-parts provides
@@ -159,7 +161,7 @@ Keep imports downward and local. Cross-tree wiring is centralized:
 | `roles` | List of directory names under `modules/core/roles/`. Every `.nix` in each named directory is imported for this host. |
 | `users` | Attrset keyed by account name. Each entry creates both a system account and a Home Manager generation. `homeModules` defaults to `homes/<name>/home.nix` when that file exists. |
 | `features` | A `deferredModule` inserted into the system. Use it for enable flags and direct NixOS config for this host. |
-| `extraModules` | A list of modules imported only by this host. Used for `fs.nix` and installer modules. |
+| `extraModules` | A list of modules imported only by this host. Used for host-specific modules (e.g. `apollo/modules`, ISO live installer). |
 
 Example (the real `apollo` host, shortened):
 
@@ -207,17 +209,22 @@ _: {
 
         system = {
           programs.plasma.enable = true;
-          programs.steam.enable = true;
           programs.flatpak.enable = true;
           loader.enable = true;
           fonts.enable = true;
         };
 
-        profiles.workstation.enable = true;
+        profiles = {
+          workstation.enable = true;
+          gaming = {
+            enable = true;
+            steam.enable = false;
+          };
+        };
       };
     };
 
-    extraModules = [./fs.nix];
+    extraModules = [./modules];
   };
 }
 ```
@@ -256,7 +263,7 @@ defaults to `homes/<name>/home.nix` when that file exists.
 `shell` is a package attribute name, so `"zsh"` becomes `pkgs.zsh`.
 
 On `apollo`, password hashes are not stored in the host file.
-`hosts/apollo/secrets.nix` declares the agenix secrets and points
+`hosts/apollo/modules/secrets.nix` declares the agenix secrets and points
 `users.users.<name>.hashedPasswordFile` at their decrypted paths. The
 `hashedPassword` field remains available for hosts that do not use agenix.
 
@@ -275,7 +282,8 @@ Feature modules do not reference specific accounts; groups such as `libvirtd` or
 3. `modules.profiles.*` and `modules.system.programs.*` — NixOS software. Profiles are
    always imported but gated by their enable option, and they turn programs on with
    `lib.mkDefault`. A host can therefore disable one program while keeping the
-   profile.
+   profile (e.g. `gaming` defaults `steam`, `bottles`, `qbittorrent`, and
+   `minecraft` on with `lib.mkDefault`, and `apollo` turns `steam` off).
 
 Profile and role modules use `lib.mkDefault`, so a host's normal-priority assignment
 wins. For example, a host can set `modules.system.programs.opencode.enable = false`
@@ -289,8 +297,8 @@ while keeping the `workstation` profile enabled, without `mkForce`.
 
 | Host | Roles | Profiles | Notable choices |
 |---|---|---|---|
-| `apollo` | `graphical`, `workstation`, `laptop` | `workstation` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Steam, Flatpak, btrfs subvolumes in `fs.nix` |
+| `apollo` | `graphical`, `workstation`, `laptop` | `workstation`, `gaming` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Flatpak, gaming profile with Steam off and Prism Launcher/Bottles/qBittorrent on, btrfs subvolumes in `modules/fs.nix` |
 | `iso` | `graphical` | none | Noctalia greeter off, Neovim on, audio, installation-CD module + `live.nix` (Calamares, iwd + dhcpcd, xanmod, polkit) |
 
-Both use `stateVersion = "26.05"`. There is currently no `gaming` profile or
-program option; Steam and Flatpak are enabled directly in `hosts/apollo/host.nix`.
+Both use `stateVersion = "26.05"`. Flatpak is enabled directly in
+`hosts/apollo/host.nix`; Steam goes through `modules.profiles.gaming.steam`.

@@ -10,6 +10,7 @@ font_family = "Monocraft"
 font_weight = 600
 margin_edge = 0
 margin_ends = 0
+position = "left"
 radius = 22
 radius_bottom_left = 0
 radius_top_left = 0
@@ -303,6 +304,7 @@ capsule = true
 font_family = "Monocraft"
 font_weight = 600
 format = "{:%H %M}"
+scale = 0.85000000000000009
 vertical_format = "{:%H %M}"
 
 [widget.clock_icon]
@@ -325,6 +327,7 @@ visualization = "graph"
 capsule = true
 font_weight = 600
 format = "{:%d %m}"
+scale = 0.85000000000000009
 
 [widget.date_icon]
 glyph = "calendar-month"

@@ -9,8 +9,8 @@
   age.identityPaths = ["/var/lib/age/agenix_ed25519"];
 
   age.secrets = {
-    ar175-password.file = ../../secrets/ar175-password.age;
-    mom-password.file = ../../secrets/mom-password.age;
+    ar175-password.file = ../../../secrets/ar175-password.age;
+    mom-password.file = ../../../secrets/mom-password.age;
   };
 
   environment.systemPackages = [inputs.agenix.packages.${pkgs.stdenv.hostPlatform.system}.default];

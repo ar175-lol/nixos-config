@@ -8,5 +8,12 @@
       used interactively"; this profile says "install the everyday
       software".
     '';
+    gaming = {
+      enable = lib.mkEnableOption "the Gaming profile";
+      steam.enable = lib.mkEnableOption "Steam";
+      qbittorrent.enable = lib.mkEnableOption "qBittorrent";
+      bottles.enable = lib.mkEnableOption "Bottles";
+      minecraft.enable = lib.mkEnableOption "Prism Launcher";
+    };
   };
 }

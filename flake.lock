@@ -359,11 +359,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792413645,
-        "narHash": "sha256-uzGscCID9pBLLI00b0HssqYIhvLc6OYEpN0Gq8hwTb8=",
+        "lastModified": 1793782042,
+        "narHash": "sha256-TItkxVuRouo7/hVlxkLA85w8AYnB1zj0VC2Fit9AaS8=",
         "owner": "ar175-lol",
         "repo": "PrismLauncher-Cracked",
-        "rev": "7818fc9b63d3c2469404941f5802c9aee28c1aa2",
+        "rev": "31e17c68a1afce72b4c33715d05e716b9b395738",
         "type": "github"
       },
       "original": {

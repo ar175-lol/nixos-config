@@ -11,15 +11,17 @@ their own options; they read `config.modules.*`.
   `gpu.nvidia.prime.*`.
 - `modules.system`: `loader.enable`, `doas.enable`, `fonts.enable`, `zram.enable`,
   `powerSave.enable`.
-- `modules.profiles`: `workstation.enable`.
+- `modules.profiles`: `workstation.enable`; `gaming.enable` plus `gaming.steam`,
+  `gaming.bottles`, `gaming.qbittorrent`, and `gaming.minecraft` (Prism Launcher).
 - `modules.system.programs`: `plasma`, `niri`, `greeter`, `noctalia`, `tmux`,
-  `neovim`, `opencode`, `localsend`, `kdenlive`, `libreoffice`, `flatpak`, `steam`,
+  `neovim`, `opencode`, `localsend`, `kdenlive`, `libreoffice`, `flatpak`,
   `virtualisation`, `adb`, and `printing` — all with `.enable`.
 
-There is no `modules.profiles.gaming` or `modules.system.programs.gaming` in the
-current tree. Steam and Flatpak are direct
-`modules.system.programs.{steam,flatpak}` toggles in a host's `features`, not a
-profile.
+`modules.profiles.gaming.*` has no `modules.system.programs.gaming` counterpart.
+Steam is selected through `modules.profiles.gaming.steam`, not
+`modules.system.programs.steam`; the older `programs.steam` option has been removed.
+Flatpak remains a direct `modules.system.programs.flatpak` toggle in a host's
+`features`.
 
 ## Role defaults
 
@@ -31,7 +33,9 @@ profile.
 ## Profile contents
 
 - `workstation`: neovim, opencode, localsend, libreoffice, and kdenlive.
-- No other profiles currently exist.
+- `gaming`: `steam` (system), `bottles`, `qbittorrent`, and `minecraft`
+  (Home Manager) under `modules.profiles.gaming.*`. Enabling the profile
+  `mkDefault`s all four on; a host can override any single piece.
 
 ## Module inventory
 
@@ -67,6 +71,8 @@ Roles:
 Profiles:
 
 - `workstation/default.nix` — everyday desktop programs, enabled with `mkDefault`.
+- `gaming/default.nix` — defaults `steam`, `bottles`, `qbittorrent`, and
+  `minecraft` on when the profile is enabled.
 
 Hardware (all gated by the matching `modules.*` option):
 
@@ -77,6 +83,7 @@ System programs (`core/common/system/programs/`):
 
 - `<name>.nix` — one file per selectable program: `flatpak`, `greeter`,
   `kdenlive`, `libreoffice`, `localsend`, `niri`, `opencode`, `plasma`, `printing`,
-  `steam`, `tmux`, plus `noctalia/` and `neovim/`.
+  `tmux`, plus `noctalia/` and `neovim/`. `steam.nix` lives here but reads
+  `modules.profiles.gaming.steam`, not a program option.
 - `neovim/` and `noctalia/` are directories because they carry settings, assets,
   or flake-level package outputs.

@@ -10,7 +10,7 @@ Run these from the repository root unless noted.
 | Build the ISO | `nix build .#nixosConfigurations.iso.config.system.build.isoImage` |
 | Prove a change is inert | `nix eval .#nixosConfigurations.apollo.config.system.build.toplevel.drvPath` |
 | Apply on apollo | `nh os switch` (run from `~/nixos-config`) |
-| Format | `nix fmt` (alejandra) |
+| Format | `nix fmt .` (alejandra) |
 | Full CI formatting parity | `nix run nixpkgs#deadnix -- --edit .` then `nix run nixpkgs#statix -- fix .` then `nix run nixpkgs#alejandra .` |
 | Update a flake input | `nix flake update <name>` |
 | Build the standalone Neovim | `nix build .#myNeovim` |
@@ -23,7 +23,7 @@ Notes:
   change.
 - `nh` is configured with `flake = "$HOME/nixos-config"`. `apollo` disables sudo
   and uses doas, so make sure the command can elevate when it needs to.
-- `nix fmt` only runs alejandra. CI also runs deadnix and statix, so run all three
+- `nix fmt .` only runs alejandra. CI also runs deadnix and statix, so run all three
   before handing off code.
 - `nix flake check --no-build` still evaluates both hosts; it is the fastest
   broad sanity check.

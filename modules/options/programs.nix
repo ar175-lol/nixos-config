@@ -18,7 +18,6 @@ in {
     libreoffice.enable = mkEnableOption "LibreOffice";
 
     flatpak.enable = mkEnableOption "Flatpak";
-    steam.enable = mkEnableOption "Steam";
 
     virtualisation.enable = mkEnableOption "hardware virtualisation (kvm)";
     adb.enable = mkEnableOption "Android debugging bridge";

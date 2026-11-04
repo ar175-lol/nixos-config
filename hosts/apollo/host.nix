@@ -93,7 +93,6 @@ _: {
         system = {
           programs = {
             plasma.enable = true;
-            steam.enable = true;
             flatpak.enable = true;
           };
 
@@ -101,13 +100,21 @@ _: {
           fonts.enable = true;
         };
 
-        profiles.workstation.enable = true;
+        profiles = {
+          workstation.enable = true;
+          gaming = {
+            enable = true;
+            steam.enable = false;
+            minecraft.enable = true;
+            bottles.enable = true;
+            qbittorrent.enable = true;
+          };
+        };
       };
     };
 
     extraModules = [
-      ./fs.nix
-      ./secrets.nix
+      ./modules
     ];
   };
 }

@@ -66,6 +66,10 @@ _: {
       modules.device.hasSound = true;
 
       modules.profiles.workstation.enable = true;
+      modules.profiles.gaming = {
+        enable = true;
+        steam.enable = false;
+      };
     };
   };
 }
@@ -79,8 +83,9 @@ There are three axes, and they answer different questions:
   only. Role code is unconditional -- a graphical machine simply has a session.
 - **`modules.profiles.*` / `modules.system.programs.*`** is system software.
   Profiles enable NixOS program bundles with `mkDefault`, so a host can turn a
-  system program back off. Per-user programs are configured separately under
-  `homes/<username>/`.
+  system program back off. The `gaming` profile defaults each piece on with
+  `mkDefault`, and its pieces can be system or Home Manager packages. Per-user
+  programs are configured separately under `homes/<username>/`.
 
 `users` is keyed by account name; each entry creates a system account and a
 Home Manager generation. Its `homeModules` defaults to `homes/<username>/home.nix`
@@ -92,12 +97,14 @@ scope inside function modules used there.
 
 | Host | What it is |
 |---|---|
-| `apollo` | the workstation: Plasma and Niri sessions, SDDM, NVIDIA; gaming profile off |
+| `apollo` | the workstation: Plasma and Niri sessions, SDDM, NVIDIA; gaming profile on with Steam off |
 | `iso` | Calamares installer, plays the `graphical` role |
 
-The gaming profile controls the system gaming bundle (Steam, Bottles, and
-qBittorrent). Minecraft is configured separately in ar175's Home Manager setup,
-so it remains installed while that profile is off.
+The gaming profile is a bundle with per-piece toggles: `steam`, `bottles`,
+`qbittorrent`, and `minecraft` (Prism Launcher). Steam is a system program;
+Bottles, qBittorrent, and Prism Launcher are Home Manager packages that read the
+same profile options through `osConfig`. Enabling the profile defaults every piece
+on, and a host can disable any single one — `apollo` turns Steam off this way.
 
 ## How it fits together
 
@@ -113,7 +120,7 @@ wraps its config in `lib.mkIf`:
   config,
   ...
 }: let
-  cfg = config.modules.system.programs.gaming;
+  cfg = config.modules.profiles.gaming.steam;
 in {
   config = lib.mkIf cfg.enable {
     programs.steam.enable = true;
@@ -132,7 +139,7 @@ new *kind* of machine) is new plumbing.
   can be gated.
 - **Option and implementation are split on purpose.** Declarations live in
   `modules/options/`; implementations read them from anywhere. The option
-  surface is one readable list, and `rg "programs.gaming"` finds every user of
+  surface is one readable list, and `rg "profiles.gaming"` finds every user of
   an option and its single declaration.
 - **A plain attrset module has no arguments.** To use `pkgs` or `lib` inside a
   value that becomes a module, write it as `{pkgs, ...}: {...}`.
@@ -152,14 +159,14 @@ new *kind* of machine) is new plumbing.
 
 ## Partitioning
 
-The on-disk layout is declared in `hosts/apollo/fs.nix` as plain
+The on-disk layout is declared in `hosts/apollo/modules/fs.nix` as plain
 `fileSystems`. disko was never wired up -- its layout file was imported by
 nothing -- and has been removed.
 
 ## Secrets
 
 Account password hashes are encrypted with [agenix][agenix-url] and stored under
-`secrets/`; `hosts/apollo/secrets.nix` wires them to
+`secrets/`; `hosts/apollo/modules/secrets.nix` wires them to
 `users.users.<name>.hashedPasswordFile`. The `.age` files are safe to commit.
 Never commit decrypted secrets, private age/SSH keys, or plaintext hashes.
 See [docs/secrets.md](docs/secrets.md) for editing, rekeying, and host-key
