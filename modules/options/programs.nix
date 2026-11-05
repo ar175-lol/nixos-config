@@ -17,6 +17,12 @@ in {
     kdenlive.enable = mkEnableOption "Kdenlive";
     libreoffice.enable = mkEnableOption "LibreOffice";
 
+    # Gaming profile
+    prismlauncher.enable = mkEnableOption "Prism Launcher";
+    steam.enable = mkEnableOption "Steam";
+    bottles.enable = mkEnableOption "Bottles";
+    qbittorrent.enable = mkEnableOption "qBittorrent";
+
     flatpak.enable = mkEnableOption "Flatpak";
 
     virtualisation.enable = mkEnableOption "hardware virtualisation (kvm)";

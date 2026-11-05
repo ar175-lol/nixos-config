@@ -18,7 +18,7 @@ the nearest existing module.
 | Topic | Doc |
 |---|---|
 | Evaluation flow, directory layout, host model, three axes | [docs/agents/architecture.md](docs/agents/architecture.md) |
-| Option surface, role defaults, profiles, module inventory | [docs/agents/options.md](docs/agents/options.md) |
+| Option surface, profile defaults, module inventory | [docs/agents/options.md](docs/agents/options.md) |
 | Module conventions, Home Manager, overlays, recipes | [docs/agents/editing.md](docs/agents/editing.md) |
 | Hard rules, gotchas, hardcoded assumptions | [docs/agents/pitfalls.md](docs/agents/pitfalls.md) |
 | Commands and CI | [docs/agents/operations.md](docs/agents/operations.md) |
@@ -33,10 +33,10 @@ the nearest existing module.
 - **Feature options live only in `modules/options/`.** Implementations read
   `config.modules.*` and gate `config`, never `imports`.
 - **`imports` must be a concrete list.** `imports = lib.mkIf ...` is a type error.
-- **Profiles and roles use `lib.mkDefault`.** A host assignment wins; do not use
-  `mkForce`. Roles are imported wholesale and are not toggles. A profile with
-  per-piece sub-options (like `gaming`) defaults each piece on; the host can turn
-  one off without dropping the profile.
+- **Profiles use `lib.mkDefault`.** A host assignment wins; do not use
+  `mkForce`. Profiles enable `modules.system.programs.*` and
+  `modules.system.services.*` with `mkDefault`, so a host can turn one piece off
+  without dropping the profile.
 - **import-tree skips `_`-prefixed files and directories.** Import `_package.nix`
   and `_data.nix` explicitly where needed.
 - **Home Manager is per-user.** Keep it in `homes/<name>/`; `users.<name>.homeModules`

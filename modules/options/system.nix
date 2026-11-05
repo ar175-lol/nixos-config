@@ -8,6 +8,5 @@ in {
     fonts.enable = mkEnableOption "the nixpkgs default font set";
 
     zram.enable = mkEnableOption "zram swap";
-    powerSave.enable = mkEnableOption "power saving defaults (undervolt, thermald, power profiles)";
   };
 }

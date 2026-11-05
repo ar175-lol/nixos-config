@@ -14,9 +14,9 @@
 - **Profiles are defaults.** They use `mkDefault`; a host feature setting the same
   option at normal priority overrides them. Do not use `mkForce` to win an argument
   with a default.
-- **Roles are unconditional.** A role directory is imported whole for a host that
-  lists it. Do not expect a role to be a toggle; use `features` or a program option
-  for behavior that must be conditional.
+- **Profiles are always imported and off by default.** There is no per-host
+  profile import list: a profile's config is gated by
+  `modules.profiles.<name>.enable`.
 - **NixOS feature options are declared only in `modules/options/`.** The
   flake-parts `hosts` option is the exception, declared in
   `modules/tree/default.nix`. Implementations read `config.modules.*`.

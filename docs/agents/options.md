@@ -9,33 +9,28 @@ their own options; they read `config.modules.*`.
 - `modules.device`: `hasSound`, `hasBluetooth`, `hasWifi`, `hasEthernet`,
   `cpu.type` (`"intel"`/`"amd"`/null), `gpu.intel.enable`, `gpu.nvidia.enable`,
   `gpu.nvidia.prime.*`.
-- `modules.system`: `loader.enable`, `doas.enable`, `fonts.enable`, `zram.enable`,
-  `powerSave.enable`.
-- `modules.profiles`: `workstation.enable`; `gaming.enable` plus `gaming.steam`,
-  `gaming.bottles`, `gaming.qbittorrent`, and `gaming.minecraft` (Prism Launcher).
+- `modules.system`: `loader.enable`, `doas.enable`, `fonts.enable`, `zram.enable`.
+- `modules.system.services`: `power-profiles-daemon.enable`, `thermald.enable`,
+  `undervolt.enable` (with `p1` and `p2` settings).
+- `modules.profiles`: `graphical.enable`, `workstation.enable`, `laptop.enable`, `gaming.enable`.
 - `modules.system.programs`: `plasma`, `niri`, `greeter`, `noctalia`, `tmux`,
   `neovim`, `opencode`, `localsend`, `kdenlive`, `libreoffice`, `flatpak`,
-  `virtualisation`, `adb`, and `printing` — all with `.enable`.
+  `virtualisation`, `adb`, `printing`, `steam`, `prismlauncher`, `bottles`,
+  `qbittorrent` — all with `.enable`.
 
-`modules.profiles.gaming.*` has no `modules.system.programs.gaming` counterpart.
-Steam is selected through `modules.profiles.gaming.steam`, not
-`modules.system.programs.steam`; the older `programs.steam` option has been removed.
+`modules.profiles.gaming` sets `steam`, `prismlauncher`, `bottles`, and `qbittorrent`
+on `modules.system.programs.*` via `mkDefault`.
 Flatpak remains a direct `modules.system.programs.flatpak` toggle in a host's
 `features`.
 
-## Role defaults
-
-- `graphical`: enables `fish` and `zsh`, and defaults `niri`, `greeter`, `noctalia`,
-  and `tmux` on.
-- `workstation`: defaults `virtualisation`, `adb`, `printing`, and `doas` on.
-- `laptop`: defaults `powerSave` and `zram` on.
-
 ## Profile contents
 
-- `workstation`: neovim, opencode, localsend, libreoffice, and kdenlive.
-- `gaming`: `steam` (system), `bottles`, `qbittorrent`, and `minecraft`
-  (Home Manager) under `modules.profiles.gaming.*`. Enabling the profile
-  `mkDefault`s all four on; a host can override any single piece.
+- `graphical`: fish and zsh shells, niri, greeter, noctalia, tmux, and xdg portals.
+- `workstation`: neovim, opencode, localsend, libreoffice, kdenlive, printing,
+  virtualisation, adb, and doas.
+- `laptop`: power-profiles-daemon, thermald, undervolt, and zram.
+- `gaming`: defaults `steam`, `prismlauncher`, `bottles`, and `qbittorrent`
+  under `modules.system.programs.*` on when the profile is enabled.
 
 ## Module inventory
 
@@ -60,30 +55,30 @@ Always imported from `core/common/system`:
 - `os/networking/dns.nix` — dnscrypt-proxy on `127.0.0.1`; resolved/resolvconf
   off.
 - `os/networking/firewall.nix` — nftables and the firewall.
-
-Roles:
-
-- `graphical/default.nix` — fish/zsh plus niri, greeter, noctalia, and tmux defaults.
-- `graphical/portal.nix` — xdg portals and the yazi-based terminal file chooser.
-- `workstation/default.nix` — doas, virtualisation, adb, printing defaults.
-- `laptop/default.nix` — powerSave and zram defaults.
+- `services/` — power-profiles-daemon, thermald, undervolt.
+- `programs/` — individual desktop programs and compositors.
 
 Profiles:
 
-- `workstation/default.nix` — everyday desktop programs, enabled with `mkDefault`.
-- `gaming/default.nix` — defaults `steam`, `bottles`, `qbittorrent`, and
-  `minecraft` on when the profile is enabled.
+- `graphical/` — desktop environment basics and portals.
+- `workstation/` — everyday desktop programs, doas, virt, adb, printing.
+- `laptop/` — power-profiles-daemon, thermald, undervolt, and zram defaults.
+- `gaming/` — gaming software via programs.* defaults.
 
 Hardware (all gated by the matching `modules.*` option):
 
-- `adb.nix`, `audio.nix`, `bluetooth.nix`, `power-save.nix`,
-  `virtualisation.nix`, `zram.nix`, `cpu/{amd,intel}.nix`, `gpu/{intel,nvidia}.nix`.
+- `adb.nix`, `audio.nix`, `bluetooth.nix`, `virtualisation.nix`, `zram.nix`,
+  `cpu/{amd,intel}.nix`, `gpu/{intel,nvidia}.nix`.
 
 System programs (`core/common/system/programs/`):
 
 - `<name>.nix` — one file per selectable program: `flatpak`, `greeter`,
   `kdenlive`, `libreoffice`, `localsend`, `niri`, `opencode`, `plasma`, `printing`,
-  `tmux`, plus `noctalia/` and `neovim/`. `steam.nix` lives here but reads
-  `modules.profiles.gaming.steam`, not a program option.
+  `steam`, `tmux`, plus `noctalia/` and `neovim/`.
 - `neovim/` and `noctalia/` are directories because they carry settings, assets,
   or flake-level package outputs.
+
+Services (`core/common/system/services/`):
+
+- `power-profiles-daemon.nix`, `thermald.nix`, `undervolt.nix` — gated by
+  `modules.system.services.*`.

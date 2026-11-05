@@ -1,4 +1,3 @@
-# Hand-maintained flake. Add inputs here and update with `nix flake update`.
 {
   outputs = inputs: import ./outputs.nix inputs;
 
@@ -32,6 +31,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     noctalia = {
       url = "github:noctalia-dev/noctalia/cachix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    pwsp = {
+      url = "github:ar175-lol/pipewire-soundpad";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nvf = {

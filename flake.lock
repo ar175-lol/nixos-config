@@ -372,6 +372,26 @@
         "type": "github"
       }
     },
+    "pwsp": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793802956,
+        "narHash": "sha256-IpKgF0jzYw8bOyi4M9d1I1MymTx2nxsjEwCFzUdLiKY=",
+        "owner": "ar175-lol",
+        "repo": "pipewire-soundpad",
+        "rev": "591a476c5c264dabf78b0eb7887bbb98ad2cd1b0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ar175-lol",
+        "repo": "pipewire-soundpad",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -386,6 +406,7 @@
         "noctalia": "noctalia",
         "nvf": "nvf",
         "prism-launcher": "prism-launcher",
+        "pwsp": "pwsp",
         "sddm-astronaut-theme": "sddm-astronaut-theme",
         "wrapper-modules": "wrapper-modules",
         "zen-browser": "zen-browser"

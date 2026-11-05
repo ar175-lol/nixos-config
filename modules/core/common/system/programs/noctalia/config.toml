@@ -5,7 +5,7 @@ spectrum_frame_rate = 30
 
 [bar.default]
 center = [ "group:g3", "group:g4" ]
-end = [ "tray", "audio_visualizer", "keyboard_layout", "group:g2" ]
+end = [ "privacy", "tray", "audio_visualizer", "keyboard_layout", "group:g2" ]
 font_family = "Monocraft"
 font_weight = 600
 margin_edge = 0
@@ -352,6 +352,9 @@ type = "custom_button"
 [widget.network]
 scale = 0.90000000000000013
 show_label = false
+
+[widget.privacy]
+scale = 0.85000000000000009
 
 [widget.ram]
 scale = 0.80000000000000004

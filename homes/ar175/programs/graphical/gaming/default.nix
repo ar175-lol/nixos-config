@@ -4,7 +4,7 @@
   osConfig,
   ...
 }: let
-  cfg = osConfig.modules.profiles.gaming;
+  cfg = osConfig.modules.system.programs;
 in {
   home.packages = lib.mkMerge [
     (lib.mkIf cfg.bottles.enable [pkgs.bottles])

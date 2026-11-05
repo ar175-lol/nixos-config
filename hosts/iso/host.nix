@@ -9,10 +9,9 @@
       shell = "fish";
     };
 
-    roles = ["graphical"];
-
     features = {
       modules = {
+        profiles.graphical.enable = true;
         device = {
           hasWifi = true;
           hasSound = true;

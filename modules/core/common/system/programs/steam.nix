@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  cfg = config.modules.profiles.gaming.steam;
+  cfg = config.modules.system.programs.steam;
 in {
   config = lib.mkIf cfg.enable {
     programs.steam.enable = true;

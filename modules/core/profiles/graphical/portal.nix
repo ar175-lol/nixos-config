@@ -1,8 +1,10 @@
 {
+  config,
   lib,
   pkgs,
   ...
 }: let
+  cfg = config.modules.profiles.graphical;
   chooserWrapper = pkgs.writeShellScript "termfilechooser-yazi" ''
     multiple="$1"
     directory="$2"
@@ -39,20 +41,22 @@
     fi
   '';
 in {
-  xdg.portal = {
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gnome
-      pkgs.xdg-desktop-portal-termfilechooser
-    ];
-    config.niri = {
-      default = lib.mkForce ["gnome"];
-      "org.freedesktop.impl.portal.FileChooser" = lib.mkForce ["termfilechooser"];
-      "org.freedesktop.impl.portal.Inhibit" = lib.mkForce ["none"];
+  config = lib.mkIf cfg.enable {
+    xdg.portal = {
+      extraPortals = [
+        pkgs.xdg-desktop-portal-gnome
+        pkgs.xdg-desktop-portal-termfilechooser
+      ];
+      config.niri = {
+        default = lib.mkForce ["gnome"];
+        "org.freedesktop.impl.portal.FileChooser" = lib.mkForce ["termfilechooser"];
+        "org.freedesktop.impl.portal.Inhibit" = lib.mkForce ["none"];
+      };
     };
-  };
 
-  environment.etc."xdg/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh" = {
-    source = chooserWrapper;
-    mode = "0555";
+    environment.etc."xdg/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh" = {
+      source = chooserWrapper;
+      mode = "0555";
+    };
   };
 }

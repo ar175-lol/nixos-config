@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -32,13 +32,11 @@ _: {
       };
     };
 
-    roles = [
-      "graphical"
-      "workstation"
-      "laptop"
-    ];
-
     features = {
+      # TODO: move it to somewhere...
+      environment.systemPackages = [inputs.pwsp.packages.x86_64-linux.default];
+
+      # TODO: move it to sddm config?
       security.polkit.extraConfig = ''
         polkit.addRule(function(action, subject) {
           var powerActions = [
@@ -94,6 +92,7 @@ _: {
           programs = {
             plasma.enable = true;
             flatpak.enable = true;
+            steam.enable = false;
           };
 
           loader.enable = true;
@@ -101,14 +100,10 @@ _: {
         };
 
         profiles = {
+          graphical.enable = true;
           workstation.enable = true;
-          gaming = {
-            enable = true;
-            steam.enable = false;
-            minecraft.enable = true;
-            bottles.enable = true;
-            qbittorrent.enable = true;
-          };
+          laptop.enable = true;
+          gaming.enable = true;
         };
       };
     };

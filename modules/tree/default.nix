@@ -8,8 +8,6 @@
   root = self.outPath;
   modulePath = root + "/modules";
 
-  rolesPath = modulePath + "/core/roles";
-
   commonTrees = [
     (modulePath + "/options")
     (modulePath + "/core/common")
@@ -50,7 +48,6 @@
       modules = lib.flatten [
         inputs.agenix.nixosModules.default
         (map (tree: inputs.import-tree tree) commonTrees)
-        (map (role: inputs.import-tree (rolesPath + "/${role}")) host.roles)
         host.extraModules
         host.features
 
@@ -79,18 +76,6 @@ in {
           stateVersion = lib.mkOption {
             type = lib.types.str;
             description = "system.stateVersion for this machine.";
-          };
-
-          roles = lib.mkOption {
-            type = lib.types.listOf lib.types.str;
-            default = [];
-            description = ''
-              What the machine IS, rather than what software it runs.
-
-              Each entry names a directory under modules/core/roles. Every
-              module in that directory is imported. A host can play several
-              roles.
-            '';
           };
 
           users = lib.mkOption {

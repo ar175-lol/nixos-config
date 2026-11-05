@@ -23,13 +23,13 @@ overwrite it. The zsh aliases `sync` and `update` call this workflow.
   NetworkManager off, dnscrypt-proxy on `127.0.0.1`, systemd-resolved and
   resolvconf disabled, nftables firewall on.
 - Privilege: `modules/core/common/system/os/doas.nix` disables sudo and enables passwordless doas
-  for `wheel`; the `workstation` role turns this on.
+  for `wheel`; the `workstation` profile turns this on.
 - Audio: PipeWire with ALSA, JACK, Pulse, and WirePlumber when
   `modules.device.hasSound` is true.
 - GPU: NVIDIA proprietary driver with modesetting/fine-grained power management and
   optional PRIME offload; Intel i915 GuC and VA-API packages when Intel GPU is on.
 - Laptop: zram swap and undervolt/thermald/power-profiles-daemon via the `laptop`
-  role.
+  profile.
 - ISO: the host sets `hasWifi` and `hasEthernet`, which enables iwd and dhcpcd
   (with `wlan*` denied in dhcpcd). `hosts/iso/live.nix` wraps Calamares with a
   Wayland/pkexec launcher, forces xanmod, forces NetworkManager off (the

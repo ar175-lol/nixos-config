@@ -21,12 +21,11 @@ secrets/               agenix-encrypted secrets and recipient rules
 modules/
   tree/
     default.nix          declares the `hosts` option, builds every machine
-  options/              the option surface: device, profiles, programs, system
+  options/              the option surface: device, profiles, programs, services, system
   core/
     common/             always on for every host
-      system/           boot, doas, nix, opt-in programs (dirs when they need data)
-    roles/              graphical, workstation, laptop -- imported per host
-    profiles/           workstation, gaming -- software bundles
+      system/           boot, doas, nix, opt-in programs and services
+    profiles/           graphical, workstation, laptop, gaming -- software bundles
   hardware/             audio, bluetooth, gpu, power, adb, ...
 ```
 
@@ -49,7 +48,10 @@ listed in `hosts/default.nix`. Each contributes a `host.nix`; the directory can
 hold more (a kernel, a filesystem layout, per-concern modules) without changing
 anything else. Adding a machine is a new directory plus one line. For example, here is my `apollo` host:
 ```nix
-_: {
+{
+  inputs,
+  ...
+}: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -60,15 +62,18 @@ _: {
       extraGroups = ["wheel" "video"];
     };
 
-    roles = ["graphical" "workstation" "laptop"];
-
     features = {
-      modules.device.hasSound = true;
+      modules = {
+        device.hasSound = true;
 
-      modules.profiles.workstation.enable = true;
-      modules.profiles.gaming = {
-        enable = true;
-        steam.enable = false;
+        system.programs.steam.enable = false;
+
+        profiles = {
+          graphical.enable = true;
+          workstation.enable = true;
+          laptop.enable = true;
+          gaming.enable = true;
+        };
       };
     };
   };
@@ -78,14 +83,14 @@ _: {
 There are three axes, and they answer different questions:
 
 - **`modules.device.*`** is capability: what hardware this machine has.
-- **`roles`** is identity: what the machine *is*. Each role names a directory
-  under `modules/core/roles/`, and every module in it is imported for that host
-  only. Role code is unconditional -- a graphical machine simply has a session.
-- **`modules.profiles.*` / `modules.system.programs.*`** is system software.
-  Profiles enable NixOS program bundles with `mkDefault`, so a host can turn a
-  system program back off. The `gaming` profile defaults each piece on with
-  `mkDefault`, and its pieces can be system or Home Manager packages. Per-user
-  programs are configured separately under `homes/<username>/`.
+- **`modules.profiles.*`** is identity: what the machine *is*. Profiles name the
+  archetype and are imported for every host, gated by their enable option. They
+  turn the programs and services they need on with `mkDefault`.
+- **`modules.system.programs.*` / `modules.system.services.*`** is system
+  software. A host can override any single piece at normal priority while
+  keeping a profile enabled. Some pieces (Bottles, qBittorrent, Prism Launcher)
+  are Home Manager packages that read the same options through `osConfig`.
+  Per-user programs are configured separately under `homes/<username>/`.
 
 `users` is keyed by account name; each entry creates a system account and a
 Home Manager generation. Its `homeModules` defaults to `homes/<username>/home.nix`
@@ -98,21 +103,22 @@ scope inside function modules used there.
 | Host | What it is |
 |---|---|
 | `apollo` | the workstation: Plasma and Niri sessions, SDDM, NVIDIA; gaming profile on with Steam off |
-| `iso` | Calamares installer, plays the `graphical` role |
+| `iso` | Calamares installer with the `graphical` profile |
 
-The gaming profile is a bundle with per-piece toggles: `steam`, `bottles`,
-`qbittorrent`, and `minecraft` (Prism Launcher). Steam is a system program;
-Bottles, qBittorrent, and Prism Launcher are Home Manager packages that read the
-same profile options through `osConfig`. Enabling the profile defaults every piece
-on, and a host can disable any single one — `apollo` turns Steam off this way.
+The gaming profile enables the matching `modules.system.programs.*` options:
+`steam`, `bottles`, `qbittorrent`, and `prismlauncher`. Steam is a system
+program; Bottles, qBittorrent, and Prism Launcher are Home Manager packages that
+read the same options through `osConfig`. Enabling the profile defaults every
+piece on, and a host can disable any single one; `apollo` turns Steam off this
+way.
 
 ## How it fits together
 
 The option surface lives in `modules/options/` and is imported into **every**
 host. The modules under `core/common`, `core/profiles`, and `hardware` are too;
-roles are the only per-host imports. A module that only affects some
-machines owns no option of its own -- it reads one of the central options and
-wraps its config in `lib.mkIf`:
+profiles are gated by their enable options, not by per-host imports. A module
+that only affects some machines owns no option of its own: it reads one of the
+central options and wraps its config in `lib.mkIf`:
 
 ```nix
 {
@@ -120,7 +126,7 @@ wraps its config in `lib.mkIf`:
   config,
   ...
 }: let
-  cfg = config.modules.profiles.gaming.steam;
+  cfg = config.modules.system.programs.steam;
 in {
   config = lib.mkIf cfg.enable {
     programs.steam.enable = true;
@@ -128,9 +134,9 @@ in {
 }
 ```
 
-Adding a feature never requires touching `hosts/default.nix` to import it --
-the module is already in every system, waiting on its option. Only a role (a
-new *kind* of machine) is new plumbing.
+Adding a feature never requires touching `hosts/default.nix` to import it: the
+module is already in every system, waiting on its option. A new profile is just
+an option plus a module in `core/profiles/`; no host import list changes.
 
 ### Three things that are not obvious
 

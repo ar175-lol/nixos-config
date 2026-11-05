@@ -5,7 +5,7 @@
   lib,
   ...
 }: let
-  cfg = osConfig.modules.profiles.gaming.minecraft;
+  cfg = osConfig.modules.system.programs.prismlauncher;
 in {
   config = lib.mkIf cfg.enable {
     programs.prismlauncher = {

@@ -30,8 +30,8 @@ Rules that follow from the module system:
   `rg "programs.foo"` find both the declaration and every consumer.
 - **Every common module is always imported.** The `lib.mkIf cfg.enable` is what
   makes it a toggle.
-- **Profiles and roles are defaults.** They use `lib.mkDefault`; do not use
-  `lib.mkForce` to win an argument with a host assignment.
+- **Profiles are defaults.** They use `lib.mkDefault`; do not use `lib.mkForce`
+  to win an argument with a host assignment.
 
 ## Home Manager
 
@@ -71,9 +71,10 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
 1. Create `hosts/<name>/host.nix` with `hosts.<name> = { ... };`.
 2. Add `./hosts/<name>/host.nix` (or the directory file you use) to
    `hosts/default.nix`. Registration is manual.
-3. Set `enable = true`, `hostName`, `stateVersion`, `users`, and `roles`.
-4. Add per-host `features` and, only if needed, `extraModules` (filesystem layout,
-   kernel module, installer module).
+3. Set `enable = true`, `hostName`, `stateVersion`, `users`, and the `features`
+   that describe the machine (device facts, profiles, program overrides).
+4. Add `extraModules` only if needed (filesystem layout, kernel module, installer
+   module).
 5. Verify:
    `nix build .#nixosConfigurations.<name>.config.system.build.toplevel --dry-run`
 
@@ -95,17 +96,16 @@ A `_package.nix` is not imported automatically. Add it to the `imports` list in
    enables programs with `lib.mkDefault`.
 3. Enable the profile in a host's `features.modules.profiles.<name>.enable`.
 
-A profile with per-piece sub-options (like `gaming`) declares sub-options in
-step 1 and defaults each piece on with `lib.mkDefault` in step 2; each
-implementation reads its own sub-option so hosts can turn individual pieces off.
+A profile enables existing program and service options with `lib.mkDefault`
+(see `gaming`); a host can then override any single piece at normal priority.
 
-### Add a role
+### Add a service
 
-1. Create `modules/core/roles/<name>/` with at least one `.nix` file.
-   `default.nix` is the conventional main file.
-2. Set role defaults with `lib.mkDefault`; role files are imported unconditionally
-   for hosts that list the role.
-3. Add `"<name>"` to a host's `roles` list. There is no other registration.
+1. Add `<name>.enable = lib.mkEnableOption "<name>";` to
+   `modules/options/services.nix`.
+2. Create `modules/core/common/system/services/<name>.nix` with the `cfg`/`mkIf`
+   pattern. It is auto-imported by the `core/common` tree.
+3. Enable it in a profile (with `mkDefault`) or in a host's `features`.
 
 ### Add a flake input
 

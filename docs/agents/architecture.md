@@ -20,7 +20,6 @@ entry into `flake.nixosConfigurations.<name>`:
 ```nix
 root = self.outPath;
 modulePath = root + "/modules";
-rolesPath = modulePath + "/core/roles";
 
 commonTrees = [
   (modulePath + "/options")
@@ -35,8 +34,8 @@ mkHost = host:
     specialArgs = {inherit inputs self;};
 
     modules = lib.flatten [
+      inputs.agenix.nixosModules.default
       (map (tree: inputs.import-tree tree) commonTrees)
-      (map (role: inputs.import-tree (rolesPath + "/${role}")) host.roles)
       host.extraModules
       host.features
 
@@ -57,7 +56,6 @@ Consequences:
 - Every host gets `options`, `core/common`, `core/profiles`, and `hardware`.
   These trees are imported for every machine, so adding a program or option does
   not require editing a host or an import list.
-- Only the role directories named in `host.roles` are imported for that host.
 - `host.extraModules` and `host.features` are per-host.
 - `hostName` and `stateVersion` are set inline; everything else comes from modules.
 - `specialArgs = {inherit inputs self;}` makes `inputs` and the flake itself
@@ -103,6 +101,7 @@ modules/
     device.nix            modules.device.*   hardware capabilities
     profiles.nix          modules.profiles.* software bundles
     programs.nix          modules.system.programs.*
+    services.nix          modules.system.services.*
     system.nix            modules.system.* (loader, doas, fonts, zram, ...)
   core/
     common/               always imported for every host
@@ -110,10 +109,10 @@ modules/
         home-manager.nix  home-manager integration and common arguments
         nix/              nix settings, Lix, and wrapper overlays
         os/               boot, loader, doas, debloat, fonts, locale, networking
+        services/         power-profiles-daemon, thermald, undervolt
         programs/name.nix           program implementation
         programs/name/              implementation plus assets/shared files
         programs/name/_foo.nix      shared Nix code/data; skipped by import-tree
-    roles/                imported only for a host that lists the role
     profiles/             always imported; their config is gated by profile options
   hardware/               always imported; config gated by device/system/program options
 ```
@@ -158,7 +157,6 @@ Keep imports downward and local. Cross-tree wiring is centralized:
 | `enable` | Build this host at all. Filtered in `mkHost`. |
 | `hostName` | Becomes `networking.hostName`. |
 | `stateVersion` | Becomes `system.stateVersion`. Do not change casually. |
-| `roles` | List of directory names under `modules/core/roles/`. Every `.nix` in each named directory is imported for this host. |
 | `users` | Attrset keyed by account name. Each entry creates both a system account and a Home Manager generation. `homeModules` defaults to `homes/<name>/home.nix` when that file exists. |
 | `features` | A `deferredModule` inserted into the system. Use it for enable flags and direct NixOS config for this host. |
 | `extraModules` | A list of modules imported only by this host. Used for host-specific modules (e.g. `apollo/modules`, ISO live installer). |
@@ -166,7 +164,10 @@ Keep imports downward and local. Cross-tree wiring is centralized:
 Example (the real `apollo` host, shortened):
 
 ```nix
-_: {
+{
+  inputs,
+  ...
+}: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -184,8 +185,6 @@ _: {
         extraGroups = ["video" "audio" "input"];
       };
     };
-
-    roles = ["graphical" "workstation" "laptop"];
 
     features = {
       modules = {
@@ -208,18 +207,20 @@ _: {
         };
 
         system = {
-          programs.plasma.enable = true;
-          programs.flatpak.enable = true;
+          programs = {
+            plasma.enable = true;
+            flatpak.enable = true;
+            steam.enable = false;
+          };
           loader.enable = true;
           fonts.enable = true;
         };
 
         profiles = {
+          graphical.enable = true;
           workstation.enable = true;
-          gaming = {
-            enable = true;
-            steam.enable = false;
-          };
+          laptop.enable = true;
+          gaming.enable = true;
         };
       };
     };
@@ -277,15 +278,14 @@ Feature modules do not reference specific accounts; groups such as `libvirtd` or
 1. `modules.device.*` — hardware capability: sound, Bluetooth, Wi-Fi, Ethernet,
    CPU vendor, GPUs. Implementations are in `modules/hardware/`; networking stays
    in `core/common/system/os/networking/`.
-2. `roles` — what the machine *is*. A role directory is imported wholesale for the
-   host. Role code is unconditional; a graphical machine simply gets a session.
-3. `modules.profiles.*` and `modules.system.programs.*` — NixOS software. Profiles are
-   always imported but gated by their enable option, and they turn programs on with
-   `lib.mkDefault`. A host can therefore disable one program while keeping the
-   profile (e.g. `gaming` defaults `steam`, `bottles`, `qbittorrent`, and
-   `minecraft` on with `lib.mkDefault`, and `apollo` turns `steam` off).
+2. `modules.profiles.*` — high-level archetypes: `graphical`, `workstation`, `laptop`,
+   `gaming`. Profiles are always imported but gated by their enable option, and they
+   turn programs/services on with `lib.mkDefault`.
+3. `modules.system.programs.*` and `modules.system.services.*` — granular NixOS software
+   and services. A host can disable one piece while keeping a profile enabled without
+   `mkForce`.
 
-Profile and role modules use `lib.mkDefault`, so a host's normal-priority assignment
+Profile modules use `lib.mkDefault`, so a host's normal-priority assignment
 wins. For example, a host can set `modules.system.programs.opencode.enable = false`
 while keeping the `workstation` profile enabled, without `mkForce`.
 
@@ -295,10 +295,10 @@ while keeping the `workstation` profile enabled, without `mkForce`.
 
 ## Current hosts
 
-| Host | Roles | Profiles | Notable choices |
-|---|---|---|---|
-| `apollo` | `graphical`, `workstation`, `laptop` | `workstation`, `gaming` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Flatpak, gaming profile with Steam off and Prism Launcher/Bottles/qBittorrent on, btrfs subvolumes in `modules/fs.nix` |
-| `iso` | `graphical` | none | Noctalia greeter off, Neovim on, audio, installation-CD module + `live.nix` (Calamares, iwd + dhcpcd, xanmod, polkit) |
+| Host | Profiles | Notable choices |
+|---|---|---|
+| `apollo` | `graphical`, `workstation`, `laptop`, `gaming` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Flatpak, gaming profile with Steam off and Prism Launcher/Bottles/qBittorrent on, btrfs subvolumes in `modules/fs.nix` |
+| `iso` | `graphical` | Noctalia greeter off, Neovim on, audio, installation-CD module + `live.nix` (Calamares, iwd + dhcpcd, xanmod, polkit) |
 
 Both use `stateVersion = "26.05"`. Flatpak is enabled directly in
-`hosts/apollo/host.nix`; Steam goes through `modules.profiles.gaming.steam`.
+`hosts/apollo/host.nix`; Steam goes through `modules.system.programs.steam`.
