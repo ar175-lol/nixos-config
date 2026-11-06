@@ -7,6 +7,8 @@
   cfg = config.modules.profiles.workstation;
 in {
   config = lib.mkIf cfg.enable {
+    modules.profiles.graphical.enable = mkDefault true;
+
     modules.system = {
       programs = {
         neovim.enable = mkDefault true;
