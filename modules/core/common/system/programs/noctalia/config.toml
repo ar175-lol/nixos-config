@@ -389,4 +389,3 @@ font_weight = 700
 labels_only_when_occupied = true
 occupied_color = "tertiary"
 scale = 0.80000000000000004
-show_labels = false
