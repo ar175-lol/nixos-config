@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         target:
-          - name: victus
+          - name: apollo
             attr: .#nixosConfigurations.apollo.config.system.build.toplevel
           - name: iso
             attr: .#nixosConfigurations.iso.config.system.build.toplevel
