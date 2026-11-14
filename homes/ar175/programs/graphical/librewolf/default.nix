@@ -14,6 +14,11 @@
   });
 in {
   config = lib.mkIf cfg.enable {
+    catppuccin = {
+      firefox.enable = false;
+      librewolf.enable = false;
+    };
+
     programs.librewolf = {
       enable = true;
 
@@ -75,6 +80,7 @@ in {
           "browser.tabs.hoverPreview.enabled" = true;
           "browser.gesture.swipe.left" = "";
           "browser.gesture.swipe.right" = "";
+          "network.http.referer.XOriginPolicy" = "2";
           "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
 
           # Reduce disk writes

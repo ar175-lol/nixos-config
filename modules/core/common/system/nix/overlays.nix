@@ -1,7 +1,13 @@
-{inputs, ...}: {
+{
+  inputs,
+  lib,
+  ...
+}: {
   nixpkgs.overlays = [
     (
       final: _: {
+        myNeovim = inputs.self.packages.${final.stdenv.hostPlatform.system}.myNeovim;
+
         myTerminal = inputs.wrapper-modules.wrappers.kitty.wrap {
           inherit (final) pkgs;
 
@@ -81,11 +87,23 @@
 
         myYazi = inputs.wrapper-modules.wrappers.yazi.wrap {
           inherit (final) pkgs;
-          settings.yazi.mgr = {
-            sort_sensitive = false;
-            sort_by = "none";
-            sort_dir_first = true;
-            show_symlink = true;
+          settings.yazi = {
+            mgr = {
+              sort_sensitive = false;
+              sort_by = "none";
+              sort_dir_first = true;
+              show_symlink = true;
+            };
+            opener = {
+              edit = [
+                {
+                  run = ''${lib.getExe final.myNeovim} %s'';
+                  block = true;
+                  desc = "Neovim";
+                  for = "unix";
+                }
+              ];
+            };
           };
         };
 

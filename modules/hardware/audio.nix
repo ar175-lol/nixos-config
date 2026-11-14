@@ -28,7 +28,7 @@ in {
             }
           ];
         };
-        # Route every capture stream that Zen (Twilight) opens to the
+        # Route every capture stream that browser opens to the
         # PipeWire Soundpad virtual mic, so soundpad audio reaches calls.
         # The browser asks for the physical mic by name, which a default-node
         # or pulse.rules target cannot override, so this is a WirePlumber
@@ -58,7 +58,7 @@ in {
               if si_props ["media.class"] ~= "Stream/Input/Audio" then
                 return
               end
-              if si_props ["application.name"] ~= "Twilight" and
+              if si_props ["application.name"] ~= "LibreWolf" and
                   si_props ["application.process.binary"] ~= "librewolf" then
                 return
               end
