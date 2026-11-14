@@ -13,6 +13,13 @@ jobs:
   update-flake:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate app token
+        uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v5
 
@@ -22,8 +29,10 @@ jobs:
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
+          token: ${{ steps.app-token.outputs.token }}
           pr-title: "chore(deps): bump flake.lock"
           pr-labels: |
             dependencies
             automated
-
+          pr-reviewers: ar175-lol
+          pr-assignees: ar175-lol
