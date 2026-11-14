@@ -16,6 +16,16 @@ in {
       kde-pim.enable = false;
     };
 
+    security.pam.services = {
+      kde.kwallet.enable = lib.mkForce false;
+      login.kwallet.enable = lib.mkForce false;
+    };
+
+    services = {
+      udisks2.enable = lib.mkForce false;
+      # fwupd.enable = lib.mkForce false;
+    };
+
     environment.plasma6.excludePackages = with pkgs.kdePackages; [
       kate
       okular
@@ -37,6 +47,7 @@ in {
       aurorae
       ffmpegthumbs
       krdp
+      kwallet
     ];
 
     nixpkgs.overlays = [
@@ -51,6 +62,7 @@ in {
             plasma-systemmonitor = mkEmptyPkg "plasma-systemmonitor";
             drkonqi = mkEmptyPkg "drkonqi";
             kwalletmanager = mkEmptyPkg "kwalletmanager";
+            kwallet = mkEmptyPkg "kwallet";
           };
       })
     ];

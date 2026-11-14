@@ -63,7 +63,7 @@
         };
       };
 
-      xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+      # xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
       layout = {
         focus-ring = {
@@ -150,8 +150,6 @@
           "Mod+Alt+K".set-window-height = "+10%";
           "Mod+Alt+L".set-column-width = "+10%";
 
-          "Mod+Shift+S".screenshot = _: {};
-
           "Mod+Slash".show-hotkey-overlay = _: {};
         }
         // (lib.listToAttrs (map (n: {
@@ -165,6 +163,7 @@
         // lib.optionalAttrs config.modules.system.programs.noctalia.enable {
           "Mod+D".spawn-sh = "${lib.getExe pkgs.myNoctalia} msg panel-toggle launcher";
           "Mod+V".spawn-sh = "${lib.getExe pkgs.myNoctalia} msg panel-toggle clipboard";
+          "Mod+Shift+S".spawn = ["${lib.getExe pkgs.myNoctalia}" "msg" "screenshot-annotate"];
         };
     }
     // lib.optionalAttrs config.modules.system.programs.noctalia.enable {
@@ -178,7 +177,11 @@
     };
 in {
   config = lib.mkIf cfg.enable {
-    services.displayManager.defaultSession = lib.mkForce "niri";
+    services = {
+      displayManager.defaultSession = lib.mkForce "niri";
+      gnome.gnome-keyring.enable = lib.mkForce false;
+    };
+
     programs.niri = {
       enable = true;
       useNautilus = false;

@@ -14,9 +14,11 @@ their own options; they read `config.modules.*`.
   `undervolt.enable` (with `p1` and `p2` settings).
 - `modules.profiles`: `graphical.enable`, `workstation.enable`, `laptop.enable`, `gaming.enable`.
 - `modules.system.programs`: `plasma`, `niri`, `greeter`, `noctalia`, `tmux`,
-  `neovim`, `opencode`, `localsend`, `kdenlive`, `libreoffice`, `flatpak`,
-  `virtualisation`, `adb`, `printing`, `steam`, `prismlauncher`, `bottles`,
-  `qbittorrent` — all with `.enable`.
+  `neovim`, `opencode`, `librewolf`, `localsend`, `kdenlive`,
+  `libreoffice`, `flatpak`, `virtualisation`, `adb`, `printing`, `steam`,
+  `prismlauncher`, `bottles`, `qbittorrent` — all with `.enable`.
+  `greeter.defaultSessions` maps usernames to session names; it is filled from
+  `hosts.<name>.users.<user>.defaultSession`.
 
 `modules.profiles.gaming` sets `steam`, `prismlauncher`, `bottles`, and `qbittorrent`
 on `modules.system.programs.*` via `mkDefault`.
@@ -73,8 +75,8 @@ Hardware (all gated by the matching `modules.*` option):
 System programs (`core/common/system/programs/`):
 
 - `<name>.nix` — one file per selectable program: `flatpak`, `greeter`,
-  `kdenlive`, `libreoffice`, `localsend`, `niri`, `opencode`, `plasma`, `printing`,
-  `steam`, `tmux`, plus `noctalia/` and `neovim/`.
+  `kdenlive`, `libreoffice`, `localsend`, `niri`, `opencode`, `plasma`,
+  `printing`, `steam`, `tmux`, plus `noctalia/` and `neovim/`.
 - `neovim/` and `noctalia/` are directories because they carry settings, assets,
   or flake-level package outputs.
 

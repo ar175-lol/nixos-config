@@ -26,6 +26,10 @@
 
     services.accounts-daemon.enable = true;
 
+    modules.system.programs.greeter.defaultSessions = lib.optionalAttrs (spec.defaultSession != null) {
+      ${name} = spec.defaultSession;
+    };
+
     environment.etc."AccountsService/users/${name}".text = lib.optionalString (spec.defaultSession != null) ''
       [User]
       Session=${spec.defaultSession}

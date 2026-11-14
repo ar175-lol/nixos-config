@@ -10,6 +10,10 @@
       url = "github:catppuccin/nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    drift = {
+      url = "github:socatlolmeow/drift";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -45,20 +49,16 @@
       url = "github:ar175-lol/PrismLauncher-Cracked";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sddm-astronaut-theme = {
-      url = "github:ar175-lol/sddm-astronaut-theme";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     wrapper-modules = {
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs = {
-        home-manager.follows = "home-manager";
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
+    # zen-browser = {
+    #   url = "github:0xc000022070/zen-browser-flake";
+    #   inputs = {
+    #     home-manager.follows = "home-manager";
+    #     nixpkgs.follows = "nixpkgs";
+    #   };
+    # };
   };
 }

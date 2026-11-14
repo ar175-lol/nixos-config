@@ -1,4 +1,4 @@
-{inputs, ...}: {
+_: {
   hosts.apollo = {
     enable = true;
     hostName = "apollo";
@@ -33,40 +33,6 @@
     };
 
     features = {
-      # TODO: move it to somewhere...
-      environment.systemPackages = [inputs.pwsp.packages.x86_64-linux.default];
-
-      # TODO: move it to sddm config?
-      security.polkit.extraConfig = ''
-        polkit.addRule(function(action, subject) {
-          var powerActions = [
-            "org.freedesktop.login1.power-off",
-            "org.freedesktop.login1.power-off-multiple-sessions",
-            "org.freedesktop.login1.power-off-ignore-inhibit",
-            "org.freedesktop.login1.reboot",
-            "org.freedesktop.login1.reboot-multiple-sessions",
-            "org.freedesktop.login1.reboot-ignore-inhibit",
-            "org.freedesktop.login1.suspend",
-            "org.freedesktop.login1.suspend-multiple-sessions",
-            "org.freedesktop.login1.suspend-ignore-inhibit",
-            "org.freedesktop.login1.hibernate",
-            "org.freedesktop.login1.hibernate-multiple-sessions",
-            "org.freedesktop.login1.hibernate-ignore-inhibit",
-            "org.freedesktop.login1.hybrid-sleep",
-            "org.freedesktop.login1.hybrid-sleep-multiple-sessions",
-            "org.freedesktop.login1.hybrid-sleep-ignore-inhibit",
-            "org.freedesktop.login1.suspend-then-hibernate",
-            "org.freedesktop.login1.suspend-then-hibernate-multiple-sessions",
-            "org.freedesktop.login1.suspend-then-hibernate-ignore-inhibit"
-          ];
-
-          if ((subject.isInGroup("wheel") || subject.user == "sddm")
-              && powerActions.indexOf(action.id) !== -1) {
-            return polkit.Result.YES;
-          }
-        });
-      '';
-
       modules = {
         device = {
           hasSound = true;
@@ -92,7 +58,10 @@
           programs = {
             plasma.enable = true;
             flatpak.enable = true;
-            steam.enable = false;
+            librewolf.enable = true;
+            steam.enable = true;
+            drift.enable = true;
+            pwsp.enable = true;
           };
 
           loader.enable = true;

@@ -38,8 +38,10 @@ Rules that follow from the module system:
 Place user-specific Home Manager configuration in `homes/<user>/`. The account's
 `homeModules` defaults to `homes/<user>/home.nix` when that file exists, so most
 hosts do not mention it at all. A home module can use
-`{config, osConfig, pkgs, inputs, self, ...}` normally, but should configure the
-selected user directly rather than gate itself behind a NixOS program option.
+`{config, osConfig, pkgs, inputs, self, ...}` normally. A user program that has a
+matching `modules.system.programs.<name>.enable` toggle should gate its config on
+`osConfig.modules.system.programs.<name>.enable` (see `graphical/browser` and
+`graphical/librewolf`); otherwise configure the selected user directly.
 `userModule` sets each account's `home.stateVersion` from the host's
 `system.stateVersion`; `core/common/system/home-manager.nix` provides global packages and
 `extraSpecialArgs = {inherit inputs self;}`.

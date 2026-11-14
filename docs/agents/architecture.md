@@ -297,7 +297,7 @@ while keeping the `workstation` profile enabled, without `mkForce`.
 
 | Host | Profiles | Notable choices |
 |---|---|---|
-| `apollo` | `graphical`, `workstation`, `laptop`, `gaming` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Flatpak, gaming profile with Steam off and Prism Launcher/Bottles/qBittorrent on, btrfs subvolumes in `modules/fs.nix` |
+| `apollo` | `graphical`, `workstation`, `laptop`, `gaming` | Intel CPU, Intel + NVIDIA PRIME, sound, Bluetooth, Wi-Fi (wired DHCP off), Limine, fonts, Plasma, Flatpak, gaming profile with Steam/Prism Launcher/Bottles/qBittorrent on, btrfs subvolumes in `modules/fs.nix` |
 | `iso` | `graphical` | Noctalia greeter off, Neovim on, audio, installation-CD module + `live.nix` (Calamares, iwd + dhcpcd, xanmod, polkit) |
 
 Both use `stateVersion = "26.05"`. Flatpak is enabled directly in

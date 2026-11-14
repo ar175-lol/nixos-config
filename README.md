@@ -102,7 +102,7 @@ scope inside function modules used there.
 
 | Host | What it is |
 |---|---|
-| `apollo` | the workstation: Plasma and Niri sessions, SDDM, NVIDIA; gaming profile on with Steam off |
+| `apollo` | the workstation: Plasma and Niri sessions, greetd + tuigreet, NVIDIA; gaming profile on with Steam off |
 | `iso` | Calamares installer with the `graphical` profile |
 
 The gaming profile enables the matching `modules.system.programs.*` options:
@@ -223,5 +223,3 @@ Thank you:
 [zed-url]: https://zed.dev/
 [agenix-url]: https://github.com/ryantm/agenix
 [home-manager-url]: https://github.com/nix-community/home-manager
-[zen-url]: https://zen-browser.app/
-[zen-flake-url]: https://github.com/0xc000022070/zen-browser-flake

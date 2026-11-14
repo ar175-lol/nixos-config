@@ -23,7 +23,11 @@ overwrite it. The zsh aliases `sync` and `update` call this workflow.
   NetworkManager off, dnscrypt-proxy on `127.0.0.1`, systemd-resolved and
   resolvconf disabled, nftables firewall on.
 - Privilege: `modules/core/common/system/os/doas.nix` disables sudo and enables passwordless doas
-  for `wheel`; the `workstation` profile turns this on.
+  for `wheel`; the `workstation` profile turns this on. When the greeter is
+  enabled, `modules/core/common/system/programs/greeter.nix` runs greetd with
+  tuigreet and grants `wheel` and the `greeter` user passwordless login1 power
+  actions via polkit. The greeter also applies the Catppuccin Mocha console
+  palette and picks a per-user session from `hosts.<name>.users.<user>.defaultSession`.
 - Audio: PipeWire with ALSA, JACK, Pulse, and WirePlumber when
   `modules.device.hasSound` is true.
 - GPU: NVIDIA proprietary driver with modesetting/fine-grained power management and

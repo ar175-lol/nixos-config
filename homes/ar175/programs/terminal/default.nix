@@ -2,5 +2,6 @@
   imports = [
     ./shell
     ./tools
+    ./music
   ];
 }

@@ -1,10 +1,11 @@
 {
   imports = [
-    ./browser
+    ./librewolf
     ./discord
     ./minecraft
     ./gaming
     ./obs
+    ./pwsp
     ./telegram
   ];
 }

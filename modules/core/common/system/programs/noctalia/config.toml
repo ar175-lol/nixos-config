@@ -5,7 +5,7 @@ spectrum_frame_rate = 30
 
 [bar.default]
 center = [ "group:g3", "group:g4" ]
-end = [ "privacy", "tray", "audio_visualizer", "keyboard_layout", "group:g2" ]
+end = [ "tray", "group:g2" ]
 font_family = "Monocraft"
 font_weight = 600
 margin_edge = 0
@@ -22,16 +22,19 @@ thickness = 40
     [[bar.default.capsule_group]]
     accordion = false
     accordion_direction = "end"
+    border_width = 1.0
     enabled = true
     fill = "surface_container"
     id = "g2"
-    members = [ "network", "battery", "volume", "session" ]
-    opacity = 1.0
+    members = [ "keyboard_layout", "battery", "network", "volume", "session" ]
+    opacity = 0.0
     padding = 6.0
+    widget_spacing = 8
 
     [[bar.default.capsule_group]]
     accordion = false
     accordion_direction = "end"
+    border_width = 1.0
     enabled = true
     fill = "surface_container"
     id = "g3"
@@ -42,6 +45,7 @@ thickness = 40
     [[bar.default.capsule_group]]
     accordion = false
     accordion_direction = "start"
+    border_width = 1.0
     enabled = true
     fill = "surface_container"
     id = "g4"
@@ -52,6 +56,7 @@ thickness = 40
     [[bar.default.capsule_group]]
     accordion = false
     accordion_direction = "end"
+    border_width = 1.0
     enabled = true
     fill = "surface_container"
     id = "g1"
@@ -84,7 +89,6 @@ type = "notification"
 type = "power_profile"
 
 [desktop_widgets]
-enabled = false
 schema_version = 2
 widget_order = []
 
@@ -96,9 +100,9 @@ widget_order = []
     [desktop_widgets.widget]
 
 [dock]
+position = "right"
 reserve_space = false
 show_dots = true
-smart_auto_hide = true
 
 [keybinds]
 down = [ "Down", "Ctrl+j" ]
@@ -290,13 +294,11 @@ transition_on_startup = true
 display = "icon_only"
 
 [widget.audio_visualizer]
-bands = 18
-width = 48
+bands = 12
+width = 80
 
 [widget.battery]
-capsule = true
 display_mode = "graphic"
-scale = 0.90000000000000013
 show_label = false
 
 [widget.clock]
@@ -371,10 +373,13 @@ scale = 0.85000000000000009
 show_value = false
 
 [widget.volume]
-capsule = true
 capsule_padding = 8
-scale = 0.90000000000000013
+capsule_radius = "auto"
 show_label = false
+
+[widget.weather]
+capsule = true
+scale = 0.90000000000000013
 
 [widget.workspaces]
 active_pill_size = 2.3999999999999999

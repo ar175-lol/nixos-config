@@ -19,7 +19,7 @@ in {
     };
 
     font = {
-      package = pkgs.nerd-fonts.jetbrains-mono;
+      package = pkgs.monocraft;
       name = "Monocraft";
       size = 11;
     };
