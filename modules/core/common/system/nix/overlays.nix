@@ -25,7 +25,7 @@
             window_margin_width = 0;
             hide_window_decorations = "yes";
             tab_bar_style = "hidden";
-            adjust_line_height = 6;
+            adjust_line_height = 2;
 
             confirm_os_window_close = 0;
 

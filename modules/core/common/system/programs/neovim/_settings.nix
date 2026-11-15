@@ -82,6 +82,7 @@ in {
     };
 
     servers.gopls.enable = true;
+    servers.rust-analyzer.enable = true;
   };
 
   languages = {
@@ -94,6 +95,7 @@ in {
       format.type = ["alejandra"];
     };
     go.enable = true;
+    rust.enable = true;
   };
 
   diagnostics = {

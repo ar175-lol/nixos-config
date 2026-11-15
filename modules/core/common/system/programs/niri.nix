@@ -63,7 +63,7 @@
         };
       };
 
-      # xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
+      xwayland-satellite.path = lib.getExe pkgs.xwayland-satellite;
 
       layout = {
         focus-ring = {

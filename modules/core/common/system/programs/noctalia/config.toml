@@ -1,4 +1,4 @@
-config_version = 16
+config_version = 20
 
 [audio]
 spectrum_frame_rate = 30
@@ -323,7 +323,7 @@ scale = 0.80000000000000004
 [widget.cpu]
 scale = 0.80000000000000004
 show_value = false
-visualization = "graph"
+visualization = "gauge"
 
 [widget.date]
 capsule = true
@@ -386,6 +386,7 @@ active_pill_size = 2.3999999999999999
 capsule = true
 capsule_radius = "auto"
 font_weight = 700
-labels_only_when_occupied = true
+labels_only_when_occupied = false
 occupied_color = "tertiary"
 scale = 0.80000000000000004
+show_labels = false
