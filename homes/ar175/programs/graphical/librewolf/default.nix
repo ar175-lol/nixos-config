@@ -31,12 +31,11 @@ in {
         "browser.toolbars.bookmarks.visibility" = "never";
         "browser.newtabpage.activity-stream.hideLogo" = true;
 
-        # Fonts: ignore site fonts and use Monocraft everywhere
-        # (icon fonts keep working, Firefox handles those separately)
-        "browser.display.use_document_fonts" = 0;
-        "font.name.serif.x-western" = "Monocraft";
-        "font.name.sans-serif.x-western" = "Monocraft";
-        "font.name.monospace.x-western" = "Monocraft";
+        # Fonts: sites keep their own fonts; these only apply where a site doesn't specify one
+        "browser.display.use_document_fonts" = 1;
+        "font.name.serif.x-western" = "JetBrainsMono Nerd Font";
+        "font.name.sans-serif.x-western" = "JetBrainsMono Nerd Font";
+        "font.name.monospace.x-western" = "JetBrainsMono Nerd Font";
 
         # Vertical tabs / sidebar
         "sidebar.verticalTabs" = true;
@@ -45,8 +44,6 @@ in {
         "sidebar.main.tools" = "history,passwords";
 
         # URL bar
-        "browser.urlbar.placeholderName" = "DuckDuckGo No-AI";
-        "browser.urlbar.placeholderName.private" = "DuckDuckGo No-AI";
         "browser.urlbar.suggest.bookmark" = false;
         "browser.urlbar.suggest.engines" = false;
         "browser.urlbar.suggest.history" = false;
@@ -63,7 +60,7 @@ in {
         # Privacy / security (rejected by the Preferences policy, so they live here)
         "privacy.resistFingerprinting" = false;
         "privacy.fingerprintingProtection" = true;
-        "privacy.spoof_english" = 1;
+        "privacy.spoof_english" = 2;
         "privacy.antitracking.isolateContentScriptResources" = true;
         "security.ssl.treat_unsafe_negotiation_as_broken" = true;
 
@@ -80,7 +77,7 @@ in {
           "browser.tabs.hoverPreview.enabled" = true;
           "browser.gesture.swipe.left" = "";
           "browser.gesture.swipe.right" = "";
-          "network.http.referer.XOriginPolicy" = "2";
+          "network.http.referer.XOriginPolicy" = 2;
           "media.videocontrols.picture-in-picture.video-toggle.enabled" = false;
 
           # Reduce disk writes
@@ -173,7 +170,7 @@ in {
           .tabbrowser-tab:hover .tab-close-button { display: flex !important; }
 
           * {
-            font-family: "Monocraft", monospace !important;
+            font-family: "JetBrainsMono Nerd Font", monospace !important;
           }
         '';
 
@@ -190,6 +187,10 @@ in {
               --in-content-primary-button-text-color: #11111b !important;
               --in-content-link-color: #cba6f7 !important;
             }
+          }
+
+          *:not(mat-icon, .material-icons, .material-symbols-outlined, .material-symbols-rounded, .google-symbols, [class*="icon" i], [class*="symbols" i]) {
+            font-family: "JetBrainsMono Nerd Font", monospace !important;
           }
         '';
       };

@@ -47,7 +47,7 @@ Always imported from `core/common/system`:
 - `os/debloat.nix` — disables ModemManager, nscd, timesyncd, speechd, core dumps,
   selected sockets/timers, and most docs.
 - `os/doas.nix` — disables sudo, enables passwordless doas for wheel.
-- `os/fonts.nix` — Monocraft; default font packages when
+- `os/fonts.nix` — JetBrains Mono Nerd Font; default font packages when
   `modules.system.fonts.enable` is true.
 - `os/loader.nix` — Limine when `modules.system.loader.enable` is true.
 - `os/locale.nix` — `Asia/Almaty`, `en_US.UTF-8`, British

@@ -10,9 +10,9 @@ in {
     fonts = {
       fontconfig = {
         enable = true;
-        # defaultFonts.monospace = ["JetBrainsMono Nerd Font"];
+        defaultFonts.monospace = ["JetBrainsMono Nerd Font"];
       };
-      packages = [pkgs.nerd-fonts.jetbrains-mono pkgs.monocraft];
+      packages = [pkgs.nerd-fonts.jetbrains-mono];
     };
 
     fonts.enableDefaultPackages = lib.mkIf cfg.enable true;

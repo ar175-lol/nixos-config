@@ -67,7 +67,7 @@
 
       layout = {
         focus-ring = {
-          width = 2;
+          width = 4;
           active-color = "#cba6f7";
           inactive-color = "#1e1e2e";
           urgent-color = "#f38ba8";

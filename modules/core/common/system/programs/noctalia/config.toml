@@ -6,7 +6,7 @@ spectrum_frame_rate = 30
 [bar.default]
 center = [ "group:g3", "group:g4" ]
 end = [ "tray", "group:g2" ]
-font_family = "Monocraft"
+font_family = "JetBrainsMono NF"
 font_weight = 600
 margin_edge = 0
 margin_ends = 0
@@ -222,7 +222,8 @@ enabled = []
 
 [shell]
 avatar_path = "/home/ar175/.face.jpg"
-font_family = "Monocraft"
+font_family = "JetBrainsMonoNL NFM ExtraBold"
+lang = "en"
 password_style = "random"
 polkit_agent = true
 
@@ -303,8 +304,8 @@ show_label = false
 
 [widget.clock]
 capsule = true
-font_family = "Monocraft"
-font_weight = 600
+font_family = "JetBrainsMono NF"
+font_weight = 700
 format = "{:%H %M}"
 scale = 0.85000000000000009
 vertical_format = "{:%H %M}"
@@ -327,7 +328,8 @@ visualization = "gauge"
 
 [widget.date]
 capsule = true
-font_weight = 600
+font_family = "JetBrainsMono NF"
+font_weight = 700
 format = "{:%d %m}"
 scale = 0.85000000000000009
 
@@ -340,8 +342,10 @@ type = "custom_button"
 [widget.keyboard_layout]
 capsule = true
 capsule_radius = "auto"
-font_weight = 600
-scale = 0.75
+font_family = "JetBrainsMono NF"
+font_scale = 1.1500000000000001
+font_weight = 700
+scale = 0.80000000000000004
 
 [widget.launcher_nixos]
 custom_image = "@ASSETS@/NixOS.png"

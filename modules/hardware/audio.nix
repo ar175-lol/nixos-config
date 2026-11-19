@@ -14,7 +14,6 @@ in {
           enable = true;
           support32Bit = true;
         };
-        jack.enable = true;
         pulse.enable = true;
         wireplumber.enable = true;
         extraConfig."pipewire-pulse"."10-block-source-volume" = {
@@ -28,12 +27,6 @@ in {
             }
           ];
         };
-        # Route every capture stream that browser opens to the
-        # PipeWire Soundpad virtual mic, so soundpad audio reaches calls.
-        # The browser asks for the physical mic by name, which a default-node
-        # or pulse.rules target cannot override, so this is a WirePlumber
-        # linking policy hook. PWSP mixes the physical mic into its virtual
-        # mic, so calls still carry the user's voice.
         wireplumber.extraScripts."pwsp/force-capture.lua" = ''
           lutils = require ("linking-utils")
           cutils = require ("common-utils")

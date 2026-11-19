@@ -12,5 +12,6 @@ in {
       enable = true;
       package = inputs.prism-launcher.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
+    home.packages = [pkgs.jdk25];
   };
 }
