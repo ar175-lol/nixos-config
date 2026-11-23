@@ -9,30 +9,30 @@
     enable = true;
     equibop.enable = true;
 
-    equibop.package = let
-      base = pkgs.equibop.overrideAttrs (_: {
-        version = "3.3.1";
-        src = pkgs.fetchFromGitHub {
-          owner = "Equicord";
-          repo = "Equibop";
-          tag = "v3.3.1";
-          hash = "sha256-cwRwVdrd91JsOw/WVhPdIJYDwWWhpjlHVhowFlfvoCo=";
-        };
-      });
-    in
-      base.overrideAttrs (_: {
-        node-modules =
-          (
-            inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage
-            "${inputs.nixpkgs}/pkgs/by-name/eq/equibop/node-modules.nix"
-            {
-              equibop = base;
-            }
-          )
-              .overrideAttrs (_: {
-            outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
-          });
-      });
+    # equibop.package = let
+    #   base = pkgs.equibop.overrideAttrs (_: {
+    #     version = "3.3.1";
+    #     src = pkgs.fetchFromGitHub {
+    #       owner = "Equicord";
+    #       repo = "Equibop";
+    #       tag = "v3.3.1";
+    #       hash = "sha256-cwRwVdrd91JsOw/WVhPdIJYDwWWhpjlHVhowFlfvoCo=";
+    #     };
+    #   });
+    # in
+    #   base.overrideAttrs (_: {
+    #     node-modules =
+    #       (
+    #         inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.callPackage
+    #         "${inputs.nixpkgs}/pkgs/by-name/eq/equibop/node-modules.nix"
+    #         {
+    #           equibop = base;
+    #         }
+    #       )
+    #           .overrideAttrs (_: {
+    #         outputHash = "sha256-odQOJOv3qBYJte5RNF14o33Duxxvm0n5Fy6jfVeCg3I=";
+    #       });
+    #   });
 
     discord.enable = false;
 

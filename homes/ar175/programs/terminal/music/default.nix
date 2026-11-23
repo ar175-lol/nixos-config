@@ -22,6 +22,9 @@ in {
       seek_step = 5.0
       volume_step = 5.0
 
+      [discord]
+      client_id = "1573318216548360232"
+
       [ui]
       accent = "#cba6f7"
 

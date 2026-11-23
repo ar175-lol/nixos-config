@@ -293,6 +293,10 @@ in {
       };
     };
   };
+
+  # Discord
+  presence.cord-nvim.enable = true;
+
   ui.noice = {
     enable = true;
 

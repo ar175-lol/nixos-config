@@ -134,37 +134,5 @@ in {
         command = greeterCommand;
       };
     };
-
-    # The greeter runs as the `greeter` user, so its power buttons need polkit
-    # permission; wheel members get the same actions without a password prompt.
-    # security.polkit.extraConfig = ''
-    #   polkit.addRule(function(action, subject) {
-    #     var powerActions = [
-    #       "org.freedesktop.login1.power-off",
-    #       "org.freedesktop.login1.power-off-multiple-sessions",
-    #       "org.freedesktop.login1.power-off-ignore-inhibit",
-    #       "org.freedesktop.login1.reboot",
-    #       "org.freedesktop.login1.reboot-multiple-sessions",
-    #       "org.freedesktop.login1.reboot-ignore-inhibit",
-    #       "org.freedesktop.login1.suspend",
-    #       "org.freedesktop.login1.suspend-multiple-sessions",
-    #       "org.freedesktop.login1.suspend-ignore-inhibit",
-    #       "org.freedesktop.login1.hibernate",
-    #       "org.freedesktop.login1.hibernate-multiple-sessions",
-    #       "org.freedesktop.login1.hibernate-ignore-inhibit",
-    #       "org.freedesktop.login1.hybrid-sleep",
-    #       "org.freedesktop.login1.hybrid-sleep-multiple-sessions",
-    #       "org.freedesktop.login1.hybrid-sleep-ignore-inhibit",
-    #       "org.freedesktop.login1.suspend-then-hibernate",
-    #       "org.freedesktop.login1.suspend-then-hibernate-multiple-sessions",
-    #       "org.freedesktop.login1.suspend-then-hibernate-ignore-inhibit"
-    #     ];
-    #
-    #     if ((subject.isInGroup("wheel") || subject.user == "greeter")
-    #         && powerActions.indexOf(action.id) !== -1) {
-    #       return polkit.Result.YES;
-    #     }
-    #   });
-    # '';
   };
 }

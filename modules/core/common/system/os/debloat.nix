@@ -10,6 +10,7 @@
         enable = false;
         wantedBy = lib.mkForce [];
       };
+      kunifiedpush-distributor.enable = false;
     };
 
     timers."systemd-tmpfiles-clean".enable = false;

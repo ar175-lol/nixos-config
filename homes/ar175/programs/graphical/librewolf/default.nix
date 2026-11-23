@@ -22,22 +22,20 @@ in {
     programs.librewolf = {
       enable = true;
 
-      # Regular prefs (not locked, and not subject to the policy pref whitelist)
       settings = {
-        # Theme / UI
         "extensions.activeThemeID" = "{76aabc99-c1a8-4c1e-832b-d4f2941d5a7a}";
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         "browser.uidensity" = 1;
         "browser.toolbars.bookmarks.visibility" = "never";
         "browser.newtabpage.activity-stream.hideLogo" = true;
 
-        # Fonts: sites keep their own fonts; these only apply where a site doesn't specify one
+        # Fonts
         "browser.display.use_document_fonts" = 1;
         "font.name.serif.x-western" = "JetBrainsMono Nerd Font";
         "font.name.sans-serif.x-western" = "JetBrainsMono Nerd Font";
         "font.name.monospace.x-western" = "JetBrainsMono Nerd Font";
 
-        # Vertical tabs / sidebar
+        # Vertical tabs
         "sidebar.verticalTabs" = true;
         "sidebar.position_start" = false;
         "sidebar.visibility" = "expand-on-hover";
@@ -56,15 +54,16 @@ in {
         "layout.frame_rate" = 144;
         "widget.use-xdg-desktop-portal.file-picker" = 1;
         "mousewheel.default.delta_multiplier_y" = 300;
+        "middlemouse.paste" = false;
 
-        # Privacy / security (rejected by the Preferences policy, so they live here)
+        # Privacy
         "privacy.resistFingerprinting" = false;
         "privacy.fingerprintingProtection" = true;
         "privacy.spoof_english" = 2;
         "privacy.antitracking.isolateContentScriptResources" = true;
         "security.ssl.treat_unsafe_negotiation_as_broken" = true;
 
-        # DRM (needs the EncryptedMediaExtensions policy below as well)
+        # DRM
         "media.eme.enabled" = true;
         "media.gmp-widevinecdm.enabled" = true;
       };
